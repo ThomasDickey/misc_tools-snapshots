@@ -1,5 +1,5 @@
 #ifndef	NO_IDENT
-static	char	Id[] = "$Header: /users/source/archives/misc_tools.vcs/src/newpath/RCS/newpath.c,v 1.6 1994/06/23 12:38:09 dickey Exp $";
+static	char	Id[] = "$Header: /users/source/archives/misc_tools.vcs/src/newpath/RCS/newpath.c,v 1.7 1997/11/06 17:31:14 dickey Exp $";
 #endif
 
 /*
@@ -44,16 +44,17 @@ extern	int	getopt();
 extern	int	optind;
 extern	char	*optarg;
 
+static	int	allow_files;
+
 static
-void	failed(s)
-	char	*s;
+void	failed(char *s)
 {
 	perror (s);
 	exit (EXIT_FAILURE);
 }
 
 static
-void	usage()
+void	usage(void)
 {
 	static	char	*tbl[] = {
 	"Usage: newpath [options [directories]]",
@@ -66,6 +67,7 @@ void	usage()
 	"    -b      put new arguments before existing path",
 	"    -d      remove duplicates/non-directory items",
 	"    -e      put new arguments after end of path",
+	"    -f      allow filenames to match, as well as directories",
 	"    -n NAME specify environment-variable to use (default: PATH)",
 	"    -p      print in C-shell form",
 	"    -r      remove arguments from path",
@@ -78,8 +80,7 @@ void	usage()
 }
 
 static
-char *	StrAlloc(s)	/* patch: not everyone has 'strdup()' */
-	char	*s;
+char *	StrAlloc(char *s)	/* patch: not everyone has 'strdup()' */
 {
 	char	*d = malloc(strlen(s)+1);
 	if (d == 0)
@@ -88,10 +89,7 @@ char *	StrAlloc(s)	/* patch: not everyone has 'strdup()' */
 }
 
 static
-void	Remove (offset, list, name)
-	int	offset;
-	LIST	*list;
-	char	*name;
+void	Remove (int offset, LIST *list, char *name)
 {
 	int	n = offset;
 
@@ -108,10 +106,7 @@ void	Remove (offset, list, name)
 }
 
 static
-int	Append (offset, list, name)
-	int	offset;
-	LIST	*list;
-	char	*name;
+int	Append (int offset, LIST *list, char *name)
 {
 	int	n = offset;
 	LIST	temp, save;
@@ -129,13 +124,25 @@ int	Append (offset, list, name)
 	return offset + 1;
 }
 
-int	main(argc, argv)
-	char	*argv[];
+static int
+exists(LIST *entry)
+{
+	if (stat(entry->nn, &(entry->sb)) >= 0) {
+		if ((entry->sb.st_mode & S_IFMT) == S_IFDIR)
+			return TRUE;
+		if (allow_files
+		 && (entry->sb.st_mode & S_IFMT) == S_IFREG)
+		 	return TRUE;
+	}
+	return FALSE;
+}
+
+int	main(int argc, char *argv[])
 {
 	char	*name = "PATH";
 	char	out_delim = PATHDELIM;
 	int	remove_duplicates = FALSE;
-	int	length = argc;
+	size_t	length = argc;
 	int	operation = 'a';
 	char	*where = 0;
 
@@ -143,7 +150,7 @@ int	main(argc, argv)
 	LIST	*list;
 	char	*s;
 
-	while ((c = getopt(argc, argv, "a:bden:pr")) != EOF) {
+	while ((c = getopt(argc, argv, "a:bdefn:pr")) != EOF) {
 		switch (c) {
 		case 'a':
 			where = optarg;
@@ -156,6 +163,9 @@ int	main(argc, argv)
 			break;
 		case 'e':
 			where = 0;
+			break;
+		case 'f':
+			allow_files = TRUE;
 			break;
 		case 'n':
 			name = optarg;
@@ -227,8 +237,7 @@ int	main(argc, argv)
 	if (remove_duplicates) {
 		/* Check to see if the directory exists. If not, remove it */
 		for (c = 1; list[c].nn != 0; c++)
-			if (stat(list[c].nn, &(list[c].sb)) < 0
-			 || (list[c].sb.st_mode & S_IFMT) != S_IFDIR) {
+			if (!exists(&list[c])) {
 				Remove(c, list, list[c].nn);
 				c--;
 			}
