@@ -6,23 +6,45 @@
  *		into nonprinting form.
  */
 
-static const char Id[] = "$Id: map.c,v 1.1 1997/06/09 10:57:36 tom Exp $";
+static const char Id[] = "$Id: map.c,v 1.4 2004/12/31 21:21:26 tom Exp $";
 
 #include "unmap.h"
 
-int main(int argc, char **argv)
+static void
+usage(void)
 {
-	if (argc > 1) {
-		int	n;
-		for (n = 1; n < argc; n++) {
-			FILE	*fp = fopen(argv[n], "r");
-			if (fp != 0) {
-				map(fp, stdout);
-				fclose(fp);
-			}
-		}
-	} else {
-		map(stdin, stdout);
+    fprintf(stderr, "Usage: map [-u] [files]\n");
+    exit(EXIT_FAILURE);
+}
+
+int
+main(int argc, char **argv)
+{
+    int ch;
+    int utf8 = 0;
+
+    while ((ch = getopt(argc, argv, "u")) != EOF) {
+	switch (ch) {
+	case 'u':
+	    utf8 = 1;
+	    break;
+	default:
+	    usage();
+	    break;
 	}
-	return 0;
+    }
+
+    if (argc > optind) {
+	int n;
+	for (n = 1; n < argc; n++) {
+	    FILE *fp = fopen(argv[n], "r");
+	    if (fp != 0) {
+		map(fp, stdout, utf8);
+		fclose(fp);
+	    }
+	}
+    } else {
+	map(stdin, stdout, utf8);
+    }
+    return 0;
 }

@@ -6,23 +6,45 @@
  *		into visible form.
  */
 
-static const char Id[] = "$Id: unmap.c,v 1.5 1997/06/09 10:46:58 tom Exp $";
+static const char Id[] = "$Id: unmap.c,v 1.7 2004/12/31 21:09:43 tom Exp $";
 
 #include "unmap.h"
 
-int main(int argc, char **argv)
+static void
+usage(void)
 {
-	if (argc > 1) {
-		int	n;
-		for (n = 1; n < argc; n++) {
-			FILE	*fp = fopen(argv[n], "r");
-			if (fp != 0) {
-				unmap(fp, stdout);
-				fclose(fp);
-			}
-		}
-	} else {
-		unmap(stdin, stdout);
+    fprintf(stderr, "Usage: unmap [-u] [files]\n");
+    exit(EXIT_FAILURE);
+}
+
+int
+main(int argc, char **argv)
+{
+    int ch;
+    int utf8 = 0;
+
+    while ((ch = getopt(argc, argv, "u")) != EOF) {
+	switch (ch) {
+	case 'u':
+	    utf8 = 1;
+	    break;
+	default:
+	    usage();
+	    break;
 	}
-	return 0;
+    }
+
+    if (argc > optind) {
+	int n;
+	for (n = 1; n < argc; n++) {
+	    FILE *fp = fopen(argv[n], "r");
+	    if (fp != 0) {
+		(void) unmap(fp, stdout, utf8);
+		(void) fclose(fp);
+	    }
+	}
+    } else {
+	(void) unmap(stdin, stdout, utf8);
+    }
+    return EXIT_SUCCESS;
 }
