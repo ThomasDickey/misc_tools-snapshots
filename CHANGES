@@ -1,3 +1,16 @@
+1997-09-06  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/acsplit/acmerge.c: better test for comment.
+
+	* src/acsplit/acsplit.c: better test for comment
+
+	* src/acsplit/acmerge.c:
+	adjusted to allow for having dashed lines in the parent file
+
+	* src/acsplit/acsplit.c:
+	make this a little smarter about header comments that contain sections
+	separated by dashes (e.g., xterm)
+
 1997-09-02  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/acsplit/acsplit.c:
