@@ -1,5 +1,5 @@
 #ifndef	NO_IDENT
-static	char	Id[] = "$Header: /users/source/archives/misc_tools.vcs/src/newpath/RCS/newpath.c,v 1.3 1994/06/02 17:14:06 dickey Exp $";
+static	char	Id[] = "$Header: /users/source/archives/misc_tools.vcs/src/newpath/RCS/newpath.c,v 1.4 1994/06/07 20:37:06 dickey Exp $";
 #endif
 
 /*
@@ -33,7 +33,7 @@ static	char	Id[] = "$Header: /users/source/archives/misc_tools.vcs/src/newpath/R
 
 #define	BLANK	""
 
-#define	TRACE(p) /*fprintf p; */
+#define	TRACE(p) /* fprintf p; */
 
 typedef	struct	{
 	char		*nn;
@@ -105,8 +105,7 @@ int	Append (offset, list, name)
 		n++;
 		save    = list[n];
 		list[n] = temp;
-		temp    = list[n+1];
-		list[n+1] = save;
+		temp    = save;
 	} while (list[n].nn != 0);
 
 	return offset + 1;
@@ -195,7 +194,7 @@ int	main(argc, argv)
 	}
 	if (list[c].nn == 0)
 		point = c - 1;
-	TRACE((stderr, "argc=%d,, point=%d (%c)\n", argc, point, operation))
+	TRACE((stderr, "argc=%d, point=%d (%c)\n", argc, point, operation))
 
 	/* Perform the actual insertion/removal */
 	while (optind < argc) {
