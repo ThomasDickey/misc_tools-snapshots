@@ -1,4 +1,4 @@
-static	const char Id[] = "$Id: unmap.c,v 1.1 1995/12/15 23:45:38 tom Exp $";
+static	const char Id[] = "$Id: unmap.c,v 1.2 1996/07/04 19:52:40 tom Exp $";
 
 #include <stdio.h>
 #include <ctype.h>
@@ -45,7 +45,7 @@ void unmap(FILE *fp)
 			break;
 		default:
 			if (iscntrl(c)) {
-				printf("^%c", c | 'A');
+				printf("^%c", c | '@');
 			} else if (c < 128) {
 				putchar(c);
 			} else {
