@@ -1,3 +1,7 @@
+1994-10-17  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/splitit/splitit.c: RCS_BASE
+
 1994-09-02  dickey@clark.net
 
 	* src/realpath/realpath.c:
