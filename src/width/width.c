@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static const char Id[] = "$Id: width.c,v 1.4 1996/11/22 19:00:26 dickey Exp $";
+static const char Id[] = "$Id: width.c,v 1.5 1997/05/11 01:07:18 dickey Exp $";
 #endif
 
 /*
@@ -56,15 +56,15 @@ static void width(char *name, FILE *fp)
 	int	column = 0;
 	int	length = 0;
 	int	c;
-	char	buffer[BUFSIZ];
+	size_t	have = BUFSIZ;
+	char	*buffer = malloc(have);
 
 	while ((c = fgetc(fp)) != EOF)
 	{
-		if (length < sizeof(buffer)-1)
-		{
-			buffer[length++] = c;
-			buffer[length] = '\0';
-		}
+		if (length + 2 > have)
+			buffer = realloc(buffer, have *= 2);
+		buffer[length++] = c;
+		buffer[length] = '\0';
 
 		/* compute the effective line & column */
 		if (c == '\n')
@@ -94,6 +94,7 @@ static void width(char *name, FILE *fp)
 		printf("%6d\t%s\n", max_width, name);
 		max_width = 0;
 	}
+	free(buffer);
 }
 
 static void usage(void)
