@@ -1,3 +1,11 @@
+1999-08-19  dickey@clark.net
+
+	* src/width/width.c: update usage for -q
+
+	* src/width/width.c: fix a realloc size, and add -q option
+
+	* src/width/width.c: add -s option to summarize percentages
+
 1998-05-16  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/tisplit/tisplit.c, src/tisplit/timerge.c, src/tisplit/doit, src/tisplit/Makefile:
