@@ -1,3 +1,9 @@
+2003-04-12  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* src/acsplit/acsplit.c:
+	make dashes check for 72-columns, to avoid conflict with headers produced
+	by "ci-aclocal"
+
 2002-12-30  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* src/acsplit/acmerge.c:

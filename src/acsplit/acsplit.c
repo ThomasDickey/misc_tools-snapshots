@@ -1,4 +1,4 @@
-static const char Id[] = "$Id: acsplit.c,v 1.10 2002/02/10 16:26:06 tom Exp $";
+static const char Id[] = "$Id: acsplit.c,v 1.11 2003/04/12 12:42:17 tom Exp $";
 
 /*
  * Title:	acsplit.c - split aclocal.m4
@@ -88,10 +88,11 @@ skip_comment(char *s)
 static int
 is_dashes(char *line)
 {
+    static const char dashes[] = "------------------------------------------------------------------------";
     line = skip_blanks(line);
     line = skip_comment(line);
     if (line != 0) {
-	return (!strncmp(line, "--------", 8));
+	return (!strncmp(line, dashes, sizeof(dashes) - 1));
     }
     return 0;
 }
@@ -141,7 +142,7 @@ my_temp(char *dst)
 }
 
 static FILE *
-finish(FILE * ofp, char *name)
+finish(FILE *ofp, char *name)
 {
     char temp[BUFSIZ];
 
@@ -166,7 +167,7 @@ finish(FILE * ofp, char *name)
 }
 
 static FILE *
-append(FILE * ofp, FILE * hdr)
+append(FILE *ofp, FILE *hdr)
 {
     char temp[BUFSIZ];
     char bfr[BUFSIZ];
