@@ -1,3 +1,11 @@
+1996-11-21  dickey@clark.net
+
+	* src/width/width.c: show current width, not maximum
+
+	* src/width/width.c: always show the result
+
+	* src/width/width.c, src/width/Makefile: RCS_BASE
+
 1996-08-14  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/unmap/unmap.c: print characters above 128 as octal
