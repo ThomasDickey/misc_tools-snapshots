@@ -1,3 +1,8 @@
+2001-04-22  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/acsplit/acmerge.c: oops - file-pointer leak.
+	luckily, NetBSD is a little retarded...
+
 2000-12-28  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/sue/sue.c: fix for broken glibc
