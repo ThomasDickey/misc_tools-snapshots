@@ -1,3 +1,8 @@
+1994-09-02  dickey@clark.net
+
+	* src/realpath/realpath.c:
+	IRIX has 'realpath()' function, but I wrote one in case I needed it
+
 1994-07-11  Thomas E. Dickey  <dickey@clark.net>
 
 	* config_h.in: RCS_BASE

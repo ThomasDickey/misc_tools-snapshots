@@ -1,6 +1,6 @@
 #ifndef	NO_IDENT
 static	char	Id[] =
-"$Header: /users/source/archives/misc_tools.vcs/src/realpath/RCS/realpath.c,v 1.1 1994/06/17 12:09:21 dickey Exp $";
+"$Header: /users/source/archives/misc_tools.vcs/src/realpath/RCS/realpath.c,v 1.2 1994/09/02 15:32:32 dickey Exp $";
 #endif
 
 /*
@@ -17,9 +17,21 @@ static	char	Id[] =
  *		since SunOS does not always resolve the directory properly
  *		when the current directory is mounted.
  */
+#include <stdlib.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/param.h>	/* for MAXPATHLEN */
+
+/* mips: IRIX */
+#if defined(sun) || defined(mips)
+# define HAVE_REALPATH 1
+#endif
+
+#if !HAVE_REALPATH
+#include <sys/types.h>
+#include <sys/stat.h>
+#endif
 
 static
 void failed(s)
@@ -28,6 +40,35 @@ void failed(s)
 	perror(s);
 	exit(1);
 }
+
+#if !HAVE_REALPATH
+static
+char *	realpath(src, dst)
+	char	*src;
+	char	*dst;
+{
+	char	save[MAXPATHLEN];
+	char	temp[MAXPATHLEN];
+	struct	stat	sb;
+
+	src = strcpy(temp, src);
+	if (stat(src, &sb) < 0)
+		return 0;
+	if ((sb.st_mode & S_IFMT) != S_IFDIR) {
+		char *leaf = strrchr(src, '/');
+		if (leaf == 0)
+			(void)strcpy(src, ".");
+		else
+			*leaf = '\0';
+	}
+	if (getcwd(save, sizeof(save))
+	 && chdir(src) == 0
+	 && getcwd(dst, MAXPATHLEN)
+	 && chdir(save) == 0)
+	 	return dst;
+	return 0;
+}
+#endif
 
 static
 void	do_path(path)
@@ -62,4 +103,5 @@ int	main(argc, argv)
 		}
 	}
 	exit(0);
+	/*NOTREACHED*/
 }
