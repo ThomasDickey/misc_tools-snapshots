@@ -1,3 +1,7 @@
+1997-08-29  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/acsplit/acsplit.c: add 'define' keyword
+
 1997-08-28  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/acsplit/acmerge.c, src/acsplit/doit, src/acsplit/Makefile, src/acsplit/acsplit.c:
