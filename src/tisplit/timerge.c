@@ -1,4 +1,4 @@
-static const char Id[] = "$Id: timerge.c,v 1.1 1998/05/16 18:05:24 tom Exp $";
+static const char Id[] = "$Id: timerge.c,v 1.2 2000/03/05 03:03:48 tom Exp $";
 
 /*
  * Title:	timerge.c - merge a split aclocal.m4
@@ -44,6 +44,7 @@ static void append(char *name, FILE *ofp)
 
 	while (fgets(temp, sizeof(temp), ifp) != 0)
 		fputs(temp, ofp);
+	fclose(ifp);
 }
 
 static void timerge(char *path)
