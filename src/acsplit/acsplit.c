@@ -1,4 +1,4 @@
-static const char Id[] = "$Id: acsplit.c,v 1.1 1997/08/28 23:25:34 tom Exp $";
+static const char Id[] = "$Id: acsplit.c,v 1.2 1997/08/29 10:01:07 tom Exp $";
 
 /*
  * Title:	acsplit.c - split aclocal.m4
@@ -7,6 +7,8 @@ static const char Id[] = "$Id: acsplit.c,v 1.1 1997/08/28 23:25:34 tom Exp $";
  * Function:	Splits an autoconf macro file (usually aclocal.m4) into
  *		a parent file which can be reprocessed by acmerge, and
  *		the macros in a subdirectory.
+ *
+ * FIXME:	The splitting is crude, not taking into account ()/[] balancing.
  */
 #include <stdlib.h>
 #include <sys/types.h>
@@ -77,7 +79,8 @@ static int defined(char *line, char *name)
 	char *s;
 
 	line = skip_blanks(line);
-	if ((s = match(line, "AC_DEFUN")) != 0) {
+	if (((s = match(line, "AC_DEFUN")) != 0)
+	 || ((s = match(line, "define")) != 0)) {
 		char *t = name;
 
 		s = skip_blanks(s);
@@ -146,8 +149,9 @@ static void acsplit(char *path)
 		} else {
 			fputs(bfr, ofp);
 		}
-		if (defined(bfr, name))
+		if (defined(bfr, name)) {
 			fprintf(hdr, "%s\n", name);
+		}
 
 		if (*name == 0 && !content)
 			fputs(bfr, hdr);
