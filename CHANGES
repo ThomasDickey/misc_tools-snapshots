@@ -1,3 +1,7 @@
+2003-11-29  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* install-sh: RCS_BASE
+
 2003-04-12  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* src/acsplit/acsplit.c:
