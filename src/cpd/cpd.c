@@ -39,7 +39,6 @@ char	*argv[];
 		usage();
 	}
 
-#ifdef	__STDCPP__
 	if (touch) {
 		char	*s = argv[1];
 		int	mon, day, hour, min, yy;
@@ -78,7 +77,6 @@ char	*argv[];
 				perror(argv[j]);
 		}
 	} else {
-#endif
 		for (j = 2; j < argc; j++)
 			if (stat(argv[1], &sb1) >= 0) {
 				timep[0] = sb1.st_atime;
