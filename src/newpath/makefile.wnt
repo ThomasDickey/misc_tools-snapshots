@@ -1,0 +1,26 @@
+#
+# makefile for newpath on WIN32 using Microsoft Visual C++
+#
+# $Id: makefile.wnt,v 1.1 2000/11/09 19:16:13 dickey Exp $
+#
+!include <ntwin32.mak>
+
+CFLAGS = $(cvars) $(cdebug) -nologo -G4
+LDFLAGS = -nologo -pdb:none
+
+OBJ = 	newpath.obj getopt.obj
+
+.c.obj:	
+	$(cc) $(CFLAGS) -c $< -Fo$@ 
+
+all:  newpath.exe
+
+newpath.exe: 	$(OBJ)
+	$(link) $(LDFLAGS) $(OBJ) $(ldebug) $(conlflags) $(conlibs) -out:$@ user32.lib
+
+install:  newpath.exe
+	copy newpath.exe c:\com
+
+clean:
+	del newpath.exe
+	del *.obj
