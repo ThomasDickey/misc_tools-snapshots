@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static const char Id[] = "$Id: width.c,v 1.5 1997/05/11 01:07:18 dickey Exp $";
+static const char Id[] = "$Id: width.c,v 1.8 1999/08/19 18:49:28 dickey Exp $";
 #endif
 
 /*
@@ -19,9 +19,17 @@ extern char *optarg;
 
 static	int	opt_width  = -1;
 static	int	opt_tabs   = -1;
+static	int	opt_sums   = 0;
+static	int	opt_show   = 1;
 static	int	opt_number = 0;
 static	int	max_width  = 0;
 static	int	per_file   = 0;
+
+static	int	*vec_sums;
+static	unsigned len_sums;
+static	int	max_sums;
+static	long	wide_lines;
+static	long	total_lines;
 
 static void failed(char *s)
 {
@@ -37,7 +45,10 @@ static void report_width(char *name, int lineno, int column, char *buffer)
 	if (opt_width > 0)
 	{
 		if (column > opt_width)
-			doit = 1;
+		{
+			doit = opt_show;
+			wide_lines++;
+		}
 	}
 	if (column > max_width)
 		max_width = column;
@@ -47,6 +58,21 @@ static void report_width(char *name, int lineno, int column, char *buffer)
 		if (opt_number)
 			printf("%s:%d:", name, lineno);
 		printf("%d:%s", column, buffer);
+	}
+
+	if (opt_sums)
+	{
+		if (column+1 >= len_sums)
+		{
+			unsigned new_sums = 2 * (column + 1);
+			vec_sums = realloc(vec_sums, new_sums * sizeof(int));
+			while (len_sums < new_sums)
+				vec_sums[len_sums++] = 0;
+		}
+		if (column > max_sums)
+			max_sums = column;
+		vec_sums[column] += 1;
+		total_lines++;
 	}
 }
 
@@ -85,8 +111,8 @@ static void width(char *name, FILE *fp)
 		{
 			column++;
 		}
-
 	}
+
 	if (length > 0)
 		report_width(name, lineno++, column, buffer);
 	if (per_file)
@@ -107,6 +133,8 @@ static void usage(void)
 	,"  -8     set tabs to 8"
 	,"  -n     show line-numbers of wide lines"
 	,"  -p     report per-file (otherwise the maximum of all files is computed)"
+	,"  -q     suppress listing of lines wider than the -w option"
+	,"  -s     print summary showing the number of lines for each length"
 	,"  -t XX  set tabs to XX"
 	,"  -w XX  set threshold to XX, showing all lines that are wider"
 	,""
@@ -125,7 +153,7 @@ int main(int argc, char *argv[])
 {
 	int	c;
 
-	while ((c = getopt(argc, argv, "pw:nt:48")) != EOF)
+	while ((c = getopt(argc, argv, "pw:nqst:48")) != EOF)
 	{
 		switch (c)
 		{
@@ -144,12 +172,23 @@ int main(int argc, char *argv[])
 		case '8':
 			opt_tabs = 8;
 			break;
+		case 'q':
+			opt_show = 0;
+			break;
+		case 's':
+			opt_sums = 1;
+			break;
 		case 't':
 			opt_tabs = atoi(optarg);
 			break;
 		default:
 			usage();
 		}
+	}
+
+	if (opt_sums)
+	{
+		vec_sums = (int *)calloc(len_sums = 256, sizeof(int *));
 	}
 
 	if (optind < argc)
@@ -186,6 +225,28 @@ int main(int argc, char *argv[])
 
 	if (!per_file)
 		printf("%d\n", max_width);
+
+	if (opt_sums)
+	{
+		long this_lines = 0;
+		printf("Summary:\n");
+		printf("%6ld lines\n", total_lines);
+		printf("%6ld wide lines\n", wide_lines);
+		printf("\n");
+		printf("Width  Count  Cumulative\n");
+		while (max_sums >= 0)
+		{
+			if ((c = vec_sums[max_sums]) != 0)
+			{
+				this_lines += c;
+				printf("%6d:%6d %5.1f%%%s\n",
+					max_sums, c,
+					(this_lines * 100.0) / total_lines,
+					max_sums == opt_width ? " <--" : "");
+			}
+			max_sums--;
+		}
+	}
 
 	return 0;
 }
