@@ -1,3 +1,31 @@
+2002-02-10  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* src/acsplit/acmerge.c: add -v option
+
+	* src/acsplit/acsplit.c: one remaining fix for "will finish" logic
+
+	* src/acsplit/acsplit.c:
+	add logic to force macros to be flushed out after the ending parenthesis or
+	bracket, even if the next line is not dashes.  (Dashes are still needed to
+	make a header comment separate from the macro contents).
+
+	* src/acsplit/acsplit.c:
+	improve verboseness a little by always emitting path:number for the interesting
+	messages.  Add a usage message.
+
+	* src/acsplit/acmerge.c: add logic to suppress dashes
+
+	* src/acsplit/acmerge.c:
+	fixes to avoid emitting a dashed line in the header when we see a blank line
+
+	* src/acsplit/acsplit.c:
+	since we don't have to worry about changequote() any more (autoconf 2.5x
+	breaks it), add logic to check level of [] and (), so we can pick up boundary
+	between macros without relying on dashes.  (They're still welcome, and are
+	used if present).
+
+	* src/acsplit/acmerge.c, src/acsplit/acsplit.c: indent'd
+
 2001-04-22  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/acsplit/acmerge.c: oops - file-pointer leak.
