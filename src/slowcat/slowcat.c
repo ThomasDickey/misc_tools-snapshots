@@ -34,6 +34,7 @@ static void slowcat(FILE *fp)
 int main(int argc, char *argv[])
 {
 	int n;
+	int ok = 0;
 
 	if (argc > 1) {
 		for (n = 1; n < argc; n++) {
@@ -50,12 +51,15 @@ int main(int argc, char *argv[])
 				}
 			} else {
 				FILE *fp = fopen(name, "r");
+				ok++;
 				if (fp != 0) {
 					slowcat(fp);
 					fclose(fp);
 				}
 			}
 		}
+		if (!ok)
+			slowcat(stdin);
 	} else
 		slowcat(stdin);
 	return 0;
