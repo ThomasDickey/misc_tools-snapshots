@@ -1,3 +1,9 @@
+1994-06-06  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/cpd/cpd.c:
+	took out the apollo-specific __STDCPP_ ifdef, so this can always act as
+	a sys5-touch if named appropriately.
+
 1994-06-02  dickey@clark.net
 
 	* src/newpath/newpath.c: added some traces
