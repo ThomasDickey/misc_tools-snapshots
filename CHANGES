@@ -1,3 +1,7 @@
+1995-02-20  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/hex/hex.c: RCS_BASE
+
 1995-01-05  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/splitit/splitit.c: added usage-message text
