@@ -1,5 +1,5 @@
 #ifndef	NO_IDENT
-static	char	Id[] = "$Header: /users/source/archives/misc_tools.vcs/src/newpath/RCS/newpath.c,v 1.5 1994/06/22 13:56:49 dickey Exp $";
+static	char	Id[] = "$Header: /users/source/archives/misc_tools.vcs/src/newpath/RCS/newpath.c,v 1.6 1994/06/23 12:38:09 dickey Exp $";
 #endif
 
 /*
@@ -45,6 +45,14 @@ extern	int	optind;
 extern	char	*optarg;
 
 static
+void	failed(s)
+	char	*s;
+{
+	perror (s);
+	exit (EXIT_FAILURE);
+}
+
+static
 void	usage()
 {
 	static	char	*tbl[] = {
@@ -67,6 +75,16 @@ void	usage()
 	for (j = 0; tbl[j] != 0; j++)
 		fprintf(stderr, "%s\n", tbl[j]);
 	exit(EXIT_FAILURE);
+}
+
+static
+char *	StrAlloc(s)	/* patch: not everyone has 'strdup()' */
+	char	*s;
+{
+	char	*d = malloc(strlen(s)+1);
+	if (d == 0)
+		failed("malloc");
+	return strcpy(d, s);
 }
 
 static
@@ -160,7 +178,7 @@ int	main(argc, argv)
 	 */
 	if ((s = getenv(name)) == 0)
 		s = BLANK;
-	s = strdup(s);		/* ...just in case someone else uses it */
+	s = StrAlloc(s);	/* ...just in case someone else uses it */
 	for (c = 0; s[c] != EOS; c++)
 		if (s[c] == PATHDELIM)
 			length++;
@@ -171,7 +189,7 @@ int	main(argc, argv)
 	/* Split the environment variable into strings indexed in list[] */
 	for (c = 1; *s != EOS; c++) {
 		if (*s == PATHDELIM) {
-			list[c].nn = strdup(".");
+			list[c].nn = StrAlloc(".");
 		} else {
 			list[c].nn = s;
 			while (*s != PATHDELIM && *s != EOS)
