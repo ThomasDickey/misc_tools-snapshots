@@ -1,4 +1,4 @@
-static const char Id[] = "$Id: acmerge.c,v 1.1 1997/08/28 23:52:56 tom Exp $";
+static const char Id[] = "$Id: acmerge.c,v 1.3 1997/09/06 23:08:51 tom Exp $";
 
 /*
  * Title:	acmerge.c - merge a split aclocal.m4
@@ -38,8 +38,28 @@ static int is_comment(char *s)
 {
 	if (!strncmp(s, "dnl", 3)) {
 		s += 3;
-		if (isspace(*s))
+		if (isspace(*s) || ispunct(*s))
 			return 1;
+	}
+	return 0;
+}
+
+static char *skip_comment(char *s)
+{
+	if (!strncmp(s, "dnl", 3)) {
+		s += 3;
+		if (isspace(*s))
+			return skip_blanks(s);
+	}
+	return 0;
+}
+
+static int is_dashes(char *line)
+{
+	line = skip_blanks(line);
+	line = skip_comment(line);
+	if (line != 0) {
+		return (!strncmp(line, "--------", 8));
 	}
 	return 0;
 }
@@ -82,7 +102,6 @@ static void acmerge(char *path)
 	char name[BUFSIZ];
 	char temp[BUFSIZ];
 	char bfr[BUFSIZ];
-	int content = 0;
 
 	sprintf(name, "%s.in", path);
 	if ((hdr = fopen(name, "r")) == 0)
@@ -94,11 +113,11 @@ static void acmerge(char *path)
 		failed(temp);
 
 	while (fgets(bfr, sizeof(bfr), hdr) != 0) {
-		if (is_comment(bfr))
+		if (is_dashes(bfr)) {
+			dashes(ofp);
+		} else if (is_comment(bfr)) {
 			fputs(bfr, ofp);
-		else {
-			if (!content++)
-				dashes(ofp);
+		} else {
 			append(bfr, ofp);
 		}
 	}

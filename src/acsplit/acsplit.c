@@ -1,4 +1,4 @@
-static const char Id[] = "$Id: acsplit.c,v 1.3 1997/09/02 23:10:31 tom Exp $";
+static const char Id[] = "$Id: acsplit.c,v 1.5 1997/09/06 23:07:58 tom Exp $";
 
 /*
  * Title:	acsplit.c - split aclocal.m4
@@ -19,9 +19,11 @@ static const char Id[] = "$Id: acsplit.c,v 1.3 1997/09/02 23:10:31 tom Exp $";
 #include <ctype.h>
 #include <string.h>
 
+#define VERBOSE(n) if(verbose > n) printf
 #define isname(c) ((isalnum(c) || (c) == '_'))
 
 static const char *target = "AcSplit";
+static int verbose;
 
 static void failed(char *msg)
 {
@@ -47,13 +49,13 @@ static char *skip_comment(char *s)
 {
 	if (!strncmp(s, "dnl", 3)) {
 		s += 3;
-		if (isspace(*s))
+		if (isspace(*s) || ispunct(*s))
 			return skip_blanks(s);
 	}
 	return 0;
 }
 
-static int dashes(char *line)
+static int is_dashes(char *line)
 {
 	line = skip_blanks(line);
 	line = skip_comment(line);
@@ -108,20 +110,48 @@ static FILE *finish(FILE *ofp, char *name)
 {
 	char temp[BUFSIZ];
 
+	my_temp(temp);
 	if (ofp != 0)
 		fclose(ofp);
 
-	my_temp(temp);
 	if (*name != 0) {
 		char dst[BUFSIZ];
+
+		VERBOSE(1) ("finish %s\n", name);
+
 		sprintf(dst, "%s/%s", target, name);
 		rename(temp, dst); 	
 		*name = 0;
-	}
 
-	remove(temp);
+		remove(temp);
+	}
 	if ((ofp = fopen(temp, "w")) == 0)
 		failed(temp);
+	return ofp;
+}
+
+static FILE *append(FILE *ofp, FILE *hdr)
+{
+	char temp[BUFSIZ];
+	char bfr[BUFSIZ];
+
+	if (ofp != 0) {
+
+		fclose(ofp);
+		my_temp(temp);
+		VERBOSE(1) ("append %s\n", temp);
+
+		ofp = fopen(temp, "r");
+		while (fgets(bfr, sizeof(bfr), ofp)) {
+			VERBOSE(2) ("*...%s", bfr);
+			fputs(bfr, hdr);
+		}
+		fclose(ofp);
+
+		remove(temp);
+		if ((ofp = fopen(temp, "w")) == 0)
+			failed(temp);
+	}
 	return ofp;
 }
 
@@ -147,18 +177,29 @@ static void acsplit(char *path)
 	ofp = finish((FILE *)0, name);
 
 	while (fgets(bfr, sizeof(bfr), ifp) != 0) {
-		if (dashes(bfr)) {
-			ofp = finish(ofp, name);
-			content++;
+		if (is_dashes(bfr)) {
+			VERBOSE(2) (">%ld (%s) %p\n", ftell(ifp), name, ofp);
+			if (*name != 0) {
+				ofp = finish(ofp, name);
+			} else {
+				ofp = append(ofp, hdr);
+				if (content)
+					fputs(bfr, hdr);
+			}
+			content = 0;
 		} else {
+			VERBOSE(2) (">...%s", bfr);
 			fputs(bfr, ofp);
+			content++;
 		}
 		if (defined(bfr, name)) {
 			fprintf(hdr, "%s\n", name);
 		}
 
+#if 0
 		if (*name == 0 && !content)
 			fputs(bfr, hdr);
+#endif
 	}
 	ofp = finish(ofp, name);
 	fclose(hdr);
@@ -169,13 +210,20 @@ int
 main(int argc, char *argv[])
 {
 	int n;
+	int found = 0;
 
 	if (argc > 1) {
-		for (n = 1; n < argc; n++)
-			acsplit(argv[n]);
-	} else {
-		acsplit("aclocal.m4");
+		for (n = 1; n < argc; n++) {
+			if (!strcmp(argv[n], "-v"))
+				verbose++;
+			else {
+				acsplit(argv[n]);
+				found++;
+			}
+		}
 	}
+	if (!found)
+		acsplit("aclocal.m4");
 
 	return EXIT_SUCCESS;
 }
