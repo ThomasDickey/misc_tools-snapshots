@@ -1,3 +1,9 @@
+2002-02-16  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* src/hex/hex.c: add utf-8 output
+
+	* src/hex/hex.c: indent'd
+
 2002-02-10  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* src/acsplit/acmerge.c: add -v option
