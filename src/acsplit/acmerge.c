@@ -1,4 +1,4 @@
-static const char Id[] = "$Id: acmerge.c,v 1.8 2002/02/10 17:19:59 tom Exp $";
+static const char Id[] = "$Id: acmerge.c,v 1.9 2002/12/30 15:01:35 tom Exp $";
 
 /*
  * Title:	acmerge.c - merge a split aclocal.m4
@@ -91,19 +91,22 @@ append(char *name, FILE * ofp)
     FILE *ifp;
     int found = 0;
     int count = 0;
+    char *next = skip_blanks(name);
 
-    name = skip_blanks(name);
     sprintf(temp, "%s/", target);
     t = temp + strlen(temp);
-    while (isname(*name)) {
-	*t++ = *name++;
+    while (isname(*next)) {
+	*t++ = *next++;
 	found = 1;
     }
     *t = 0;
 
-    VERBOSE(0) ("appending %s\n", name);
-    if ((ifp = fopen(temp, "r")) == 0)
+    VERBOSE(0) ("appending %s\n", temp);
+    if ((ifp = fopen(temp, "r")) == 0) {
+	if (!strncmp(name, "AC_", 3) || !strncmp(name, "AM_", 3))
+	    return;
 	failed(temp);
+    }
 
     if (found)
 	dashes(ofp);
