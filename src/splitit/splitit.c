@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static char *Id = "$Id: splitit.c,v 1.1 1994/10/17 23:05:58 tom Exp $";
+static char *Id = "$Id: splitit.c,v 1.2 1995/01/05 23:08:53 tom Exp $";
 #endif
 
 /*
@@ -42,6 +42,16 @@ failed(char *s)
 static void
 usage(void)
 {
+	static	char	*msg[] = {
+	 "Usage: splitit [options] [input-files]"
+	,""
+	,"Options:"
+	,"  -p NAME  output file-specification (will append .001 etc)"
+	,"  -s SIZE  output chunk-size (default 1.44M)"
+	};
+	register int j;
+	for (j = 0; j < sizeof(msg)/sizeof(msg[0]); j++)
+		fprintf(stderr, "%s\n", msg[j]);
 	exit(EXIT_FAILURE);
 }
 
