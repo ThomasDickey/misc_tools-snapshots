@@ -1,5 +1,5 @@
 #ifndef	NO_IDENT
-static	char	Id[] = "$Header: /users/source/archives/misc_tools.vcs/src/newpath/RCS/newpath.c,v 1.4 1994/06/07 20:37:06 dickey Exp $";
+static	char	Id[] = "$Header: /users/source/archives/misc_tools.vcs/src/newpath/RCS/newpath.c,v 1.5 1994/06/22 13:56:49 dickey Exp $";
 #endif
 
 /*
@@ -121,7 +121,7 @@ int	main(argc, argv)
 	int	operation = 'a';
 	char	*where = 0;
 
-	int	c, point;
+	int	c, point = 0;
 	LIST	*list;
 	char	*s;
 
