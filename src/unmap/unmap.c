@@ -1,4 +1,12 @@
-static	const char Id[] = "$Id: unmap.c,v 1.3 1996/08/14 23:27:12 tom Exp $";
+/*
+ * Title:	unmap.c
+ * Author:	T.E.Dickey
+ * Created:	15 Dec 1995
+ * Function:	Translate one or more files containing nonprinting characters
+ *		into visible form.
+ */
+
+static const char Id[] = "$Id: unmap.c,v 1.4 1997/04/05 16:33:06 tom Exp $";
 
 #include <stdio.h>
 #include <ctype.h>
@@ -14,12 +22,16 @@ void escape(int c)
 void unmap(FILE *fp)
 {
 	int	c;
+	int	last = 1;
+
 	while ((c = fgetc(fp)) != EOF) {
 		c &= 0xff;
+		last = 0;
 		switch (c) {
 		case '\033':
 			putchar('\n');
 			escape('E');
+			last = 1;
 			break;
 		case '\b':
 			escape('b');
@@ -30,6 +42,7 @@ void unmap(FILE *fp)
 		case '\n':
 			putchar('\n');
 			escape('n');
+			last = 1;
 			break;
 		case '\r':
 			escape('r');
@@ -44,7 +57,7 @@ void unmap(FILE *fp)
 			escape('?');
 			break;
 		default:
-			if (c > 128) {
+			if (c >= 128) {
 				printf("%c%03o", ESC, c);
 			} else if (iscntrl(c)) {
 				printf("^%c", c | '@');
@@ -55,6 +68,8 @@ void unmap(FILE *fp)
 			}
 		}
 	}
+	if (!last)
+		putchar('\n');
 }
 
 int main(int argc, char **argv)
