@@ -1,3 +1,9 @@
+2000-11-09  dickey@clark.net
+
+	* src/newpath/newpath.c: add logic to make exec'able subprocess
+
+	* src/newpath/makefile.wnt: RCS_BASE
+
 2000-07-08  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/perror/perror.c: RCS_BASE

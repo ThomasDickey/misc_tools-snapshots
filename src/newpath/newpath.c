@@ -1,5 +1,5 @@
 #ifndef	NO_IDENT
-static	char	Id[] = "$Header: /users/source/archives/misc_tools.vcs/src/newpath/RCS/newpath.c,v 1.7 1997/11/06 17:31:14 dickey Exp $";
+static	char	Id[] = "$Header: /users/source/archives/misc_tools.vcs/src/newpath/RCS/newpath.c,v 1.8 2000/11/09 20:16:01 dickey Exp $";
 #endif
 
 /*
@@ -17,7 +17,11 @@ static	char	Id[] = "$Header: /users/source/archives/misc_tools.vcs/src/newpath/R
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#ifdef WIN32
+#define	PATHDELIM ';'
+#else
 #define	PATHDELIM ':'
+#endif
 
 #ifndef	TRUE
 #define	TRUE	1
@@ -57,7 +61,7 @@ static
 void	usage(void)
 {
 	static	char	*tbl[] = {
-	"Usage: newpath [options [directories]]",
+	"Usage: newpath [options [directories]] [ - command]",
 	"",
 	"Echos the PATH environment variable with the given directories added",
 	"(the default) or removed.",
@@ -71,6 +75,9 @@ void	usage(void)
 	"    -n NAME specify environment-variable to use (default: PATH)",
 	"    -p      print in C-shell form",
 	"    -r      remove arguments from path",
+	"",
+	"Put a '-' before a command which is invoked with the environment variable",
+	"updated, rather than echoing the result to standard output.",
 	0
 	};
 	register int	j;
@@ -227,6 +234,8 @@ int	main(int argc, char *argv[])
 	/* Perform the actual insertion/removal */
 	while (optind < argc) {
 		s = argv[optind++];
+		if (!strcmp(s, "-"))
+			break;
 		if (operation == 'r') {
 			Remove(point, list, s);
 		} else {
@@ -256,13 +265,29 @@ int	main(int argc, char *argv[])
 	}
 
 	/* Finally, print the path */
-	for (c = 1; list[c].nn != 0; c++) {
-		if (c > 1)
-			(void)putchar(out_delim);
-		(void)fputs(list[c].nn, stdout);
+	if (optind < argc) {
+		unsigned len = strlen(name) + 2;
+		char *changed = 0;
+		for (c = 1; list[c].nn != 0; c++)
+			len += 1 + strlen(list[c].nn);
+		changed = malloc(len);
+		strcpy(changed, name);
+		for (c = 1; list[c].nn != 0; c++) {
+			sprintf(changed + strlen(changed), "%c%s",
+				(c > 1) ? PATHDELIM : '=',
+				list[c].nn);
+		}
+		putenv(changed);
+		execvp(argv[optind], &argv[optind]);
+	} else {
+		for (c = 1; list[c].nn != 0; c++) {
+			if (c > 1)
+				(void)putchar(out_delim);
+			(void)fputs(list[c].nn, stdout);
+		}
+		(void)putchar('\n');
+		fflush(stdout);
 	}
-	(void)putchar('\n');
-	fflush(stdout);
 
 	exit(EXIT_SUCCESS);
 	/*NOTREACHED*/
