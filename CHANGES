@@ -1,3 +1,10 @@
+1997-06-10  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/unmap/chrcount.c:
+	fix so we don't pick up non-files with the "-m" option
+
+	* src/unmap/chrcount.c: RCS_BASE
+
 1997-06-09  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/unmap/Makefile: dependencies

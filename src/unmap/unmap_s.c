@@ -6,7 +6,7 @@
  *		into visible form.
  */
 
-static const char Id[] = "$Id: unmap_s.c,v 1.2 1997/06/09 11:00:21 tom Exp $";
+static const char Id[] = "$Id: unmap_s.c,v 1.3 1997/06/10 00:10:59 tom Exp $";
 
 #include "unmap.h"
 
@@ -66,6 +66,9 @@ unmap(FILE *ifp, FILE *ofp)
 			break;
 		case '\177':
 			count += escape(ofp, '?');
+			break;
+		case BACKSLASH:
+			count += escape(ofp, c);
 			break;
 		default:
 			*temp = '\0';
