@@ -1,6 +1,10 @@
 #include <time.h>
 #include <sys/time.h>
+#include <unistd.h>
 #include <stdio.h>
+
+#define NORMAL 5000.0
+static double usecs = NORMAL;
 
 static double timer(void)
 {
@@ -12,10 +16,11 @@ static double timer(void)
 static void put_char(int c)
 {
 	double t1;
+	char C = c;
 
 	t1 = timer();
-	putchar(c);
-	while ((timer() - t1) < 5000.0)
+	write (1, &C, 1);
+	while ((timer() - t1) < usecs)
 		;
 }
 
@@ -32,10 +37,23 @@ int main(int argc, char *argv[])
 
 	if (argc > 1) {
 		for (n = 1; n < argc; n++) {
-			FILE *fp = fopen(argv[n], "r");
-			if (fp != 0) {
-				slowcat(fp);
-				fclose(fp);
+			char *name = argv[n];
+			if (*name == '-') {
+				switch (*++name) {
+				case '2': case '3':
+				case '4': case '5':
+				case '6': case '7':
+				case '8': case '9':
+					usecs = NORMAL * ((*name) - '0');
+					printf("Threshold:%f\n", usecs);
+					break;
+				}
+			} else {
+				FILE *fp = fopen(name, "r");
+				if (fp != 0) {
+					slowcat(fp);
+					fclose(fp);
+				}
 			}
 		}
 	} else

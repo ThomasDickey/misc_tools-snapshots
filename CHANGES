@@ -1,3 +1,8 @@
+1997-07-06  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/slowcat/slowcat.c: write directly w/o buffering.
+	add -<number> options
+
 1997-06-10  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/unmap/chrcount.c:
