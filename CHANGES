@@ -1,3 +1,7 @@
+1994-06-23  dickey@clark.net
+
+	* src/newpath/newpath.c: ULTRIX has no 'strdup()'
+
 1994-06-22  dickey@clark.net
 
 	* src/newpath/newpath.c:
