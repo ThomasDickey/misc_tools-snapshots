@@ -1,3 +1,13 @@
+2000-03-26  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/newest/newest.c: oops - trim trailing blank on stdin's
+
+	* src/newest/newest.c: RCS_BASE
+
+2000-03-04  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/tisplit/timerge.c: oops - fclose() the input files
+
 1999-08-19  dickey@clark.net
 
 	* src/width/width.c: update usage for -q
