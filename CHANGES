@@ -1,3 +1,7 @@
+1994-07-11  Thomas E. Dickey  <dickey@clark.net>
+
+	* config_h.in: RCS_BASE
+
 1994-06-28  dickey@clark.net
 
 	* src/count_files/count_files.c: RCS_BASE
