@@ -1,4 +1,4 @@
-static const char Id[] = "$Id: acsplit.c,v 1.2 1997/08/29 10:01:07 tom Exp $";
+static const char Id[] = "$Id: acsplit.c,v 1.3 1997/09/02 23:10:31 tom Exp $";
 
 /*
  * Title:	acsplit.c - split aclocal.m4
@@ -38,7 +38,7 @@ static char *skip_blanks(char *s)
 
 static char *skip_punct(char *s)
 {
-	while (ispunct(*s) && !isname(*s))
+	while (*s != '\0' && strchr("[()]", *s))
 		s++;
 	return s;
 }
@@ -81,7 +81,8 @@ static int defined(char *line, char *name)
 	line = skip_blanks(line);
 	if (((s = match(line, "AC_DEFUN")) != 0)
 	 || ((s = match(line, "define")) != 0)) {
-		char *t = name;
+		char temp[BUFSIZ];
+		char *t = temp;
 
 		s = skip_blanks(s);
 		s = skip_punct(s);
@@ -89,7 +90,10 @@ static int defined(char *line, char *name)
 		while (isname(*s))
 			*t++ = *s++;
 		*t = 0;
-		return (t != name);
+		if (t != temp) {
+			strcpy(name, temp);
+			return 1;
+		}
 	}
 	return 0;
 }
