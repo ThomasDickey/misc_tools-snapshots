@@ -1,3 +1,32 @@
+1997-06-09  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/unmap/Makefile: dependencies
+
+	* src/unmap/unmap.h: chrcount stuff
+
+	* src/unmap/run_test.sh: cleanup
+
+	* src/unmap/unmap_s.c: escape backslashes
+
+	* src/unmap/run_test.sh, src/unmap/map_s.c: RCS_BASE
+
+	* src/unmap/Makefile: add 'check' rule
+
+	* src/unmap/unmap_s.c: change name of ESC to BACKSLASH.
+
+	* src/unmap/unmap.h: names ESCAPE, BACKSLASH
+
+	* src/unmap/map.c, src/unmap/unmap_s.c, src/unmap/Makefile: RCS_BASE
+
+	* src/unmap/unmap.c: split-out common function as unmap_s()
+
+	* src/unmap/unmap.h: RCS_BASE
+
+1997-05-10  dickey@clark.net
+
+	* src/width/width.c:
+	allocate the line-buffer dynamically so I can display a long line
+
 1997-04-05  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/unmap/unmap.c: force trailing newline to make comparison simpler
