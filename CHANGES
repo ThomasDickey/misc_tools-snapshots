@@ -1,3 +1,7 @@
+1996-08-14  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/unmap/unmap.c: print characters above 128 as octal
+
 1996-07-04  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/unmap/unmap.c: used the wrong base for ^x
