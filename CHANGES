@@ -1,3 +1,11 @@
+1997-03-12  dickey@clark.net
+
+	* src/newpath/getopt.c, src/newpath/getopt.h: RCS_BASE
+
+1997-01-13  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/slowcat/slowcat.c: RCS_BASE
+
 1996-11-22  dickey@clark.net
 
 	* src/width/width.1: add "-p" and "-" interpretation
