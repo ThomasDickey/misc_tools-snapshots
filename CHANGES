@@ -1,3 +1,8 @@
+1997-08-28  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/acsplit/acmerge.c, src/acsplit/doit, src/acsplit/Makefile, src/acsplit/acsplit.c:
+	RCS_BASE
+
 1997-07-06  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/slowcat/slowcat.c: write directly w/o buffering.

@@ -1,0 +1,7 @@
+#!/bin/sh
+if (make) ; then
+	copy aclocal.m4.tmp aclocal.m4
+	./acsplit
+	./acmerge
+	diff aclocal.m4.tmp aclocal.m4
+fi
