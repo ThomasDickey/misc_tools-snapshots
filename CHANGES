@@ -1,3 +1,7 @@
+2000-07-08  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/perror/perror.c: RCS_BASE
+
 2000-03-26  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/newest/newest.c: oops - trim trailing blank on stdin's
