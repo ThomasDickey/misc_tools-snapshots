@@ -9,12 +9,17 @@ int main(int argc, char **argv)
 	int	n;
 
 	for (n = 1; n < argc; n++) {
-		long	value;
+		char	*next = argv[n];
+		long	value = 0;
 		unsigned long p;
 		char	*temp;
 		char	string[80];
 
-		value = strtol(argv[n], &temp, 0);
+		do {
+			value = (value * 16) + strtol(next, &temp, 0);
+			next = *temp ? ++temp : temp;
+		} while (*next);
+
 		string[0] = EOS;
 		for (p = value; p != 0; p >>= 8) {
 			unsigned char q = p & 0xff;
