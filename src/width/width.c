@@ -1,5 +1,5 @@
 #ifndef NO_IDENT
-static const char Id[] = "$Id: width.c,v 1.3 1996/11/21 15:53:18 dickey Exp $";
+static const char Id[] = "$Id: width.c,v 1.4 1996/11/22 19:00:26 dickey Exp $";
 #endif
 
 /*
@@ -21,6 +21,7 @@ static	int	opt_width  = -1;
 static	int	opt_tabs   = -1;
 static	int	opt_number = 0;
 static	int	max_width  = 0;
+static	int	per_file   = 0;
 
 static void failed(char *s)
 {
@@ -88,6 +89,11 @@ static void width(char *name, FILE *fp)
 	}
 	if (length > 0)
 		report_width(name, lineno++, column, buffer);
+	if (per_file)
+	{
+		printf("%6d\t%s\n", max_width, name);
+		max_width = 0;
+	}
 }
 
 static void usage(void)
@@ -99,10 +105,14 @@ static void usage(void)
 	,"  -4     set tabs to 4"
 	,"  -8     set tabs to 8"
 	,"  -n     show line-numbers of wide lines"
+	,"  -p     report per-file (otherwise the maximum of all files is computed)"
 	,"  -t XX  set tabs to XX"
 	,"  -w XX  set threshold to XX, showing all lines that are wider"
 	,""
 	,"(If you do not specify tabs, they will be counted as single-columns)"
+	,""
+	,"Use a '-' instead of [files] to process a list of filenames from the"
+	,"standard input."
 	};
 	int n;
 	for (n = 0; n < sizeof(tbl)/sizeof(tbl[0]); n++)
@@ -114,7 +124,7 @@ int main(int argc, char *argv[])
 {
 	int	c;
 
-	while ((c = getopt(argc, argv, "w:nt:48")) != EOF)
+	while ((c = getopt(argc, argv, "pw:nt:48")) != EOF)
 	{
 		switch (c)
 		{
@@ -123,6 +133,9 @@ int main(int argc, char *argv[])
 			break;
 		case 'n':
 			opt_number = 1;
+			break;
+		case 'p':
+			per_file = 1;
 			break;
 		case '4':
 			opt_tabs = 4;
@@ -143,18 +156,35 @@ int main(int argc, char *argv[])
 		while (optind < argc)
 		{
 			char *name = argv[optind++];
-			FILE *fp = fopen(name, "r");
-			if (fp == 0)
-				failed(name);
-			width(name, fp);
-			(void) fclose(fp);
+			if (!strcmp(name, "-"))
+			{
+				char buffer[BUFSIZ];
+				while (gets(buffer) != 0)
+				{
+					FILE *fp = fopen(buffer, "r");
+					if (fp == 0)
+						failed(buffer);
+					width(buffer, fp);
+					(void) fclose(fp);
+				}
+			}
+			else
+			{
+				FILE *fp = fopen(name, "r");
+				if (fp == 0)
+					failed(name);
+				width(name, fp);
+				(void) fclose(fp);
+			}
 		}
 	}
 	else
 	{
 		width("<stdin>", stdin);
 	}
-	printf("%d\n", max_width);
+
+	if (!per_file)
+		printf("%d\n", max_width);
 
 	return 0;
 }

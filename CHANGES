@@ -1,3 +1,12 @@
+1996-11-22  dickey@clark.net
+
+	* src/width/width.1: add "-p" and "-" interpretation
+
+	* src/width/width.c:
+	add "-p" option and process "-" as a list of files from standard-input
+
+	* src/width/width.1: RCS_BASE
+
 1996-11-21  dickey@clark.net
 
 	* src/width/width.c: show current width, not maximum

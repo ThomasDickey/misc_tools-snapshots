@@ -1,0 +1,87 @@
+.\" $Id: width.1,v 1.2 1996/11/22 19:20:29 dickey Exp $
+.deDS
+.sp
+.nf
+.RS
+..
+.deDE
+.fi
+.RE
+..
+.
+.TH WIDTH "" "November 1996"
+.hy 0
+.SH NAME
+width \- display width of lines in a text file
+.
+.SH SYNOPSIS
+.B width
+[
+.I options
+] [
+.I filename
+[
+.I ...
+]
+]
+.
+.SH DESCRIPTION
+Use \fBwidth\fR to
+.TP 5
+-
+find the length of the longest line in one or more files, or
+.TP
+-
+show lines that are longer than a given threshold
+.
+.SH OPTIONS
+.TP 5
+.B \-4
+set tab stops to multiples of 4 (e.g., 1, 5, 9, ...)
+.
+.TP 5
+.B \-8
+set tab stops to multiples of 4 (e.g., 1, 9, 17, ...)
+.
+.TP 5
+.B \-n
+show line-numbers of wide lines, prefixed by the corresponding filename.
+Several text editors (e.g., vile, emacs) treat this style of output as
+an error listing, and can step through the reported instances.
+.
+.TP 5
+.BI \-p
+report maximum width per-file (otherwise the maximum across all files
+is reported).
+.
+.TP 5
+.BI \-t NUM
+set tab stops to multiples of \fINUM\fB.
+If you do not set tab stops, tab characters (and other nonprinting characters
+except for newline) will be counted as a single column.
+.
+.TP 5
+.BI \-w NUM
+report lines longer than \fINUM\fB.
+.
+.
+.SH USAGE
+.
+\fBWidth\fR is normally used to check the width of production-quality
+C/C++ code, e.g.,
+.
+.DS 4
+width -w79 -4 -n $*
+.DE
+.
+.PP
+Use a "-" in place of the \fI[filename]\fR to read a list of filenames
+from the standard input.
+.
+.SH SEE ALSO
+indent
+.
+.
+.SH BUGS
+.
+Probably.
