@@ -1,3 +1,8 @@
+1998-05-16  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/tisplit/tisplit.c, src/tisplit/timerge.c, src/tisplit/doit, src/tisplit/Makefile:
+	RCS_BASE
+
 1997-11-06  dickey@clark.net
 
 	* src/newpath/newpath.c: add -f option to accommodate Java $CLASSPATH

@@ -1,0 +1,8 @@
+#!/bin/sh
+if (make) ; then
+	rm -rf TiSplit
+	copy terminfo.src.tmp terminfo.src
+	./tisplit -v -v -v
+	./timerge
+	diff terminfo.src.tmp terminfo.src
+fi
