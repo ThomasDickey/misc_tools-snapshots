@@ -1,3 +1,15 @@
+2000-11-10  dickey@clark.net
+
+	* src/newpath/newpath.c:
+	on win32, spawn a subprocess with spawnvp() rather than execvp(), since
+	the latter will execute more/less in parallel with the parent process.
+
+	* src/newpath/newpath.c: DEBUG appears to be predefined on NT.
+
+	* src/newpath/newpath.c: add -v option
+	indent'd
+	port to win32
+
 2000-11-09  dickey@clark.net
 
 	* src/newpath/newpath.c: add logic to make exec'able subprocess
