@@ -1,3 +1,8 @@
+1994-06-07  dickey@clark.net
+
+	* src/newpath/newpath.c:
+	corrected an error in Append that caused it to also remove
+
 1994-06-06  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/cpd/cpd.c:
