@@ -1,3 +1,24 @@
+2004-12-31  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* src/unmap/map_s.c: add utf8-decoding
+
+	* src/unmap/map.c: typo
+
+	* src/unmap/map.c: add -u option
+
+	* src/unmap/unmap.c: add -u option, for UTF-8
+
+	* src/unmap/unmap_s.c: adapted UTF-8 decoding from xterm
+
+	* src/unmap/chrcount.c: added utf8 param to map()
+
+	* src/unmap/unmap.h: include <string.h>
+
+	* src/unmap/map_s.c: add utf8 param to map()
+
+	* src/unmap/chrcount.c, src/unmap/map.c, src/unmap/map_s.c, src/unmap/unmap.c, src/unmap/unmap_s.c, src/unmap/unmap.h:
+	indent'd
+
 2003-11-29  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* install-sh: RCS_BASE
