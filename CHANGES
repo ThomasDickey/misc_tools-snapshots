@@ -1,0 +1,4 @@
+1990-04-23  Thomas E. Dickey  <dickey@software.org>
+
+	* src/sue/sue.c: RCS_BASE
+
