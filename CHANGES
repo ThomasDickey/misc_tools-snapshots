@@ -1,3 +1,7 @@
+2011-10-06  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* README: RCS_BASE
+
 2010-08-26  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/debian/source/format: RCS_BASE
