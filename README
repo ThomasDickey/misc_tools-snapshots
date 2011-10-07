@@ -1,0 +1,7 @@
+-- $Id: README,v 1.1 2011/10/06 23:16:57 tom Exp $
+
+This archive is built from the most useful parts of an older "misc"
+archive dating from 1996 and "ncu-test" dating from 1997.  Some (such
+as newpath) are assumed in my development environment, so this package
+is (along with ded and vile) one of the first to be built/installed
+when setting up a new machine.
