@@ -1,5 +1,5 @@
 /*
- * $Id: width.c,v 1.9 2010/06/01 21:28:59 tom Exp $
+ * $Id: width.c,v 1.10 2012/03/13 21:06:21 tom Exp $
  *
  * Title:	width.c
  * Author:	T.Dickey
@@ -7,13 +7,17 @@
  * Function:	Display lines from a text file that are longer than a given
  *		threshold (usually 80).
  */
+
+#include <config.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
 
-extern int optind;
-extern char *optarg;
+#ifdef HAVE_GETOPT_H
+#include <getopt.h>
+#endif
 
 static int opt_width = -1;
 static int opt_tabs = -1;
@@ -24,7 +28,7 @@ static int max_width = 0;
 static int per_file = 0;
 
 static int *vec_sums;
-static unsigned len_sums;
+static size_t len_sums;
 static int max_sums;
 static long wide_lines;
 static long total_lines;
@@ -58,8 +62,8 @@ report_width(char *name, int lineno, int column, char *buffer)
     }
 
     if (opt_sums) {
-	if (column + 1 >= len_sums) {
-	    unsigned new_sums = 2 * (column + 1);
+	if ((size_t) (column + 1) >= len_sums) {
+	    size_t new_sums = 2 * (column + 1);
 	    vec_sums = realloc(vec_sums, new_sums * sizeof(int));
 	    while (len_sums < new_sums)
 		vec_sums[len_sums++] = 0;
@@ -82,7 +86,7 @@ width(char *name, FILE *fp)
     char *buffer = malloc(have);
 
     while ((c = fgetc(fp)) != EOF) {
-	if (length + 2 > have)
+	if ((size_t) (length + 2) > have)
 	    buffer = realloc(buffer, have *= 2);
 	buffer[length++] = c;
 	buffer[length] = '\0';
@@ -133,7 +137,7 @@ usage(void)
 	,"standard input."
     };
     int n;
-    for (n = 0; n < sizeof(tbl) / sizeof(tbl[0]); n++)
+    for (n = 0; n < (int) (sizeof(tbl) / sizeof(tbl[0])); n++)
 	fprintf(stderr, "%s\n", tbl[n]);
     exit(1);
 }
@@ -183,7 +187,7 @@ main(int argc, char *argv[])
 	    char *name = argv[optind++];
 	    if (!strcmp(name, "-")) {
 		char buffer[BUFSIZ];
-		while (gets(buffer) != 0) {
+		while (fgets(buffer, sizeof(buffer), stdin) != 0) {
 		    FILE *fp = fopen(buffer, "r");
 		    if (fp == 0)
 			failed(buffer);

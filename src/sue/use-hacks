@@ -1,0 +1,24 @@
+#!/bin/sh
+# $Id: use-hacks,v 1.2 2012/03/13 20:22:54 tom Exp $
+# install the given program as setuid/setgid for the listed users
+
+DOIT=eval
+
+INSTALL="$1"; shift 1
+PROGRAM="$1"; shift 1
+DESTDIR="$1"; shift 1
+
+if test "$#" != 0
+then
+	echo "** installing setuid for $*"
+	for user in $*
+	do
+		U=`id | sed -e 's/^uid=//' -e 's/(.*//'`
+		G=`id | sed -e 's/^.*gid=//' -e 's/(.*//'`
+		$DOIT $INSTALL $PROGRAM $DESTDIR/$user
+		$DOIT chown $U $DESTDIR/$user
+		$DOIT chgrp $G $DESTDIR/$user
+		$DOIT chmod ug+s $DESTDIR/$user
+		ls -l $DESTDIR/$user
+	done
+fi
