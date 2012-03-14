@@ -1,12 +1,12 @@
 /*
+ * $Id: chrcount.c,v 1.6 2012/03/14 09:00:17 tom Exp $
+ *
  * Title:	chrcount.c
  * Author:	T.E.Dickey
  * Created:	09 Jun 1997
  * Function:	Count characters from one or more files, optionally converting
  *		on the fly from printable form to to nonprinting form.
  */
-
-static const char Id[] = "$Id: chrcount.c,v 1.5 2012/03/13 21:09:24 tom Exp $";
 
 #include "unmap.h"
 
@@ -81,7 +81,7 @@ chrcount(char *path)
 	struct dirent **namelist;
 	n = scandir(path, &namelist, do_select, alphasort);
 	if (n > 0) {
-	    need = n;
+	    need = (size_t) n;
 	    result = typeCalloc(need + 1, COUNTS);
 	    for (n = 0, used = 0; n < (int) need; n++) {
 		char *leaf = namelist[n]->d_name;
@@ -143,7 +143,7 @@ main(int argc, char **argv)
     /* count everything */
     labels = argv + optind;
     for (n = optind, m = 0; n < argc; n++) {
-	widths[m] = strlen(argv[n]) + 1;
+	widths[m] = (int) strlen(argv[n]) + 1;
 	if (widths[m] < 8)
 	    widths[m] = 8;
 	vector[m++] = chrcount(argv[n]);
@@ -155,7 +155,7 @@ main(int argc, char **argv)
     /* compute the label-width */
     for (n = 0, lwidth = 8; vector[0][n].name != 0; n++) {
 	if (lwidth < (int) strlen(vector[0][n].name) + 1)
-	    lwidth = strlen(vector[0][n].name) + 1;
+	    lwidth = (int) strlen(vector[0][n].name) + 1;
     }
 
     /* write the header */

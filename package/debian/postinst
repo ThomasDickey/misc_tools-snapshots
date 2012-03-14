@@ -1,0 +1,25 @@
+#! /bin/sh
+# postinst script for misctools
+
+set -e
+
+if [ $1 != "upgrade" ]
+then
+	cd /usr/bin
+	for prog in `cat /usr/share/misctools/setuid`
+	do
+	if id $prog >/dev/null 2>/dev/null
+	then
+		U=`id $prog | sed -e 's/^uid=//' -e 's/(.*//'`
+		G=`id $prog | sed -e 's/^.*gid=//' -e 's/(.*//'`
+		chown $U $prog
+		chgrp $G $prog
+		chmod ug+s $prog
+	fi
+	done
+
+fi
+
+#DEBHELPER#
+
+exit 0

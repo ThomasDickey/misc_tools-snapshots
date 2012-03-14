@@ -1,4 +1,4 @@
-# $Id: makefile.in,v 1.1 2012/03/13 17:13:37 tom Exp $
+# $Id: makefile.in,v 1.2 2012/03/14 00:31:27 tom Exp $
 
 SHELL		= /bin/sh
 THIS		= realpath
@@ -22,7 +22,7 @@ CC		= @CC@
 CFLAGS		= @CFLAGS@ @EXTRA_CFLAGS@
 
 CPP		= @CPP@
-CPPFLAGS	= @CPPFLAGS@
+CPPFLAGS	= @CPPFLAGS@ -I$(top_srcdir)
 
 LINK		= $(CC) $(CFLAGS)
 

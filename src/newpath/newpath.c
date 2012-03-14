@@ -1,5 +1,5 @@
 /*
- * $Id: newpath.c,v 1.12 2012/03/13 17:44:33 tom Exp $
+ * $Id: newpath.c,v 1.13 2012/03/14 08:47:06 tom Exp $
  *
  * Author:	T.E.Dickey
  * Created:	02 Jun 1994
@@ -59,19 +59,17 @@ typedef struct {
 
 static int allow_files;
 
-static
-void
-failed(char *s)
+static void
+failed(const char *s)
 {
     perror(s);
     exit(EXIT_FAILURE);
 }
 
-static
-void
+static void
 usage(void)
 {
-    static char *tbl[] =
+    static const char *tbl[] =
     {
 	"Usage: newpath [options [directories]] [ - command]",
 	"",
@@ -100,9 +98,8 @@ usage(void)
     exit(EXIT_FAILURE);
 }
 
-static
-char *
-StrAlloc(char *s)		/* patch: not everyone has 'strdup()' */
+static char *
+StrAlloc(const char *s)		/* patch: not everyone has 'strdup()' */
 {
     char *d = malloc(strlen(s) + 1);
 
@@ -111,8 +108,7 @@ StrAlloc(char *s)		/* patch: not everyone has 'strdup()' */
     return strcpy(d, s);
 }
 
-static
-void
+static void
 Remove(int offset, LIST * list, char *name)
 {
     int n = offset;
@@ -130,8 +126,7 @@ Remove(int offset, LIST * list, char *name)
     }
 }
 
-static
-int
+static int
 Append(int offset, LIST * list, char *name)
 {
     int n = offset;
@@ -173,12 +168,12 @@ exists(LIST * entry)
 int
 main(int argc, char *argv[])
 {
-    char *name = "PATH";
+    const char *name = "PATH";
     char out_delim = PATHDELIM;
     int remove_duplicates = FALSE;
-    size_t length = argc;
+    size_t length = (size_t) argc;
     int operation = 'a';
-    char *where = 0;
+    const char *where = 0;
 
     int c, point = 0;
     LIST *list;
@@ -224,14 +219,16 @@ main(int argc, char *argv[])
      * enough room in the list to allow us to insert the arguments also.
      */
     if ((s = getenv(name)) == 0)
-	s = BLANK;
-    s = StrAlloc(s);		/* ...just in case someone else uses it */
+	s = StrAlloc(BLANK);
+    else
+	s = StrAlloc(s);	/* ...just in case someone else uses it */
+
     for (c = 0; s[c] != EOS; c++)
 	if (s[c] == PATHDELIM)
 	    length++;
     length += 3;
     list = (LIST *) calloc(length, sizeof(LIST));
-    list[0].nn = BLANK;		/* dummy entry, to simplify -b option */
+    list[0].nn = StrAlloc(BLANK);	/* dummy entry, to simplify -b option */
 
     /* Split the environment variable into strings indexed in list[] */
     for (c = 1; *s != EOS; c++) {

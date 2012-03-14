@@ -1,4 +1,11 @@
-static const char Id[] = "$Id: hex.c,v 1.4 2002/02/16 21:07:20 tom Exp $";
+/*
+ * $Id: hex.c,v 1.5 2012/03/14 09:03:13 tom Exp $
+ *
+ * Title:	hex.c
+ * Author:	T.E.Dickey
+ * Created:	20 Feb 1995
+ * Function:	displays a value in different ways, e.g., to show ECMA codes.
+ */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -8,20 +15,20 @@ static const char Id[] = "$Id: hex.c,v 1.4 2002/02/16 21:07:20 tom Exp $";
 #define EOS '\0'
 
 static void
-to_text(char *dst, long value)
+to_text(char *dst, unsigned long value)
 {
     unsigned long p;
 
     dst[0] = EOS;
     for (p = value; p != 0; p >>= 8) {
-	unsigned char q = p & 0xff;
+	unsigned char q = (unsigned char) (p & 0xff);
 	char last[80];
 	strcpy(last, dst);
 	if (q < 128 && isprint(q)) {
 	    int m = 0;
-	    dst[m++] = q;
+	    dst[m++] = (char) q;
 	    if (q == '\\')
-		dst[m++] = q;
+		dst[m++] = (char) q;
 	    dst[m] = EOS;
 	} else {
 	    sprintf(dst, "\\%03o", q);
@@ -31,7 +38,7 @@ to_text(char *dst, long value)
 }
 
 static void
-to_utf8(char *dst, long ch)
+to_utf8(char *dst, unsigned long ch)
 {
     static const unsigned byteMask = 0xBF;
     static const unsigned otherMark = 0x80;
@@ -60,27 +67,27 @@ to_utf8(char *dst, long ch)
     ptr = result + count;
     switch (count) {
     case 6:
-	*--ptr = (ch | otherMark) & byteMask;
+	*--ptr = (int) ((ch | otherMark) & byteMask);
 	ch >>= 6;
 	/* FALLTHRU */
     case 5:
-	*--ptr = (ch | otherMark) & byteMask;
+	*--ptr = (int) ((ch | otherMark) & byteMask);
 	ch >>= 6;
 	/* FALLTHRU */
     case 4:
-	*--ptr = (ch | otherMark) & byteMask;
+	*--ptr = (int) ((ch | otherMark) & byteMask);
 	ch >>= 6;
 	/* FALLTHRU */
     case 3:
-	*--ptr = (ch | otherMark) & byteMask;
+	*--ptr = (int) ((ch | otherMark) & byteMask);
 	ch >>= 6;
 	/* FALLTHRU */
     case 2:
-	*--ptr = (ch | otherMark) & byteMask;
+	*--ptr = (int) ((ch | otherMark) & byteMask);
 	ch >>= 6;
 	/* FALLTHRU */
     case 1:
-	*--ptr = (ch | firstMark[count]);
+	*--ptr = (int) (ch | firstMark[count]);
 	break;
     }
     while (count--) {
@@ -96,19 +103,19 @@ main(int argc, char **argv)
 
     for (n = 1; n < argc; n++) {
 	char *next = argv[n];
-	long value = 0;
+	unsigned long value = 0;
 	char *temp;
 	char text_buf[BUFSIZ];
 	char utf8_buf[BUFSIZ];
 
 	do {
-	    value = (value * 16) + strtol(next, &temp, 0);
+	    value = (value * 16) + strtoul(next, &temp, 0);
 	    next = *temp ? ++temp : temp;
 	} while (*next);
 
 	to_text(text_buf, value);
 	to_utf8(utf8_buf, value);
-	printf("%s: %ld %#lo %#lx text \"%s\" utf8 %s\n",
+	printf("%s: %lu %#lo %#lx text \"%s\" utf8 %s\n",
 	       argv[n], value, value, value, text_buf, utf8_buf);
     }
     exit(0);

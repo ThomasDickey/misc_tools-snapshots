@@ -1,5 +1,5 @@
 /*
- * $Id: width.c,v 1.10 2012/03/13 21:06:21 tom Exp $
+ * $Id: width.c,v 1.12 2012/03/14 09:15:37 tom Exp $
  *
  * Title:	width.c
  * Author:	T.Dickey
@@ -42,7 +42,7 @@ failed(char *s)
 
 /* report lines that are wider than the threshold */
 static void
-report_width(char *name, int lineno, int column, char *buffer)
+report_width(const char *name, int lineno, int column, char *buffer)
 {
     int doit = 0;
 
@@ -63,7 +63,7 @@ report_width(char *name, int lineno, int column, char *buffer)
 
     if (opt_sums) {
 	if ((size_t) (column + 1) >= len_sums) {
-	    size_t new_sums = 2 * (column + 1);
+	    size_t new_sums = (size_t) (2 * (column + 1));
 	    vec_sums = realloc(vec_sums, new_sums * sizeof(int));
 	    while (len_sums < new_sums)
 		vec_sums[len_sums++] = 0;
@@ -76,7 +76,7 @@ report_width(char *name, int lineno, int column, char *buffer)
 }
 
 static void
-width(char *name, FILE *fp)
+width(const char *name, FILE *fp)
 {
     int lineno = 1;
     int column = 0;
@@ -88,7 +88,7 @@ width(char *name, FILE *fp)
     while ((c = fgetc(fp)) != EOF) {
 	if ((size_t) (length + 2) > have)
 	    buffer = realloc(buffer, have *= 2);
-	buffer[length++] = c;
+	buffer[length++] = (char) c;
 	buffer[length] = '\0';
 
 	/* compute the effective line & column */

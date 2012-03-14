@@ -1,3 +1,28 @@
+2012-03-14  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* src/sue/use-usual: quote here-document
+
+	* src/unmap/map.c, src/unmap/unmap.c, src/realpath/realpath.c, src/width/width.c:
+	cleanup
+
+	* package/debian/changelog, package/misc_tools.spec: bump
+
+	* src/width/width.c, src/slowcat/slowcat.c, src/sue/sue.c, src/tisplit/timerge.c, src/tisplit/tisplit.c, src/acsplit/acmerge.c, src/hex/hex.c, src/unmap/chrcount.c, src/unmap/map_s.c, src/unmap/unmap_s.c, src/acsplit/acsplit.c, src/newpath/newpath.c:
+	cleanup
+
+	* configure: regen
+
+	* package/debian/postinst: RCS_BASE
+
+	* configure.in: add --with-package option.
+
+	* package/debian/rules: use --with-package option for consistent layout
+
+	* src/sue/makefile.in:
+	install a list of setuid programs for use by rpm/dpkg scripts
+
+	* package/misc_tools.spec: sue/makefile now generates the setuid file
+
 2012-03-13  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/misc_tools.spec:

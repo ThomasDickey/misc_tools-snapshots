@@ -1,12 +1,12 @@
 /*
+ * $Id: map_s.c,v 1.5 2012/03/14 09:00:11 tom Exp $
+ *
  * Title:	map.c
  * Author:	T.E.Dickey
  * Created:	09 Jun 1997
  * Function:	Translate file containing printing characters into nonprinting
  *		form.
  */
-
-static const char Id[] = "$Id: map_s.c,v 1.4 2004/12/31 21:28:47 tom Exp $";
 
 #include "unmap.h"
 
@@ -27,7 +27,7 @@ put_ch(FILE *ofp, int c)
  * cell).
  */
 static void
-utf8_outch(FILE *ofp, int ch)
+utf8_outch(FILE *ofp, unsigned ch)
 {
     static const unsigned byteMask = 0xBF;
     static const unsigned otherMark = 0x80;
@@ -56,27 +56,27 @@ utf8_outch(FILE *ofp, int ch)
     ptr = result + count;
     switch (count) {
     case 6:
-	*--ptr = (ch | otherMark) & byteMask;
+	*--ptr = (int) ((ch | otherMark) & byteMask);
 	ch >>= 6;
 	/* FALLTHRU */
     case 5:
-	*--ptr = (ch | otherMark) & byteMask;
+	*--ptr = (int) ((ch | otherMark) & byteMask);
 	ch >>= 6;
 	/* FALLTHRU */
     case 4:
-	*--ptr = (ch | otherMark) & byteMask;
+	*--ptr = (int) ((ch | otherMark) & byteMask);
 	ch >>= 6;
 	/* FALLTHRU */
     case 3:
-	*--ptr = (ch | otherMark) & byteMask;
+	*--ptr = (int) ((ch | otherMark) & byteMask);
 	ch >>= 6;
 	/* FALLTHRU */
     case 2:
-	*--ptr = (ch | otherMark) & byteMask;
+	*--ptr = (int) ((ch | otherMark) & byteMask);
 	ch >>= 6;
 	/* FALLTHRU */
     case 1:
-	*--ptr = (ch | firstMark[count]);
+	*--ptr = (int) (ch | firstMark[count]);
 	break;
     }
     while (count--)
@@ -171,11 +171,13 @@ map(FILE *ifp, FILE *ofp, int utf8)
 		break;
 	    case 6:
 		if (isdigit(c)) {
-		    buffer[digit++] = c;
+		    buffer[digit++] = (char) c;
 		    if (digit >= 4) {
+			unsigned uvalue;
+
 			buffer[digit] = 0;
-			sscanf(buffer, "%X", &value);
-			utf8_outch(ofp, value);
+			sscanf(buffer, "%X", &uvalue);
+			utf8_outch(ofp, uvalue);
 			state = 0;
 		    }
 		}

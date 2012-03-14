@@ -1,6 +1,6 @@
-static const char Id[] = "$Id: acmerge.c,v 1.9 2002/12/30 15:01:35 tom Exp $";
-
 /*
+ * $Id: acmerge.c,v 1.10 2012/03/14 09:03:24 tom Exp $
+ *
  * Title:	acmerge.c - merge a split aclocal.m4
  * Author:	T.E.Dickey
  * Created:	28 Aug 1997
@@ -71,7 +71,7 @@ is_dashes(char *line)
 }
 
 static void
-dashes(FILE * ofp)
+dashes(FILE *ofp)
 {
     if (do_dash) {
 	int n;
@@ -84,7 +84,7 @@ dashes(FILE * ofp)
 }
 
 static void
-append(char *name, FILE * ofp)
+append(char *name, FILE *ofp)
 {
     char temp[BUFSIZ];
     char *t;
@@ -121,7 +121,7 @@ append(char *name, FILE * ofp)
 }
 
 static void
-acmerge(char *path)
+acmerge(const char *path)
 {
     FILE *hdr;
     FILE *ofp;
