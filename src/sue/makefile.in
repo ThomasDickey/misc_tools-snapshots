@@ -1,0 +1,65 @@
+# $Id: makefile.in,v 1.2 2012/03/13 20:30:28 tom Exp $
+
+SHELL		= /bin/sh
+THIS		= sue
+
+#### Start of system configuration section. ####
+
+top_srcdir	= @top_srcdir@
+srcdir		= @srcdir@
+srcdir_sl	= @srcdir@/
+VPATH		= @srcdir@
+@SET_MAKE@
+
+prefix		= @prefix@
+exec_prefix	= @exec_prefix@
+
+bindir		= @bindir@
+
+BINDIR		= $(DESTDIR)$(bindir)
+
+CC		= @CC@
+CFLAGS		= @CFLAGS@ @EXTRA_CFLAGS@
+
+CPP		= @CPP@
+CPPFLAGS	= @CPPFLAGS@
+
+LINK		= $(CC) $(CFLAGS)
+
+INSTALL		= @INSTALL@
+INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+
+o		= .@OBJEXT@
+x		= @EXEEXT@
+PROGS		= $(THIS)$x
+SUDO_HACKS	= @SUDO_HACKS@
+SUDO_USUAL	= @SUDO_USUAL@
+
+.SUFFIXES: .c .i $o
+
+.c.i:
+	@RULE_CC@
+	@ECHO_CC@$(CPP) -C $(CPPFLAGS) $< >$@
+.c$o:
+	@RULE_CC@
+	@ECHO_CC@$(CC) -c $(CPPFLAGS) $(CFLAGS) $<
+
+all : $(PROGS)
+
+$(THIS)$x : $(THIS)$o
+	@ECHO_LD@$(LINK) $(CFLAGS) $(LDFLAGS) -o $@ $(THIS)$o $(LIBS)
+
+install : $(PROGS) $(BINDIR)
+	$(SHELL) $(srcdir)/use-hacks "$(INSTALL_PROGRAM)" "$(THIS)$x" "$(BINDIR)" $(SUDO_HACKS)
+	$(SHELL) $(srcdir)/use-usual "$(INSTALL_PROGRAM)" "$(THIS)$x" "$(BINDIR)" $(SUDO_USUAL)
+
+uninstall :
+	$(SHELL) -c "for n in $(SUDO_HACKS) $(SUDO_USUAL); do echo ...removing \$$n; rm -f $(BINDIR)/\$$n; done"
+
+clean :
+	rm -f $(PROGS) *.o core
+distclean : clean
+	rm -f makefile
+
+$(BINDIR) :
+	mkdir -p $@

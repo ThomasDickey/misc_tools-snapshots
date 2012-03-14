@@ -6,7 +6,7 @@
  *		on the fly from printable form to to nonprinting form.
  */
 
-static const char Id[] = "$Id: chrcount.c,v 1.4 2004/12/31 20:36:18 tom Exp $";
+static const char Id[] = "$Id: chrcount.c,v 1.5 2012/03/13 21:09:24 tom Exp $";
 
 #include "unmap.h"
 
@@ -27,7 +27,7 @@ static int p_opt;
 static char *
 strmalloc(char *name)
 {
-    return strcpy(malloc(strlen(name)) + 1, name);
+    return strcpy((char *) malloc(strlen(name)) + 1, name);
 }
 
 static int
@@ -49,6 +49,7 @@ static int
 do_select(const struct dirent *de)
 {
     /* select everything, so we don't do 'stat()' twice */
+    (void) de;
     return 1;
 }
 
@@ -70,7 +71,7 @@ do_count(char *path)
 static COUNTS *
 chrcount(char *path)
 {
-    char temp[PATH_MAX];
+    char temp[1024];
     size_t used = 0;
     size_t need = 0;
     COUNTS *result = typeCalloc(2, COUNTS);
@@ -82,7 +83,7 @@ chrcount(char *path)
 	if (n > 0) {
 	    need = n;
 	    result = typeCalloc(need + 1, COUNTS);
-	    for (n = 0, used = 0; n < need; n++) {
+	    for (n = 0, used = 0; n < (int) need; n++) {
 		char *leaf = namelist[n]->d_name;
 		sprintf(temp, "%s/%s", path, leaf);
 		if ((result[used].count = do_count(temp)) >= 0) {
@@ -153,7 +154,7 @@ main(int argc, char **argv)
 
     /* compute the label-width */
     for (n = 0, lwidth = 8; vector[0][n].name != 0; n++) {
-	if (lwidth < strlen(vector[0][n].name) + 1)
+	if (lwidth < (int) strlen(vector[0][n].name) + 1)
 	    lwidth = strlen(vector[0][n].name) + 1;
     }
 

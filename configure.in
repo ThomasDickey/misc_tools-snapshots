@@ -1,0 +1,115 @@
+dnl $Id: configure.in,v 1.13 2012/03/13 21:03:05 tom Exp $
+dnl configure-script template for "misc_tools"
+
+AC_INIT(src/newpath/newpath.c)
+CF_CHECK_CACHE
+AC_CONFIG_HEADER(config.h:config_h.in)
+
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+
+AC_SET_MAKE
+CF_MAKEFLAGS
+
+CF_PROG_EXT
+CF_ANSI_CC_REQD
+
+CF_DISABLE_ECHO
+CF_ENABLE_WARNINGS
+
+dnl This package installs a setuid/setgid program like "su", but without a
+dnl password.  If sudo is present, I can use that for root (but not for the
+dnl other users, because sudo alters the environment).  Filter "root" out of
+dnl the hacks, into the "usual" variable in this case.
+AC_PATH_PROG(SUDO_PATH, sudo, none)
+AC_MSG_CHECKING(if you want to install sudo-hacks)
+AC_ARG_WITH(sudo-hacks,
+	[  --with-sudo-hacks=XXX   set list of id's for sudo hacks],
+	[SUDO_HACKS="$withval"],
+	[SUDO_HACKS="no"])
+SUDO_USUAL=
+if test "x$SUDO_HACKS" != xno
+then
+	test -z "$SUDO_HACKS" && SUDO_HACKS=root
+	test "$SUDO_HACKS" = yes && SUDO_HACKS=root
+	if test "x$SUDO_PATH" != xnone
+	then
+		SUDO_USUAL=`echo "$SUDO_HACKS" | sed -e 's/\<root\>//'`
+		if test "$SUDO_USUAL" != "$SUDO_HACKS"
+		then
+			SUDO_HACKS="$SUDO_USUAL"
+			SUDO_USUAL=root
+		else
+			SUDO_USUAL=
+		fi
+	fi
+fi
+SUDO_HACKS=`echo "$SUDO_HACKS" | sed -e 's/,/ /g' -e 's/  / /g' -e 's/^ //' -e 's/ $//'`
+AC_MSG_RESULT($SUDO_HACKS)
+AC_MSG_CHECKING(if you will use sudo wrapper)
+AC_MSG_RESULT($SUDO_USUAL)
+test "$SUDO_HACKS" = no && SUDO_HACKS=
+
+AC_SUBST(SUDO_HACKS)
+AC_SUBST(SUDO_USUAL)
+
+AC_STDC_HEADERS
+AC_CHECK_HEADERS( \
+getopt.h \
+unistd.h \
+)
+
+AC_OUTPUT(makefile,[
+echo "** updating makefile targets"
+for name in [$]srcdir/src/*/makefile.in
+do
+	cf_FILE=`echo "$name" | sed -e "s,$srcdir/,," -e 's,\.in$,,'`
+	cf_DIR=`echo "$cf_FILE" | sed -e 's,/makefile,,'`
+	if test -s $cf_FILE
+	then
+		echo "	cd $cf_DIR && \$(MAKE) \$(MAKE_RECUR) \[$]@" >>makefile
+	fi
+done
+cat >>makefile <<CF_EOF
+distclean ::
+	rm -f makefile config.h config.status config.log config.cache
+CF_EOF
+],[
+echo "** checking for conflicts"
+for name in makefile.in [$]srcdir/src/*/makefile.in
+do
+	cf_FILE=\`echo "\$name" | sed -e "s,\$srcdir/,," -e 's,\.in\$,,'\`
+	cf_DIR=\`echo "\$cf_FILE" | sed -e 's,/makefile,,'\`
+	cf_TMP=\`basename \$cf_DIR\`
+	case \$cf_TMP in #(vi
+	perror) #(vi
+		if \$cf_TMP --version 2>/dev/null >/dev/null
+		then
+			echo "...skipping \$cf_TMP"
+			continue
+		fi
+		;;
+	realpath)
+		if \$cf_TMP --version 2>/dev/null >/dev/null
+		then
+			echo "...skipping \$cf_TMP"
+			if test -s \$cf_FILE
+			then
+				echo "?? oops \$cf_FILE"
+				rm -f \$cf_FILE
+			fi
+			continue
+		else
+			cf_realpath=\`realpath --version\ 2>/dev/null\`
+			if test "x$cf_realpath" = "x`pwd`/--version"
+			then
+				echo "...skipping \$cf_TMP"
+				continue
+			fi
+		fi
+		;;
+	esac
+	CONFIG_FILES="\$CONFIG_FILES \$cf_FILE"
+done
+],[cat])

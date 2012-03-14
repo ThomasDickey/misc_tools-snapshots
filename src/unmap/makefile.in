@@ -1,0 +1,72 @@
+# $Id: makefile.in,v 1.2 2012/03/13 18:24:45 tom Exp $
+# makefile for unmap
+
+SHELL		= /bin/sh
+
+#### Start of system configuration section. ####
+
+top_srcdir	= @top_srcdir@
+srcdir		= @srcdir@
+srcdir_sl	= @srcdir@/
+VPATH		= @srcdir@
+@SET_MAKE@
+
+prefix		= @prefix@
+exec_prefix	= @exec_prefix@
+
+bindir		= @bindir@
+
+BINDIR		= $(DESTDIR)$(bindir)
+
+CC		= @CC@
+CFLAGS		= @CFLAGS@ @EXTRA_CFLAGS@
+
+CPP		= @CPP@
+CPPFLAGS	= @CPPFLAGS@
+
+LINK		= $(CC) $(CFLAGS)
+
+INSTALL		= @INSTALL@
+INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+
+o		= .@OBJEXT@
+x		= @EXEEXT@
+PROGS		= chrcount$x map$x unmap$x
+
+.SUFFIXES: .c .i $o
+
+.c.i:
+	@RULE_CC@
+	@ECHO_CC@$(CPP) -C $(CPPFLAGS) $< >$@
+.c$o:
+	@RULE_CC@
+	@ECHO_CC@$(CC) -c $(CPPFLAGS) $(CFLAGS) $<
+
+all : $(PROGS)
+
+chrcount$x : chrcount$o map_s$o
+	@ECHO_LD@$(LINK) $(CFLAGS) $(LDFLAGS) -o $@ chrcount$o map_s$o $(LIBS)
+
+map$x : map$o map_s$o
+	@ECHO_LD@$(LINK) $(CFLAGS) $(LDFLAGS) -o $@ map$o map_s$o $(LIBS)
+
+unmap$x : unmap$o unmap_s$o
+	@ECHO_LD@$(LINK) $(CFLAGS) $(LDFLAGS) -o $@ unmap$o unmap_s$o $(LIBS)
+
+install : $(PROGS) $(BINDIR)
+	$(INSTALL_PROGRAM) chrcount$x $(BINDIR)
+	$(INSTALL_PROGRAM) map$x $(BINDIR)
+	$(INSTALL_PROGRAM) unmap$x $(BINDIR)
+
+uninstall :
+	rm -f $(BINDIR)/chrcount$x
+	rm -f $(BINDIR)/map$x
+	rm -f $(BINDIR)/unmap$x
+
+clean :
+	rm -f $(PROGS) *.o core
+distclean : clean
+	rm -f makefile
+
+$(BINDIR) :
+	mkdir -p $@

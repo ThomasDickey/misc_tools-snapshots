@@ -1,3 +1,103 @@
+2012-03-13  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* package/misc_tools.spec:
+	modified further to construct a list of setuid programs which is used in
+	the post-install process.
+
+	* package/misc_tools.spec:
+	tentative post-install script to fix setuid's
+
+	* src/sue/use-hacks: one of the error-checks interfered - remove it
+
+	* configure: regen
+
+	* aclocal.m4, configure.in: add/use CF_XOPEN_SOURCE
+
+	* src/realpath/makefile.in: add -I option for config.h
+
+	* configure: regen
+
+	* configure.in: check for realpath function
+
+	* src/realpath/realpath.c: cleanup
+
+	* configure.in:
+	add --with-everything option, so I can test-compile perror and realpath
+
+	* src/sue/use-hacks: add some error-checking
+
+	* package/debian/watch, package/debian/docs, package/debian/rules, package/debian/control, package/debian/copyright, package/debian/changelog, package/misc_tools.spec:
+	RCS_BASE
+
+	* src/unmap/chrcount.c: cleanup
+
+	* configure: regen
+
+	* src/width/width.c: cleanup
+
+	* configure.in: generate config.h
+
+	* src/width/makefile.in: this relies on config.h
+
+	* configure.in: show the values (root) moved into SUDO_USUAL
+
+	* configure.in: reset variable after display to avoid confusing scripts
+
+	* src/sue/makefile.in:
+	setup special install/uninstall rules for setuid programs
+
+	* src/sue/sue.c: cleanup
+
+	* src/sue/use-hacks: only install setuid here
+
+	* src/sue/use-usual: RCS_BASE
+
+	* configure.in: remember if we've filtered "root" out of SUDO_HACKS
+
+	* src/sue/use-hacks: RCS_BASE
+
+	* configure.in: add --with-sudo-hacks option
+
+	* configure.in:
+	improve check for realpath, taking into account my version.
+
+	* configure: RCS_BASE
+
+	* src/width/makefile.in: typo
+
+	* src/unmap/makefile.in: fill in dependencies
+
+	* configure.in:
+	improve check for pre-existing perror and realpath programs
+
+	* src/newpath/newpath.c, src/isatty/isatty.c, src/cpd/cpd.c: cleanup
+
+	* configure.in:
+	test for a couple of programs which have equivalents in some Linux packages:
+		a) realpath
+		b) perror (in MySQL)
+
+	* src/unmap/makefile.in, src/tisplit/makefile.in, src/sue/makefile.in, src/width/makefile.in, src/slowcat/makefile.in, src/realpath/makefile.in, src/perror/makefile.in, src/newpath/makefile.in, src/isatty/makefile.in:
+	makefile-template
+
+	* aclocal.m4, configure.in, makefile.in: add/use CF_MAKEFLAGS
+
+	* src/cpd/makefile.in: simplify
+
+	* src/hex/makefile.in: makefile-template
+
+	* src/cpd/makefile.in, src/acsplit/makefile.in: RCS_BASE
+
+	* configure.in, aclocal.m4: add --disable-echo and --enable-warnings
+
+	* configure.in:
+	tweak to make the makefile-generation compatible between 2.13 and 2.52
+	(with my patches of course)
+
+	* configure.in: generate */src/makefile
+
+	* makefile.in, aclocal.m4, configure.in: RCS_BASE
+
 2012-02-25  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* config.guess, config.sub: RCS_BASE

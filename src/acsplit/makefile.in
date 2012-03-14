@@ -1,0 +1,67 @@
+# $Id: makefile.in,v 1.1 2012/03/13 16:48:42 tom Exp $
+# makefile for acsplit
+
+SHELL		= /bin/sh
+
+#### Start of system configuration section. ####
+
+top_srcdir	= @top_srcdir@
+srcdir		= @srcdir@
+srcdir_sl	= @srcdir@/
+VPATH		= @srcdir@
+@SET_MAKE@
+
+prefix		= @prefix@
+exec_prefix	= @exec_prefix@
+
+bindir		= @bindir@
+
+BINDIR		= $(DESTDIR)$(bindir)
+
+CC		= @CC@
+CFLAGS		= @CFLAGS@ @EXTRA_CFLAGS@
+
+CPP		= @CPP@
+CPPFLAGS	= @CPPFLAGS@
+
+LINK		= $(CC) $(CFLAGS)
+
+INSTALL		= @INSTALL@
+INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+
+o		= .@OBJEXT@
+x		= @EXEEXT@
+PROGS		= acsplit$x acmerge$x
+
+.SUFFIXES: .c .i $o
+
+.c.i:
+	@RULE_CC@
+	@ECHO_CC@$(CPP) -C $(CPPFLAGS) $< >$@
+.c$o:
+	@RULE_CC@
+	@ECHO_CC@$(CC) -c $(CPPFLAGS) $(CFLAGS) $<
+
+all : $(PROGS)
+
+acmerge$x : acmerge$o
+	@ECHO_LD@$(LINK) $(CFLAGS) $(LDFLAGS) -o $@ acmerge$o $(LIBS)
+
+acsplit$x : acsplit$o
+	@ECHO_LD@$(LINK) $(CFLAGS) $(LDFLAGS) -o $@ acsplit$o $(LIBS)
+
+install : $(PROGS) $(BINDIR)
+	$(INSTALL_PROGRAM) acsplit$x $(BINDIR)
+	$(INSTALL_PROGRAM) acmerge$x $(BINDIR)
+
+uninstall :
+	rm -f $(BINDIR)/acsplit$x
+	rm -f $(BINDIR)/acmerge$x
+
+clean :
+	rm -f $(PROGS) *.o core
+distclean : clean
+	rm -f makefile
+
+$(BINDIR) :
+	mkdir -p $@

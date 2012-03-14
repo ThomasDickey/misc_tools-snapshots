@@ -1,0 +1,22 @@
+#!/bin/sh
+# $Id: use-usual,v 1.1 2012/03/13 20:22:47 tom Exp $
+# Install a wrapper script for "sudo" instead of the given setuid/setgid
+# program.
+
+INSTALL="$1"; shift 1
+PROGRAM="$1"; shift 1
+DESTDIR="$1"; shift 1
+
+if test "$#" != 0
+then
+	echo "** installing sudo wrapper for $*"
+	for user in $*
+	do
+		$INSTALL $PROGRAM $DESTDIR/$user
+		cat >$DESTDIR/$user <<EOF
+#!/bin/sh
+sudo "$@"
+EOF
+		ls -l $DESTDIR/$user
+	done
+fi
