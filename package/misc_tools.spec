@@ -1,7 +1,7 @@
 Summary: vttest - test VT100-type terminal
 %define AppProgram misc_tools
-%define AppVersion 20120313
-# $XTermId: misc_tools.spec,v 1.1 2012/03/13 21:20:26 tom Exp $
+%define AppVersion 20120314
+# $XTermId: misc_tools.spec,v 1.5 2012/03/14 09:06:02 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
 Release: 1
@@ -27,7 +27,8 @@ INSTALL_PROGRAM='${INSTALL}' \
 		--prefix=%{_prefix} \
 		--bindir=%{_bindir} \
 		--libdir=%{_libdir} \
-		--mandir=%{_mandir}
+		--mandir=%{_mandir} \
+		--with-sudo-hacks=root,dickey
 
 make
 
@@ -35,16 +36,46 @@ make
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
 make install                    DESTDIR=$RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%name
+touch    $RPM_BUILD_ROOT%{_datadir}/%name/setuid
 
-strip $RPM_BUILD_ROOT%{_bindir}/*
+pushd $RPM_BUILD_ROOT%{_bindir}
+for prog in *
+do
+	case `file $prog` in
+	*script*|*text*)
+		;;
+	*executable*)
+		strip $prog
+		;;
+	esac
+done
+popd
+
+%post
+
+pushd %{_bindir}
+for prog in `cat %{_datadir}/%name/setuid`
+do
+	if id $prog >/dev/null 2>/dev/null
+	then
+		U=`id $prog | sed -e 's/^uid=//' -e 's/(.*//'`
+		G=`id $prog | sed -e 's/^.*gid=//' -e 's/(.*//'`
+		chown $U $prog
+		chgrp $G $prog
+		chmod ug+s $prog
+	fi
+done
+popd
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%{_prefix}/bin/*
+%{_bindir}/*
 #%{_mandir}/man1/%{AppProgram}.*
+%{_datadir}/%name/*
 
 %changelog
 # each patch should add its ChangeLog entries here

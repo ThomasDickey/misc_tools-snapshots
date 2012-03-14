@@ -1,12 +1,12 @@
 /*
+ * $Id: unmap.c,v 1.8 2012/03/14 09:20:58 tom Exp $
+ *
  * Title:	unmap.c
  * Author:	T.E.Dickey
  * Created:	15 Dec 1995
  * Function:	Translate one or more files containing nonprinting characters
  *		into visible form.
  */
-
-static const char Id[] = "$Id: unmap.c,v 1.7 2004/12/31 21:09:43 tom Exp $";
 
 #include "unmap.h"
 

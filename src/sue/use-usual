@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: use-usual,v 1.1 2012/03/13 20:22:47 tom Exp $
+# $Id: use-usual,v 1.2 2012/03/14 09:56:37 tom Exp $
 # Install a wrapper script for "sudo" instead of the given setuid/setgid
 # program.
 
@@ -13,7 +13,7 @@ then
 	for user in $*
 	do
 		$INSTALL $PROGRAM $DESTDIR/$user
-		cat >$DESTDIR/$user <<EOF
+		cat >$DESTDIR/$user <<\EOF
 #!/bin/sh
 sudo "$@"
 EOF

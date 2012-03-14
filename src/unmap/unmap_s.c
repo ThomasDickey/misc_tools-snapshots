@@ -1,12 +1,12 @@
 /*
+ * $Id: unmap_s.c,v 1.6 2012/03/14 09:00:04 tom Exp $
+ *
  * Title:	unmap_s.c
  * Author:	T.E.Dickey
  * Created:	15 Dec 1995
  * Function:	Translate one or more files containing nonprinting characters
  *		into visible form.
  */
-
-static const char Id[] = "$Id: unmap_s.c,v 1.5 2004/12/31 21:08:45 tom Exp $";
 
 #include "unmap.h"
 
@@ -45,7 +45,7 @@ decode_utf8(unsigned ch)
 	    if (utf_count > 0) {
 		utf_data = UCS_REPL;	/* prev. sequence incomplete */
 	    } else {
-		utf_data = ch;
+		utf_data = (int) ch;
 	    }
 	    result = 1;
 	    break;
@@ -90,7 +90,7 @@ decode_utf8(unsigned ch)
 		}
 		utf_count--;
 		if (utf_count == 0) {
-		    utf_data = utf_char;
+		    utf_data = (int) utf_char;
 		    result = 1;
 		    break;
 		}

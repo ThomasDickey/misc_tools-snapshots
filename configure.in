@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.13 2012/03/13 21:03:05 tom Exp $
+dnl $Id: configure.in,v 1.17 2012/03/14 08:28:15 tom Exp $
 dnl configure-script template for "misc_tools"
 
 AC_INIT(src/newpath/newpath.c)
@@ -14,9 +14,28 @@ CF_MAKEFLAGS
 
 CF_PROG_EXT
 CF_ANSI_CC_REQD
+CF_XOPEN_SOURCE
+
 
 CF_DISABLE_ECHO
 CF_ENABLE_WARNINGS
+
+dnl Provide a package name, used for determining the directory where the list
+dnl of setuid programs resides.  The list is needed because packaging systems
+dnl such as rpm and dpkg lack a reliable way to determine an arbitrary list
+dnl of setuid programs which are installed.
+AC_MSG_CHECKING(for the package name to use when installing)
+AC_ARG_WITH(package,
+	[  --with-package=XXX      override package name (default: misc_tools)],
+	[PACKAGE="$withval"],
+	[PACKAGE="misc_tools"])
+case x$PACKAGE in
+x|xyes|xno)
+	PACKAGE=misc_tools
+	;;
+esac
+AC_MSG_RESULT($PACKAGE)
+AC_SUBST(PACKAGE)
 
 dnl This package installs a setuid/setgid program like "su", but without a
 dnl password.  If sudo is present, I can use that for root (but not for the
@@ -54,10 +73,21 @@ test "$SUDO_HACKS" = no && SUDO_HACKS=
 AC_SUBST(SUDO_HACKS)
 AC_SUBST(SUDO_USUAL)
 
+AC_MSG_CHECKING(if you want all programs)
+AC_ARG_WITH(everything,
+	[  --with-everything       produce all programs ignoring conflicts],
+	[with_everything="$withval"],
+	[with_everything="no"])
+AC_MSG_RESULT($with_everything)
+
 AC_STDC_HEADERS
 AC_CHECK_HEADERS( \
 getopt.h \
 unistd.h \
+)
+
+AC_HAVE_FUNCS( \
+realpath \
 )
 
 AC_OUTPUT(makefile,[
@@ -82,34 +112,37 @@ do
 	cf_FILE=\`echo "\$name" | sed -e "s,\$srcdir/,," -e 's,\.in\$,,'\`
 	cf_DIR=\`echo "\$cf_FILE" | sed -e 's,/makefile,,'\`
 	cf_TMP=\`basename \$cf_DIR\`
-	case \$cf_TMP in #(vi
-	perror) #(vi
-		if \$cf_TMP --version 2>/dev/null >/dev/null
-		then
-			echo "...skipping \$cf_TMP"
-			continue
-		fi
-		;;
-	realpath)
-		if \$cf_TMP --version 2>/dev/null >/dev/null
-		then
-			echo "...skipping \$cf_TMP"
-			if test -s \$cf_FILE
-			then
-				echo "?? oops \$cf_FILE"
-				rm -f \$cf_FILE
-			fi
-			continue
-		else
-			cf_realpath=\`realpath --version\ 2>/dev/null\`
-			if test "x$cf_realpath" = "x`pwd`/--version"
+	if test $with_everything = no
+	then
+		case \$cf_TMP in #(vi
+		perror) #(vi
+			if \$cf_TMP --version 2>/dev/null >/dev/null
 			then
 				echo "...skipping \$cf_TMP"
 				continue
 			fi
-		fi
-		;;
-	esac
+			;;
+		realpath)
+			if \$cf_TMP --version 2>/dev/null >/dev/null
+			then
+				echo "...skipping \$cf_TMP"
+				if test -s \$cf_FILE
+				then
+					echo "?? oops \$cf_FILE"
+					rm -f \$cf_FILE
+				fi
+				continue
+			else
+				cf_realpath=\`realpath --version\ 2>/dev/null\`
+				if test "x$cf_realpath" = "x`pwd`/--version"
+				then
+					echo "...skipping \$cf_TMP"
+					continue
+				fi
+			fi
+			;;
+		esac
+	fi
 	CONFIG_FILES="\$CONFIG_FILES \$cf_FILE"
 done
 ],[cat])

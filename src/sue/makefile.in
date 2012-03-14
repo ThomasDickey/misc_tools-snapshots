@@ -1,7 +1,8 @@
-# $Id: makefile.in,v 1.2 2012/03/13 20:30:28 tom Exp $
+# $Id: makefile.in,v 1.3 2012/03/14 08:27:01 tom Exp $
 
 SHELL		= /bin/sh
 THIS		= sue
+PACKAGE		= @PACKAGE@
 
 #### Start of system configuration section. ####
 
@@ -15,8 +16,10 @@ prefix		= @prefix@
 exec_prefix	= @exec_prefix@
 
 bindir		= @bindir@
+datadir		= @datadir@/@PACKAGE@
 
 BINDIR		= $(DESTDIR)$(bindir)
+DATADIR		= $(DESTDIR)$(datadir)
 
 CC		= @CC@
 CFLAGS		= @CFLAGS@ @EXTRA_CFLAGS@
@@ -49,7 +52,11 @@ all : $(PROGS)
 $(THIS)$x : $(THIS)$o
 	@ECHO_LD@$(LINK) $(CFLAGS) $(LDFLAGS) -o $@ $(THIS)$o $(LIBS)
 
-install : $(PROGS) $(BINDIR)
+SUDO_LIST	= $(DATADIR)/setuid
+
+install : $(PROGS) $(DATADIR) $(BINDIR)
+	rm -f $(SUDO_LIST)
+	$(SHELL) -c "for n in $(SUDO_HACKS); do echo \$$n >>$(SUDO_LIST); done"
 	$(SHELL) $(srcdir)/use-hacks "$(INSTALL_PROGRAM)" "$(THIS)$x" "$(BINDIR)" $(SUDO_HACKS)
 	$(SHELL) $(srcdir)/use-usual "$(INSTALL_PROGRAM)" "$(THIS)$x" "$(BINDIR)" $(SUDO_USUAL)
 
@@ -61,5 +68,6 @@ clean :
 distclean : clean
 	rm -f makefile
 
-$(BINDIR) :
+$(BINDIR) \
+$(DATADIR) :
 	mkdir -p $@

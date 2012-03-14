@@ -1,5 +1,9 @@
 /*
- * $Id: sue.c,v 1.3 2012/03/13 20:24:27 tom Exp $
+ * $Id: sue.c,v 1.4 2012/03/14 09:03:25 tom Exp $
+ *
+ * Author:	T.E.Dickey
+ * Created:	23 Apr 1990
+ * Purpose:	provide a "su" command which preserves caller's environment.
  */
 #include	<stdlib.h>
 #include	<unistd.h>	/* may define _POSIX_SAVED_IDS */
@@ -10,10 +14,12 @@
 int
 main(int argc, char *argv[])
 {
+    static char the_default_shell[] = "/bin/sh";
     char home[BUFSIZ];
     char shell[BUFSIZ];
     char user[BUFSIZ];
-    char *default_shell = "/bin/sh";
+    char *default_shell = the_default_shell;
+    int code = EXIT_SUCCESS;
     register struct passwd *q;
 
 #ifndef _POSIX_SAVED_IDS
@@ -49,7 +55,9 @@ main(int argc, char *argv[])
     if (argc > 1) {
 	execvp(argv[1], argv + 1);
 	perror(argv[1]);
-    } else
-	system(default_shell);
-    exit(0);
+    } else {
+	if (system(default_shell))
+	    code = EXIT_FAILURE;
+    }
+    exit(code);
 }

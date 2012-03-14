@@ -1,6 +1,8 @@
-static const char Id[] = "$Id: acsplit.c,v 1.11 2003/04/12 12:42:17 tom Exp $";
+static const char Id[] = "$Id: acsplit.c,v 1.12 2012/03/14 08:58:02 tom Exp $";
 
 /*
+ * $Id: acsplit.c,v 1.12 2012/03/14 08:58:02 tom Exp $
+ *
  * Title:	acsplit.c - split aclocal.m4
  * Author:	T.E.Dickey
  * Created:	28 Aug 1997
@@ -35,11 +37,11 @@ static const char Id[] = "$Id: acsplit.c,v 1.11 2003/04/12 12:42:17 tom Exp $";
 
 static const char *target = "AcSplit";
 static int verbose;
-static char *cur_path;
+static const char *cur_path;
 static int cur_line;
 
 static void
-failed(char *msg)
+failed(const char *msg)
 {
     perror(msg);
     exit(EXIT_FAILURE);
@@ -98,7 +100,7 @@ is_dashes(char *line)
 }
 
 static char *
-match(char *s, char *name)
+match(char *s, const char *name)
 {
     char *base = s;
 
@@ -195,7 +197,7 @@ append(FILE *ofp, FILE *hdr)
 #define WARN(msg) fprintf(stderr, "%s:%d:%s\n", path, lineno, msg)
 
 static void
-acsplit(char *path)
+acsplit(const char *path)
 {
     FILE *hdr;
     FILE *ifp = fopen(path, "r");

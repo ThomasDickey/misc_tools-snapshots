@@ -33,6 +33,7 @@ configure-stamp:
 		--prefix=/usr \
 		--mandir=\$${prefix}/share/man \
 		--sysconfdir=/etc \
+		--with-package=misctools \
 		--with-sudo-hacks=root,dickey
 
 	touch configure-stamp
@@ -65,7 +66,7 @@ install-stamp: build-stamp
 	dh_clean -k
 	dh_installdirs
 
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/vttest-cur
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/misctools
 
 	touch install-stamp
 

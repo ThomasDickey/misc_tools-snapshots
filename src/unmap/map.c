@@ -1,12 +1,12 @@
 /*
+ * $Id: map.c,v 1.5 2012/03/14 09:20:58 tom Exp $
+ *
  * Title:	map.c
  * Author:	T.E.Dickey
  * Created:	09 Jun 1997
  * Function:	Translate one or more files containing printing characters
  *		into nonprinting form.
  */
-
-static const char Id[] = "$Id: map.c,v 1.4 2004/12/31 21:21:26 tom Exp $";
 
 #include "unmap.h"
 
