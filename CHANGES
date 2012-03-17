@@ -1,3 +1,14 @@
+2012-03-17  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* package/debian/changelog, package/misc_tools.spec: bump
+
+	* configure: regen
+
+	* src/unmap/chrcount.c:
+	modify to not use scandir, since that is historically not portable to BSD
+
+	* configure.in: FreeBSD sed doesn't honor \< and \> word-marks
+
 2012-03-14  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* src/sue/use-usual: quote here-document
