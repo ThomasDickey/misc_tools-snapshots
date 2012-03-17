@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.17 2012/03/14 08:28:15 tom Exp $
+dnl $Id: configure.in,v 1.18 2012/03/17 14:47:38 tom Exp $
 dnl configure-script template for "misc_tools"
 
 AC_INIT(src/newpath/newpath.c)
@@ -41,6 +41,9 @@ dnl This package installs a setuid/setgid program like "su", but without a
 dnl password.  If sudo is present, I can use that for root (but not for the
 dnl other users, because sudo alters the environment).  Filter "root" out of
 dnl the hacks, into the "usual" variable in this case.
+define([CF_TRIM_LIST],[
+	$1=`echo "[$]$1" | sed -e 's/,/ /g' -e 's/  / /g' -e 's/^ //' -e 's/ $//'`
+])
 AC_PATH_PROG(SUDO_PATH, sudo, none)
 AC_MSG_CHECKING(if you want to install sudo-hacks)
 AC_ARG_WITH(sudo-hacks,
@@ -52,9 +55,10 @@ if test "x$SUDO_HACKS" != xno
 then
 	test -z "$SUDO_HACKS" && SUDO_HACKS=root
 	test "$SUDO_HACKS" = yes && SUDO_HACKS=root
+	CF_TRIM_LIST(SUDO_HACKS)
 	if test "x$SUDO_PATH" != xnone
 	then
-		SUDO_USUAL=`echo "$SUDO_HACKS" | sed -e 's/\<root\>//'`
+		SUDO_USUAL=`echo " $SUDO_HACKS " | sed -e 's/ root //'`
 		if test "$SUDO_USUAL" != "$SUDO_HACKS"
 		then
 			SUDO_HACKS="$SUDO_USUAL"
@@ -64,7 +68,8 @@ then
 		fi
 	fi
 fi
-SUDO_HACKS=`echo "$SUDO_HACKS" | sed -e 's/,/ /g' -e 's/  / /g' -e 's/^ //' -e 's/ $//'`
+CF_TRIM_LIST(SUDO_HACKS)
+CF_TRIM_LIST(SUDO_USUAL)
 AC_MSG_RESULT($SUDO_HACKS)
 AC_MSG_CHECKING(if you will use sudo wrapper)
 AC_MSG_RESULT($SUDO_USUAL)

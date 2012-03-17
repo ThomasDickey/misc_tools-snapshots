@@ -1,18 +1,18 @@
 /*
- * $Id: chrcount.c,v 1.6 2012/03/14 09:00:17 tom Exp $
+ * $Id: chrcount.c,v 1.7 2012/03/17 15:35:11 tom Exp $
  *
  * Title:	chrcount.c
  * Author:	T.E.Dickey
  * Created:	09 Jun 1997
  * Function:	Count characters from one or more files, optionally converting
  *		on the fly from printable form to to nonprinting form.
+ *		This is useful for getting metrics from map/unmap output files.
  */
 
 #include "unmap.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <dirent.h>
 
 #define typeCalloc(count,type) (type *)calloc(count,sizeof(type))
 
@@ -24,10 +24,19 @@ typedef struct {
 static int m_opt;
 static int p_opt;
 
+static void
+trim(char *buffer)
+{
+    char *s = buffer + strlen(buffer);
+    while (s-- > buffer && (*s == '\r' || *s == '\n')) {
+	*s = '\0';
+    }
+}
+
 static char *
 strmalloc(char *name)
 {
-    return strcpy((char *) malloc(strlen(name)) + 1, name);
+    return strcpy((char *) malloc(strlen(name) + 1), name);
 }
 
 static int
@@ -43,14 +52,6 @@ filesize(char *path)
     struct stat sb;
     return (stat(path, &sb) == 0 && (sb.st_mode & S_IFMT) == S_IFREG) ?
 	sb.st_size : -1;
-}
-
-static int
-do_select(const struct dirent *de)
-{
-    /* select everything, so we don't do 'stat()' twice */
-    (void) de;
-    return 1;
 }
 
 static long
@@ -72,25 +73,28 @@ static COUNTS *
 chrcount(char *path)
 {
     char temp[1024];
+    char leaf[1024];
     size_t used = 0;
-    size_t need = 0;
-    COUNTS *result = typeCalloc(2, COUNTS);
+    size_t need = 2;
+    COUNTS *result = typeCalloc(need, COUNTS);
 
     if (isdirectory(path)) {
-	int n;
-	struct dirent **namelist;
-	n = scandir(path, &namelist, do_select, alphasort);
-	if (n > 0) {
-	    need = (size_t) n;
-	    result = typeCalloc(need + 1, COUNTS);
-	    for (n = 0, used = 0; n < (int) need; n++) {
-		char *leaf = namelist[n]->d_name;
+	FILE *pp = popen("ls -1 -a", "r");
+	if (pp != 0) {
+	    while (fgets(leaf, sizeof(leaf), pp) != 0) {
+		trim(leaf);
 		sprintf(temp, "%s/%s", path, leaf);
+		if ((used + 1) >= need) {
+		    need = (used + 1) * 2;
+		    result = realloc(result, sizeof(COUNTS) * need);
+		}
 		if ((result[used].count = do_count(temp)) >= 0) {
-		    result[used].name = leaf;
+		    result[used].name = strmalloc(leaf);
 		    used++;
+		    result[used].name = 0;
 		}
 	    }
+	    pclose(pp);
 	}
     } else {
 	result[0].name = strmalloc(path);
@@ -181,5 +185,7 @@ main(int argc, char **argv)
 	}
 	printf("\n");
     }
+    free(vector);
+    free(widths);
     return EXIT_SUCCESS;
 }

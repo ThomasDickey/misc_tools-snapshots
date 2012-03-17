@@ -1,7 +1,7 @@
 Summary: vttest - test VT100-type terminal
 %define AppProgram misc_tools
-%define AppVersion 20120314
-# $XTermId: misc_tools.spec,v 1.5 2012/03/14 09:06:02 tom Exp $
+%define AppVersion 20120317
+# $XTermId: misc_tools.spec,v 1.6 2012/03/17 15:40:30 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
 Release: 1
