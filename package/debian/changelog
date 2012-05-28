@@ -1,3 +1,9 @@
+misctools (20120527) unstable; urgency=low
+
+  * Port to Solaris 10/11.
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sun, 27 May 2012 18:07:07 -0400
+
 misctools (20120317) unstable; urgency=low
 
   * Initial release.

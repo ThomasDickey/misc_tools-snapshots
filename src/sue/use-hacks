@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: use-hacks,v 1.4 2012/03/14 00:53:19 tom Exp $
+# $Id: use-hacks,v 1.5 2012/05/27 19:55:13 tom Exp $
 # install the given program as setuid/setgid for the listed users
 
 DOIT=eval
@@ -11,7 +11,7 @@ DESTDIR="$1"; shift 1
 if test "$#" != 0
 then
 	echo "** installing setuid for $*"
-	for user in $*
+	for user in "$@"
 	do
 		$DOIT $INSTALL $PROGRAM $DESTDIR/$user
 		if id $user >/dev/null 2>/dev/null
