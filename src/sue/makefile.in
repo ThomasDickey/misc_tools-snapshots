@@ -1,4 +1,4 @@
-# $Id: makefile.in,v 1.3 2012/03/14 08:27:01 tom Exp $
+# $Id: makefile.in,v 1.4 2012/05/27 20:11:59 tom Exp $
 
 SHELL		= /bin/sh
 THIS		= sue
@@ -55,13 +55,13 @@ $(THIS)$x : $(THIS)$o
 SUDO_LIST	= $(DATADIR)/setuid
 
 install : $(PROGS) $(DATADIR) $(BINDIR)
-	rm -f $(SUDO_LIST)
-	$(SHELL) -c "for n in $(SUDO_HACKS); do echo \$$n >>$(SUDO_LIST); done"
+	-rm -f $(SUDO_LIST)
+	$(SHELL) -c "if test -n '$(SUDO_HACKS)' ; then for n in ''$(SUDO_HACKS); do echo \$$n >>$(SUDO_LIST); done; fi"
 	$(SHELL) $(srcdir)/use-hacks "$(INSTALL_PROGRAM)" "$(THIS)$x" "$(BINDIR)" $(SUDO_HACKS)
 	$(SHELL) $(srcdir)/use-usual "$(INSTALL_PROGRAM)" "$(THIS)$x" "$(BINDIR)" $(SUDO_USUAL)
 
 uninstall :
-	$(SHELL) -c "for n in $(SUDO_HACKS) $(SUDO_USUAL); do echo ...removing \$$n; rm -f $(BINDIR)/\$$n; done"
+	$(SHELL) -c "if test -n '$(SUDO_HACKS)$(SUDO_USUAL)' ; then for n in ''$(SUDO_HACKS) $(SUDO_USUAL); do echo ...removing \$$n; rm -f $(BINDIR)/\$$n; done; fi"
 
 clean :
 	rm -f $(PROGS) *.o core

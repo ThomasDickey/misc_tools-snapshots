@@ -1,3 +1,10 @@
+2012-05-27  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* package/debian/changelog, package/misc_tools.spec: bump
+
+	* src/sue/makefile.in, src/sue/use-usual, src/sue/use-hacks:
+	Solaris 10 workarounds
+
 2012-03-17  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/debian/changelog, package/misc_tools.spec: bump
