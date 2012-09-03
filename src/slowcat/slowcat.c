@@ -1,5 +1,5 @@
 /*
- * $Id: slowcat.c,v 1.4 2012/03/14 09:03:25 tom Exp $
+ * $Id: slowcat.c,v 1.5 2012/09/02 22:09:02 tom Exp $
  *
  * Author:	T.E.Dickey
  * Created:	14 Jan 1997
@@ -18,7 +18,7 @@ timer(void)
 {
     struct timeval tv;
     gettimeofday(&tv, (struct timezone *) 0);
-    return tv.tv_sec * 1000000. + tv.tv_usec;
+    return (double) tv.tv_sec * 1000000. + (double) tv.tv_usec;
 }
 
 static void

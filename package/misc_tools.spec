@@ -1,7 +1,7 @@
 Summary: misc_tools - miscellaneous foundation tools
 %define AppProgram misc_tools
-%define AppVersion 20120527
-# $XTermId: misc_tools.spec,v 1.7 2012/05/27 22:06:22 tom Exp $
+%define AppVersion 20120902
+# $XTermId: misc_tools.spec,v 1.9 2012/09/02 21:35:14 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
 Release: 1
@@ -10,6 +10,7 @@ Group: Applications/Development
 URL: ftp://invisible-island.net/%{AppProgram}
 Source0: %{AppProgram}-%{AppVersion}.tgz
 Packager: Thomas Dickey <dickey@invisible-island.net>
+Requires: sudo
 
 %description
 These are various programs which I use in my development environment,

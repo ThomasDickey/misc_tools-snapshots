@@ -1,3 +1,36 @@
+2012-09-02  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* src/count_files/count_files.c: indent/ansify
+
+	* src/perror/perror.c, src/unmap/chrcount.c: gcc warning
+
+	* src/splitit/splitit.c: indent/ansify
+
+	* src/width/width.c, src/newest/newest.c, src/slowcat/slowcat.c:
+	gcc warning
+
+	* src/splitit/makefile.in, src/newest/makefile.in, src/count_files/makefile.in:
+	makefile-template
+
+	* package/misc_tools.spec:
+	add dependency on sudo (Fedora has no realpath package, though there may
+	be a conflicting file).
+	..
+
+	* src/newpath/newpath.c: compiler warning
+
+	* src/sue/makefile.in: support datarootdir
+
+	* configure: regen (now need to support --datarootdir)
+
+	* aclocal.m4: resync with my-autoconf (adding CF_CLANG_WARNINGS)
+
+	* package/debian/control:
+	add explicit dependencies on sudo and realpath to get consistent results
+	when building/installing
+
+	* package/misc_tools.spec, package/debian/changelog: bump
+
 2012-05-27  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/debian/changelog, package/misc_tools.spec: bump

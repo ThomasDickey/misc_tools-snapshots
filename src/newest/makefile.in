@@ -1,8 +1,7 @@
-# $Id: makefile.in,v 1.5 2012/09/02 20:10:03 tom Exp $
+# $Id: makefile.in,v 1.1 2012/09/02 21:52:17 tom Exp $
 
 SHELL		= /bin/sh
-THIS		= sue
-PACKAGE		= @PACKAGE@
+THIS		= newest
 
 #### Start of system configuration section. ####
 
@@ -14,13 +13,10 @@ VPATH		= @srcdir@
 
 prefix		= @prefix@
 exec_prefix	= @exec_prefix@
-datarootdir	= @datarootdir@
 
 bindir		= @bindir@
-datadir		= @datadir@/@PACKAGE@
 
 BINDIR		= $(DESTDIR)$(bindir)
-DATADIR		= $(DESTDIR)$(datadir)
 
 CC		= @CC@
 CFLAGS		= @CFLAGS@ @EXTRA_CFLAGS@
@@ -36,8 +32,6 @@ INSTALL_PROGRAM	= @INSTALL_PROGRAM@
 o		= .@OBJEXT@
 x		= @EXEEXT@
 PROGS		= $(THIS)$x
-SUDO_HACKS	= @SUDO_HACKS@
-SUDO_USUAL	= @SUDO_USUAL@
 
 .SUFFIXES: .c .i $o
 
@@ -53,22 +47,16 @@ all : $(PROGS)
 $(THIS)$x : $(THIS)$o
 	@ECHO_LD@$(LINK) $(CFLAGS) $(LDFLAGS) -o $@ $(THIS)$o $(LIBS)
 
-SUDO_LIST	= $(DATADIR)/setuid
-
-install : $(PROGS) $(DATADIR) $(BINDIR)
-	-rm -f $(SUDO_LIST)
-	$(SHELL) -c "if test -n '$(SUDO_HACKS)' ; then for n in ''$(SUDO_HACKS); do echo \$$n >>$(SUDO_LIST); done; fi"
-	$(SHELL) $(srcdir)/use-hacks "$(INSTALL_PROGRAM)" "$(THIS)$x" "$(BINDIR)" $(SUDO_HACKS)
-	$(SHELL) $(srcdir)/use-usual "$(INSTALL_PROGRAM)" "$(THIS)$x" "$(BINDIR)" $(SUDO_USUAL)
+install : $(PROGS) $(BINDIR)
+	$(INSTALL_PROGRAM) $(THIS)$x $(BINDIR)
 
 uninstall :
-	$(SHELL) -c "if test -n '$(SUDO_HACKS)$(SUDO_USUAL)' ; then for n in ''$(SUDO_HACKS) $(SUDO_USUAL); do echo ...removing \$$n; rm -f $(BINDIR)/\$$n; done; fi"
+	rm -f $(BINDIR)/$(THIS)$x
 
 clean :
 	rm -f $(PROGS) *.o core
 distclean : clean
 	rm -f makefile
 
-$(BINDIR) \
-$(DATADIR) :
+$(BINDIR) :
 	mkdir -p $@

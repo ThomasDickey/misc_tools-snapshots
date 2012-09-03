@@ -1,5 +1,5 @@
 /*
- * $Id: width.c,v 1.12 2012/03/14 09:15:37 tom Exp $
+ * $Id: width.c,v 1.13 2012/09/02 22:10:50 tom Exp $
  *
  * Title:	width.c
  * Author:	T.Dickey
@@ -221,7 +221,7 @@ main(int argc, char *argv[])
 		this_lines += c;
 		printf("%6d:%6d %5.1f%%%s\n",
 		       max_sums, c,
-		       (this_lines * 100.0) / total_lines,
+		       ((double) this_lines * 100.0) / (double) total_lines,
 		       max_sums == opt_width ? " <--" : "");
 	    }
 	    max_sums--;
