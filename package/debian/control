@@ -3,11 +3,12 @@ Maintainer: Thomas E. Dickey <dickey@invisible-island.net>
 Section: utils
 Priority: optional
 Standards-Version: 3.8.4
-Build-Depends: debhelper (>= 5)
+Build-Depends: debhelper (>= 5), sudo, realpath
 Homepage: http://invisible-island.net/misc_tools/
 
 Package: misctools
 Architecture: any
+Depends: sudo, realpath, ${shlibs:Depends}
 Description: miscellaneous utility programs
  These are utility programs which I install first on a given development
  machine, along with ded and vile.

@@ -1,5 +1,5 @@
 /*
- * $Id: chrcount.c,v 1.7 2012/03/17 15:35:11 tom Exp $
+ * $Id: chrcount.c,v 1.8 2012/09/02 22:15:18 tom Exp $
  *
  * Title:	chrcount.c
  * Author:	T.E.Dickey
@@ -50,8 +50,9 @@ static int
 filesize(char *path)
 {
     struct stat sb;
-    return (stat(path, &sb) == 0 && (sb.st_mode & S_IFMT) == S_IFREG) ?
-	sb.st_size : -1;
+    return ((stat(path, &sb) == 0 && (sb.st_mode & S_IFMT) == S_IFREG)
+	    ? (int) sb.st_size
+	    : -1);
 }
 
 static long
@@ -175,8 +176,8 @@ main(int argc, char **argv)
 	    long value = find_count(vector[0][n].name, vector[m]);
 	    if (value >= 0) {
 		if (p_opt && vector[0][n].count) {
-		    printf("%*.1f%%", widths[m] - 1, (100.0) * value /
-			   vector[0][n].count);
+		    printf("%*.1f%%", widths[m] - 1,
+			   (100.0 * (double) value) / (double) vector[0][n].count);
 		} else {
 		    printf("%*ld", widths[m], value);
 		}

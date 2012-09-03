@@ -1,11 +1,16 @@
 /*
+ * $Id: newest.c,v 1.3 2012/09/02 22:10:29 tom Exp $
+ *
  * Given one or more files specified either on the command line, or via a pipe,
  * compute the date and/or name of the newest one, printing to stdout.
  */
+#include <stdlib.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
-#include <getopt.h>
+#include <string.h>
+#include <time.h>
 
 static int found = 0;
 static time_t the_date;
@@ -50,9 +55,9 @@ main(int argc, char *argv[])
     } else {
 	char buffer[BUFSIZ];
 	while (fgets(buffer, sizeof(buffer), stdin)) {
-	    int n = strlen(buffer);
-	    if (n > 0 && buffer[--n] == '\n')
-		buffer[n] = 0;
+	    size_t nn = strlen(buffer);
+	    if (nn != 0 && buffer[--nn] == '\n')
+		buffer[nn] = 0;
 	    newest(buffer);
 	}
     }

@@ -1,3 +1,9 @@
+misctools (20120902) unstable; urgency=low
+
+  * add build/install dependencies on sudo and realpath
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sun, 02 Sep 2012 15:46:28 -0400
+
 misctools (20120527) unstable; urgency=low
 
   * Port to Solaris 10/11.

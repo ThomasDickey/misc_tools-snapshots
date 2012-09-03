@@ -1,5 +1,5 @@
 /*
- * $Id: newpath.c,v 1.13 2012/03/14 08:47:06 tom Exp $
+ * $Id: newpath.c,v 1.14 2012/09/02 20:12:52 tom Exp $
  *
  * Author:	T.E.Dickey
  * Created:	02 Jun 1994
@@ -292,7 +292,7 @@ main(int argc, char *argv[])
 
     /* Finally, print the path */
     if (optind < argc) {
-	unsigned len = strlen(name) + 2;
+	size_t len = strlen(name) + 2;
 	char *changed = 0;
 
 	for (c = 1; list[c].nn != 0; c++)
