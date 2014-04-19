@@ -1,3 +1,7 @@
+2014-04-19  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.guess: update to 2014-03-23
+
 2012-09-02  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* src/count_files/count_files.c: indent/ansify
