@@ -1,3 +1,9 @@
+misctools (20150104) unstable; urgency=low
+
+  * update configure script, add copyright notice.
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sun, 04 Jan 2015 09:52:22 -0500
+
 misctools (20120902) unstable; urgency=low
 
   * add build/install dependencies on sudo and realpath

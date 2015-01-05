@@ -1,12 +1,12 @@
 /*
- * $Id: timerge.c,v 1.3 2012/03/14 09:03:25 tom Exp $
+ * $Id: timerge.c,v 1.4 2015/01/04 21:42:43 tom Exp $
  *
- * Title:	timerge.c - merge a split aclocal.m4
+ * Title:	timerge.c - merge a split terminfo.src
  * Author:	T.E.Dickey
- * Created:	28 Aug 1997
- * Function:	Merges parts for a split-up autoconf macro file (usually
- *		aclocal.m4) from a parent file which was processed by acsplit,
- *		and the macros in a subdirectory.
+ * Created:	16 May 1998
+ * Function:	Merges parts for a split-up terminfo source file (usually
+ *		terminfo.src) from a parent file which was processed by
+ *		tisplit.
  */
 #include <stdlib.h>
 #include <sys/types.h>
