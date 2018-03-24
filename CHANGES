@@ -1,3 +1,27 @@
+2018-03-24  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* COPYING.asc: bump
+
+	* package/debian/rules: use Debian build-flags
+
+	* package/debian/watch: update ftp url
+
+	* configure: regen
+
+	* aclocal.m4: resync with my-autoconf
+
+	* COPYING: bump
+
+	* package/misc_tools.spec: bump, update ftp url, disable debug
+
+	* package/debian/changelog: bump
+
+2018-02-05  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.sub: 2018-01-15
+
+	* config.guess: 2018-01-26
+
 2015-01-04  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* src/tisplit/timerge.c:
@@ -345,7 +369,7 @@
 
 	* src/sue/sue.c: fix for broken glibc
 
-2000-11-10  dickey@clark.net
+2000-11-10  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/newpath/newpath.c:
 	on win32, spawn a subprocess with spawnvp() rather than execvp(), since
@@ -357,7 +381,7 @@
 	indent'd
 	port to win32
 
-2000-11-09  dickey@clark.net
+2000-11-09  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/newpath/newpath.c: add logic to make exec'able subprocess
 
@@ -377,7 +401,7 @@
 
 	* src/tisplit/timerge.c: oops - fclose() the input files
 
-1999-08-19  dickey@clark.net
+1999-08-19  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/width/width.c: update usage for -q
 
@@ -390,7 +414,7 @@
 	* src/tisplit/tisplit.c, src/tisplit/timerge.c, src/tisplit/doit, src/tisplit/Makefile:
 	RCS_BASE
 
-1997-11-06  dickey@clark.net
+1997-11-06  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/newpath/newpath.c: add -f option to accommodate Java $CLASSPATH
 
@@ -462,7 +486,7 @@
 
 	* src/unmap/unmap.h: RCS_BASE
 
-1997-05-10  dickey@clark.net
+1997-05-10  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/width/width.c:
 	allocate the line-buffer dynamically so I can display a long line
@@ -471,7 +495,7 @@
 
 	* src/unmap/unmap.c: force trailing newline to make comparison simpler
 
-1997-03-12  dickey@clark.net
+1997-03-12  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/newpath/getopt.c, src/newpath/getopt.h: RCS_BASE
 
@@ -479,7 +503,7 @@
 
 	* src/slowcat/slowcat.c: RCS_BASE
 
-1996-11-22  dickey@clark.net
+1996-11-22  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/width/width.1: add "-p" and "-" interpretation
 
@@ -488,7 +512,7 @@
 
 	* src/width/width.1: RCS_BASE
 
-1996-11-21  dickey@clark.net
+1996-11-21  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/width/width.c: show current width, not maximum
 
@@ -524,7 +548,7 @@
 
 	* src/splitit/splitit.c: RCS_BASE
 
-1994-09-02  dickey@clark.net
+1994-09-02  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/realpath/realpath.c:
 	IRIX has 'realpath()' function, but I wrote one in case I needed it
@@ -533,28 +557,28 @@
 
 	* config_h.in: RCS_BASE
 
-1994-06-28  dickey@clark.net
+1994-06-28  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/count_files/count_files.c: RCS_BASE
 
-1994-06-24  dickey@clark.net
+1994-06-24  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/newpath/newpath.sh: RCS_BASE
 
-1994-06-23  dickey@clark.net
+1994-06-23  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/newpath/newpath.c: ULTRIX has no 'strdup()'
 
-1994-06-22  dickey@clark.net
+1994-06-22  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/newpath/newpath.c:
 	CLIX compiler warning about possibly uninitialized 'point' variable
 
-1994-06-17  dickey@clark.net
+1994-06-17  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/realpath/realpath.c: RCS_BASE
 
-1994-06-07  dickey@clark.net
+1994-06-07  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/newpath/newpath.c:
 	corrected an error in Append that caused it to also remove
@@ -565,7 +589,7 @@
 	took out the apollo-specific __STDCPP_ ifdef, so this can always act as
 	a sys5-touch if named appropriately.
 
-1994-06-02  dickey@clark.net
+1994-06-02  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/newpath/newpath.c: added some traces
 
@@ -574,15 +598,15 @@
 
 	* src/newpath/newpath.c: RCS_BASE
 
-1994-05-31  dickey@clark.net
+1994-05-31  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/isatty/isatty.c: RCS_BASE
 
-1991-10-29  Thomas E. Dickey  <dickey@software.org>
+1991-10-29  dickey@software.org
 
 	* src/cpd/cpd.c: RCS_BASE
 
-1990-04-23  Thomas E. Dickey  <dickey@software.org>
+1990-04-23  dickey@software.org
 
 	* src/sue/sue.c: RCS_BASE
 

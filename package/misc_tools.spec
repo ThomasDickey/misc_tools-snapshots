@@ -1,13 +1,13 @@
 Summary: misc_tools - miscellaneous foundation tools
 %define AppProgram misc_tools
-%define AppVersion 20150104
-# $XTermId: misc_tools.spec,v 1.10 2015/01/04 14:49:33 tom Exp $
+%define AppVersion 20180324
+# $XTermId: misc_tools.spec,v 1.11 2018/03/24 18:54:07 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
 Release: 1
 License: MIT
 Group: Applications/Development
-URL: ftp://invisible-island.net/%{AppProgram}
+URL: ftp://ftp.invisible-island.net/%{AppProgram}
 Source0: %{AppProgram}-%{AppVersion}.tgz
 Packager: Thomas Dickey <dickey@invisible-island.net>
 Requires: sudo
@@ -17,6 +17,9 @@ These are various programs which I use in my development environment,
 and install on each machine, but which are too small to package separately.
 
 %prep
+
+# no need for debugging symbols...
+%define debug_package %{nil}
 
 %setup -q -n %{AppProgram}-%{AppVersion}
 
@@ -36,7 +39,7 @@ make
 %install
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
-make install                    DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/%name
 touch    $RPM_BUILD_ROOT%{_datadir}/%name/setuid
 
@@ -80,6 +83,9 @@ popd
 
 %changelog
 # each patch should add its ChangeLog entries here
+
+* Sat Mar 24 2018 Thomas Dickey
+- update ftp url, disable debug package
 
 * Tue Mar 13 2012 Thomas Dickey
 - initial version
