@@ -1,3 +1,11 @@
+2019-12-31  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* src/unmap/unmap_s.c, src/acsplit/acsplit.c: gcc warning
+
+2019-12-20  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.guess: 2019-12-21
+
 2019-10-06  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/debian/changelog: repair "realpath" dependency
@@ -9,6 +17,10 @@
 	* package/debian/control: repair "realpath" dependency
 
 	* package/debian/changelog, package/misc_tools.spec: bump
+
+2019-09-11  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.sub: 2019-09-11
 
 2019-06-30  Thomas E. Dickey  <dickey@invisible-island.net>
 
