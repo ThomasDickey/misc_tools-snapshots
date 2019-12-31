@@ -1,5 +1,5 @@
 /*
- * $Id: unmap_s.c,v 1.6 2012/03/14 09:00:04 tom Exp $
+ * $Id: unmap_s.c,v 1.7 2019/12/31 18:46:07 tom Exp $
  *
  * Title:	unmap_s.c
  * Author:	T.E.Dickey
@@ -134,18 +134,15 @@ int
 unmap(FILE *ifp, FILE *ofp, int utf8)
 {
     int c;
-    int last = 1;
     int count = 0;
     char temp[BUFSIZ];
 
     while ((c = fgetc(ifp)) != EOF) {
 	c &= 0xff;
-	last = 0;
 	switch (c) {
 	case ESCAPE:
 	    count += put_ch(ofp, '\n');
 	    count += escape(ofp, 'E');
-	    last = 1;
 	    break;
 	case '\b':
 	    count += escape(ofp, 'b');
@@ -156,7 +153,6 @@ unmap(FILE *ifp, FILE *ofp, int utf8)
 	case '\n':
 	    count += put_ch(ofp, '\n');
 	    count += escape(ofp, 'n');
-	    last = 1;
 	    break;
 	case '\r':
 	    count += escape(ofp, 'r');

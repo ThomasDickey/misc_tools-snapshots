@@ -1,7 +1,5 @@
-static const char Id[] = "$Id: acsplit.c,v 1.12 2012/03/14 08:58:02 tom Exp $";
-
 /*
- * $Id: acsplit.c,v 1.12 2012/03/14 08:58:02 tom Exp $
+ * $Id: acsplit.c,v 1.13 2019/12/31 18:45:15 tom Exp $
  *
  * Title:	acsplit.c - split aclocal.m4
  * Author:	T.E.Dickey
@@ -209,7 +207,6 @@ acsplit(const char *path)
     int quote = 0;
     int n;
     int lineno = 0;
-    int first = 1;
     int last = 0;
 
     if (ifp == 0)
@@ -236,7 +233,6 @@ acsplit(const char *path)
 		    fputs(bfr, hdr);
 	    }
 	    content = 0;
-	    first = 0;
 	    last = 0;
 	} else {
 	    fputs(bfr, ofp);
@@ -246,7 +242,6 @@ acsplit(const char *path)
 	    if (defined(bfr, name)) {
 		VERBOSE(0) ("%s start %s\n", where(), name);
 		fprintf(hdr, "%s\n", name);
-		first = 0;
 	    }
 	}
 	if (skip_comment(bfr) == 0) {	/* not a comment-line? */
