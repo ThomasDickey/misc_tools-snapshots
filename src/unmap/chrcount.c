@@ -1,5 +1,5 @@
 /*
- * $Id: chrcount.c,v 1.8 2012/09/02 22:15:18 tom Exp $
+ * $Id: chrcount.c,v 1.9 2020/10/25 18:03:54 tom Exp $
  *
  * Title:	chrcount.c
  * Author:	T.E.Dickey
@@ -13,6 +13,8 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+
+#include <td_getopt.h>
 
 #define typeCalloc(count,type) (type *)calloc(count,sizeof(type))
 

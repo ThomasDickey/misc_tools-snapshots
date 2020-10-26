@@ -1,4 +1,4 @@
-# $Id: makefile.in,v 1.1 2012/03/13 17:15:55 tom Exp $
+# $Id: makefile.in,v 1.3 2020/10/25 18:24:35 tom Exp $
 # makefile for tisplit
 
 SHELL		= /bin/sh
@@ -22,12 +22,15 @@ CC		= @CC@
 CFLAGS		= @CFLAGS@ @EXTRA_CFLAGS@
 
 CPP		= @CPP@
-CPPFLAGS	= @CPPFLAGS@
+CPPFLAGS	= @CPPFLAGS@ -I$(top_srcdir)
 
 LINK		= $(CC) $(CFLAGS)
 
 INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+
+LINT		= @LINT@
+LINT_OPTS	= @LINT_OPTS@
 
 o		= .@OBJEXT@
 x		= @EXEEXT@
@@ -62,6 +65,10 @@ clean :
 	rm -f $(PROGS) *.o core
 distclean : clean
 	rm -f makefile
+
+lint:
+	$(LINT) $(LINT_OPTS) $(CPPFLAGS) tisplit.c
+	$(LINT) $(LINT_OPTS) $(CPPFLAGS) timerge.c
 
 $(BINDIR) :
 	mkdir -p $@

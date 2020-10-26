@@ -1,5 +1,5 @@
 /*
- * $Id: map.c,v 1.5 2012/03/14 09:20:58 tom Exp $
+ * $Id: map.c,v 1.6 2020/10/25 18:04:06 tom Exp $
  *
  * Title:	map.c
  * Author:	T.E.Dickey
@@ -9,6 +9,8 @@
  */
 
 #include "unmap.h"
+
+#include <td_getopt.h>
 
 static void
 usage(void)

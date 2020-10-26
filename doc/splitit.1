@@ -1,0 +1,43 @@
+.\" $Id: splitit.1,v 1.2 2020/10/25 23:50:12 tom Exp $
+.TH SPLITIT "1" "October 2020"
+.hy 0
+.SH NAME
+splitit \- split a file or output stream into files
+.
+.SH SYNOPSIS
+.B width
+[
+.I options
+] [
+.I filename
+[
+.I ...
+]
+]
+.
+.SH DESCRIPTION
+Reads one or more files, writing to a new set of files suffixed
+".001", ".002", etc.  which are all the same size.  The naming
+convention is chosen to match the MSDOS utility named \fBsplitit\fP.
+.
+.SH OPTIONS
+.TP 5
+.BI \-p NAME
+output file-specification (will append .001 etc)
+.TP 5
+.BI \-s SIZE
+output chunk-size (default 1.44M)
+.
+.
+.SH USAGE
+This program is a relic of a scheme used for backup in the 1990s.
+Written in 1994 (and used until 2008), it split a backup file.
+The output was staged on a Windows partition, from which tapes were written.
+.
+.SH SEE ALSO
+split(1)
+.
+.
+.SH BUGS
+.
+Probably.

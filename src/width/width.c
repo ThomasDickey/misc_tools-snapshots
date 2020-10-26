@@ -1,5 +1,5 @@
 /*
- * $Id: width.c,v 1.13 2012/09/02 22:10:50 tom Exp $
+ * $Id: width.c,v 1.15 2020/10/25 17:32:34 tom Exp $
  *
  * Title:	width.c
  * Author:	T.Dickey
@@ -15,12 +15,11 @@
 #include <ctype.h>
 #include <string.h>
 
-#ifdef HAVE_GETOPT_H
-#include <getopt.h>
-#endif
+#include <td_getline.h>
+#include <td_getopt.h>
 
 static int opt_width = -1;
-static int opt_tabs = -1;
+static int opt_tabs = 8;
 static int opt_sums = 0;
 static int opt_show = 1;
 static int opt_number = 0;
@@ -81,32 +80,31 @@ width(const char *name, FILE *fp)
     int lineno = 1;
     int column = 0;
     int length = 0;
-    int c;
-    size_t have = BUFSIZ;
-    char *buffer = malloc(have);
+    size_t have = 0;
+    char *buffer = 0;
 
-    while ((c = fgetc(fp)) != EOF) {
-	if ((size_t) (length + 2) > have)
-	    buffer = realloc(buffer, have *= 2);
-	buffer[length++] = (char) c;
-	buffer[length] = '\0';
-
-	/* compute the effective line & column */
-	if (c == '\n') {
-	    report_width(name, lineno++, column, buffer);
-	    column = 0;
-	    length = 0;
-	} else if (opt_tabs > 0 && c == '\t') {
-	    column = opt_tabs * ((column / opt_tabs) + 1);
-	} else if (isprint(c)) {
-	    column++;
-	} else if (opt_tabs <= 0) {
-	    column++;
+    while (getline(&buffer, &have, fp) >= 0) {
+	int c;
+	int ch;
+	column = 0;
+	length = 0;
+	for (c = 0; (ch = buffer[c]) != '\0'; ++c) {
+	    if (ch == '\n') {
+		length = c;
+		report_width(name, lineno++, column, buffer);
+		break;
+	    } else if (opt_tabs > 0 && ch == '\t') {
+		column = opt_tabs * ((column / opt_tabs) + 1);
+	    } else if (isprint(ch)) {
+		column++;
+	    } else if (opt_tabs <= 0) {
+		column++;
+	    }
 	}
     }
 
     if (length > 0)
-	report_width(name, lineno++, column, buffer);
+	report_width(name, lineno, column, buffer);
     if (per_file) {
 	printf("%6d\t%s\n", max_width, name);
 	max_width = 0;
@@ -186,14 +184,16 @@ main(int argc, char *argv[])
 	while (optind < argc) {
 	    char *name = argv[optind++];
 	    if (!strcmp(name, "-")) {
-		char buffer[BUFSIZ];
-		while (fgets(buffer, sizeof(buffer), stdin) != 0) {
-		    FILE *fp = fopen(buffer, "r");
+		char *filename = 0;
+		size_t lenname = 0;
+		while (getline(&filename, &lenname, stdin) != 0) {
+		    FILE *fp = fopen(filename, "r");
 		    if (fp == 0)
-			failed(buffer);
-		    width(buffer, fp);
+			failed(filename);
+		    width(filename, fp);
 		    (void) fclose(fp);
 		}
+		free(filename);
 	    } else {
 		FILE *fp = fopen(name, "r");
 		if (fp == 0)

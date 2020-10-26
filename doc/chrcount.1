@@ -1,0 +1,44 @@
+.\" $Id: chrcount.1,v 1.1 2020/10/26 00:35:31 tom Exp $
+.TH CHRCOUNT "1" "October 2020"
+.hy 0
+.SH NAME
+chrcount \- count characters
+.
+.SH SYNOPSIS
+.B chrcount
+[
+.I options
+] [
+.I filename
+[
+.I ...
+]
+]
+.
+.SH DESCRIPTION
+Count characters from one or more files, optionally converting
+on the fly from printable form to to nonprinting form.
+This is useful for getting metrics from map/unmap output files.
+.
+.SH OPTIONS
+.TP 5
+.B \-m
+use \fBmap\fP to convert from printable form before counting.
+.
+.TP 5
+.B \-p
+show results in percentage form, rather than absolute.
+.
+.SH USAGE
+.
+\fBChrcount\fR is normally used to check review results from testing
+ncurses.
+.
+.SH SEE ALSO
+map(1),
+unmap(1),
+.
+.
+.SH BUGS
+.
+Probably.

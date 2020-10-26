@@ -1,0 +1,38 @@
+.\" $Id: timerge.1,v 1.2 2020/10/25 23:50:24 tom Exp $
+.ie \n(.g .ds `` \(lq
+.el       .ds `` ``
+.ie \n(.g .ds '' \(rq
+.el       .ds '' ''
+.TH TIMERGE "1" "October 2020"
+.hy 0
+.SH NAME
+timerge \- merge a split terminfo.src
+.
+.SH SYNOPSIS
+.B timerge
+[
+.I filename
+]
+.
+.SH DESCRIPTION
+Merge parts for a split-up terminfo source file (usually
+terminfo.src) from a parent file which was processed by
+\fBtisplit\fP.
+.PP
+The command parameter tells \fBtimerge\fP where to write merged terminfo
+source (default: \*(``terminfo.src\*('').
+.
+.SH OPTIONS
+None.
+.
+.SH USAGE
+.
+\fBTimerge\fR is used to compare sources for large terminfo databases.
+.
+.SH SEE ALSO
+tisplit
+.
+.
+.SH BUGS
+.
+Probably.

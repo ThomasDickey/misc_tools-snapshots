@@ -1,0 +1,52 @@
+.\" $Id: acsplit.1,v 1.1 2020/10/26 00:27:30 tom Exp $
+.ie \n(.g .ds `` \(lq
+.el       .ds `` ``
+.ie \n(.g .ds '' \(rq
+.el       .ds '' ''
+.
+.TH ACSPLIT "1" "October 2020"
+.hy 0
+.SH NAME
+acsplit \- split a terminfo source-file
+.
+.SH SYNOPSIS
+.B acsplit
+[
+.I options
+] [
+.I filename
+[
+.I ...
+]
+]
+.
+.SH DESCRIPTION
+Splits an autoconf macro file file (usually aclocal.m4) into
+a parent file which can be reprocessed by acmerge, and
+the entries in a \*(``AcSplit\*('' subdirectory.
+.PP
+If no filename is given, this splits \*(``aclocal.m4\*(''
+.PP
+While splitting, \fBacsplit\fP creates a map of the input file,
+named for the input with \*(``.in\*('' appended,
+e.g., \*(``aclocal.m4.in\*(''
+(used by \fBacmerge\fP when reconstructing the original file).
+.
+.SH OPTIONS
+.
+.TP 5
+.B \-v
+verbose, printing the filenames which are split.
+.
+.SH USAGE
+.
+\fBAcsplit\fR is used to maintain the aclocal.m4 files whose macros
+are stored in a repository.
+.
+.SH SEE ALSO
+acmerge(1)
+.
+.
+.SH BUGS
+.
+Probably.

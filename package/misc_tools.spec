@@ -1,7 +1,7 @@
 Summary: misc_tools - miscellaneous foundation tools
 %define AppProgram misc_tools
-%define AppVersion 20191006
-# $XTermId: misc_tools.spec,v 1.13 2019/10/06 13:56:27 tom Exp $
+%define AppVersion 20201025
+# $XTermId: misc_tools.spec,v 1.15 2020/10/26 00:57:15 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
 Release: 1
@@ -73,16 +73,24 @@ done
 popd
 
 %clean
-[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
+if rm -rf $RPM_BUILD_ROOT; then
+  echo OK
+else
+  find $RPM_BUILD_ROOT -type f | grep -F -v /.nfs && exit 1
+fi
+exit 0
 
 %files
 %defattr(-,root,root)
 %{_bindir}/*
-#%{_mandir}/man1/%{AppProgram}.*
+%{_mandir}/man1/*
 %{_datadir}/%name/*
 
 %changelog
 # each patch should add its ChangeLog entries here
+
+* Sun Oct 25 2020 Thomas Dickey
+- add manual pages
 
 * Sat Mar 24 2018 Thomas Dickey
 - update ftp url, disable debug package

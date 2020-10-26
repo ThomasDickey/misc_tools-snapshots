@@ -1,5 +1,5 @@
 /*
- * $Id: splitit.c,v 1.3 2012/09/02 22:15:18 tom Exp $
+ * $Id: splitit.c,v 1.4 2020/10/25 18:02:51 tom Exp $
  *
  * Title:	splitit.c
  * Author:	T.E.Dickey
@@ -18,7 +18,8 @@
 #include <sys/param.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <getopt.h>
+
+#include <td_getopt.h>
 
 static FILE *output;
 static off_t split_size = 1024 * 1423;	/* MS-DOS 3.5" diskette */

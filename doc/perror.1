@@ -1,0 +1,33 @@
+.\" $Id: perror.1,v 1.2 2020/10/25 23:49:53 tom Exp $
+.TH PERROR "1" "October 2020"
+.hy 0
+.SH NAME
+perror \- print messages for errno values
+.
+.SH SYNOPSIS
+.B perror
+[
+.I errno1
+[
+.I ...
+]
+]
+.
+.SH DESCRIPTION
+Use \fBperror\fR to print the messages corresponding to \fBerrno\fP value.
+This accepts one or more parameters, which must be integers.
+.
+.SH OPTIONS
+None.
+.
+.SH USAGE
+.
+\fBPerror\fR is used to lookup the message for a given \fBerrno\fP value.
+.
+.SH SEE ALSO
+errno(3)
+.
+.
+.SH BUGS
+.
+Probably.

@@ -1,5 +1,5 @@
 /*
- * $Id: count_files.c,v 1.2 2012/09/02 22:17:06 tom Exp $
+ * $Id: count_files.c,v 1.3 2020/10/25 17:58:39 tom Exp $
  *
  * Title:	count_files.c
  * Author:	T.E.Dickey
@@ -12,12 +12,13 @@
  * Todo:	make this count binary stuff just like 'wc'.
  */
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+
+#include <td_getopt.h>
 
 #ifndef	TRUE
 #define TRUE 1

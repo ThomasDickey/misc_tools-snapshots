@@ -1,0 +1,47 @@
+.\" $Id: slowcat.1,v 1.4 2020/10/25 23:50:07 tom Exp $
+.TH SLOWCAT "1" "October 2020"
+.hy 0
+.SH NAME
+slowcat \- write a file to standard output SLOWLY
+.
+.SH SYNOPSIS
+.B width
+[
+.I options
+] [
+.I filename
+[
+.I ...
+]
+]
+.
+.SH DESCRIPTION
+Write a file to the standard output with a time delay between bytes.
+.
+.SH OPTIONS
+.TP 5
+.B \-[23456789]
+Multiply the time delay (5msec) by the option.
+.
+.SH USAGE
+.
+\fBSlowcat\fR is used to replay \fItypescript\fP files when analyzing
+problems with ncurses or xterm.
+.
+.SH NOTES
+This program was written in January 1997,
+and was mentioned in bug reports for ncurses and xterm.
+A Red Hat developer wrote an equivalent program
+using the same name,
+Another developer added it to VTE in July 2002,
+without mentioning the earlier program.
+.
+.SH SEE ALSO
+script(1),
+map(1),
+unmap(1).
+.
+.
+.SH BUGS
+.
+Probably.

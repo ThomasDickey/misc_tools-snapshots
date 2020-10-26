@@ -1,0 +1,48 @@
+.\" $Id: unmap.1,v 1.4 2020/10/25 23:50:35 tom Exp $
+.ie \n(.g .ds `` \(lq
+.el       .ds `` ``
+.ie \n(.g .ds '' \(rq
+.el       .ds '' ''
+.TH UNMAP "1" "October 2020"
+.hy 0
+.SH NAME
+unmap \- decode typescript files
+.
+.SH SYNOPSIS
+.B unmap
+[
+.I options
+] [
+.I filename
+[
+.I ...
+]
+]
+.
+.SH DESCRIPTION
+Translate one or more files containing nonprinting characters into visible form.
+If no filename is given, read from the standard input.
+.PP
+All bytes in the file are converted to graphic format,
+including space (\*(``\\s\*('').
+The ASCII escape character is treated specially, with a line break as well
+as displaying it as \*(``\\E\*('').
+.
+.SH OPTIONS
+.TP 5
+.B \-u
+decode bytes into Unicode, assuming UTF-8
+.
+.
+.SH USAGE
+.
+\fBUnmap\fR is used to convert \fItypescript\fP files created by \fBscript\fP
+into readable form.
+.
+.SH SEE ALSO
+map
+.
+.
+.SH BUGS
+.
+Probably.

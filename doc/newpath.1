@@ -1,0 +1,67 @@
+.\" $Id: newpath.1,v 1.2 2020/10/25 23:49:42 tom Exp $
+.TH NEWPATH "1" "October 2020"
+.hy 0
+.SH NAME
+newpath \- review or update the PATH
+.
+.SH SYNOPSIS
+.B newpath
+[ \fIoptions\fP [ \fIdirectories\fP ]]
+[ - \fIcommand\fP ]
+.
+.SH DESCRIPTION
+Echoes the \fBPATH\fP environment variable with the given directories added,
+(the default) or removed.
+.PP
+After the options and directory-parameters,
+you can put a '\-' before a command
+to invoke it with the environment variable updated,
+rather than echoing the result to standard output.
+.
+.SH OPTIONS
+.TP 5
+.BI \-a NAME
+modify path after given \fINAME\fP.
+.TP 5
+.B \-b
+put new arguments before existing path
+.TP 5
+.B \-d
+remove duplicates/non-directory items
+.TP 5
+.B \-e
+put new arguments after end of path
+.TP 5
+.B \-f
+allow filenames to match, as well as directories
+.TP 5
+.BI \-n NAME
+specify environment-variable to use (default: PATH)
+.TP 5
+.B \-p
+print in C-shell form
+.TP 5
+.B \-r
+remove arguments from path
+.TP 5
+.B \-v
+verbose, shows the path with one directory per line.
+.
+.SH USAGE
+.
+\fBNewpath\fR is used in the shell initialization script to
+set up customized PATH (or PATH-like) environment variables
+which correspond to the directories which exist.
+For example, it is used in systems that have NFS-mounted
+home directories with different application directories on each host.
+.PP
+This program was written in June 1994, and is used in a variety
+of shell environments.
+.
+.SH SEE ALSO
+sh(1)
+.
+.
+.SH BUGS
+.
+Probably.
