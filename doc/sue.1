@@ -1,0 +1,35 @@
+.\" $Id: sue.1,v 1.2 2020/10/25 23:50:18 tom Exp $
+.ie \n(.g .ds `` \(lq
+.el       .ds `` ``
+.ie \n(.g .ds '' \(rq
+.el       .ds '' ''
+.TH SUE "1" "October 2020"
+.hy 0
+.SH NAME
+sue \- su with environment
+.
+.SH SYNOPSIS
+.B sue
+.I command
+.
+.SH DESCRIPTION
+Provides a \*(``su\*('' command which preserves caller's environment.
+.PP
+\fBSue\fR may be a wrapper for \fBsudo\fP (e.g., to the \fIroot\fP user).
+For non-root use, the setuid configuration is preferred,
+because \fBsudo\fP makes it cumbersome to reuse the current \fBPATH\fP.
+.
+.SH OPTIONS
+None.
+.
+.SH USAGE
+.
+\fBSue\fR is installed by convention as the user to which it should \*(``su\*''
+.
+.SH SEE ALSO
+sudo, su
+.
+.
+.SH BUGS
+.
+Probably.

@@ -1,0 +1,57 @@
+.\" $Id: hex.1,v 1.1 2020/10/26 00:18:16 tom Exp $
+.de NE
+.fi
+.ft R
+.ie n  .in -4
+.el    .in -2
+..
+.de NS
+.ie n  .sp
+.el    .sp .5
+.ie n  .in +4
+.el    .in +2
+.nf
+.ft C			\" Courier
+..
+.
+.TH HEX "1" "October 2020"
+.hy 0
+.SH NAME
+hex \- display value in different ways
+.
+.SH SYNOPSIS
+.B hex
+.I value
+[
+.I ...
+]
+.
+.SH DESCRIPTION
+Displays a value in different ways, e.g., to show ECMA codes.
+.
+.SH OPTIONS
+None
+.
+.
+.SH USAGE
+.
+\fBHex\fR is used to decode a string from octal, decimal or hexadecimal,
+and show the value in those format as well as text or UTF-8.
+For example
+.
+.NS 4
+$ hex 1234
+1234: 1234 02322 0x4d2 text "\\004\\322" utf8 \\323\\222
+$ hex 0x1234
+0x1234: 4660 011064 0x1234 text "\\0224" utf8 \\341\\210\\264
+$ hex 01234
+01234: 668 01234 0x29c text "\\002\\234" utf8 \\312\\234
+.NE
+.
+.SH SEE ALSO
+printf
+.
+.
+.SH BUGS
+.
+Probably.

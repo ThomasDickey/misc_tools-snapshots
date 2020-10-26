@@ -1,14 +1,14 @@
 #
 # makefile for newpath on WIN32 using Microsoft Visual C++
 #
-# $Id: makefile.wnt,v 1.1 2000/11/09 19:16:13 dickey Exp $
+# $Id: makefile.wnt,v 1.2 2020/10/25 17:31:48 tom Exp $
 #
 !include <ntwin32.mak>
 
 CFLAGS = $(cvars) $(cdebug) -nologo -G4
 LDFLAGS = -nologo -pdb:none
 
-OBJ = 	newpath.obj getopt.obj
+OBJ = 	newpath.obj
 
 .c.obj:	
 	$(cc) $(CFLAGS) -c $< -Fo$@ 

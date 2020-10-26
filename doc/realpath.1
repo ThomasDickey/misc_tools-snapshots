@@ -1,0 +1,86 @@
+.\" $Id: realpath.1,v 1.2 2020/10/25 23:50:01 tom Exp $
+.de bP
+.ie n  .IP \(bu 4
+.el    .IP \(bu 2
+..
+.de NE
+.fi
+.ft R
+.ie n  .in -4
+.el    .in -2
+..
+.de NS
+.ie n  .sp
+.el    .sp .5
+.ie n  .in +4
+.el    .in +2
+.nf
+.ft C			\" Courier
+..
+.
+.TH REALPATH "1" "October 2020"
+.hy 0
+.SH NAME
+realpath \- expand directory and filename paths
+.
+.SH SYNOPSIS
+.B realpath
+[
+.I filename
+[
+.I ...
+]
+]
+.
+.SH DESCRIPTION
+Use \fBrealpath\fR to find the full pathname of directories or files.
+.bP
+If one or more parameters is given, it prints the full pathname for those
+directories or files.
+.bP
+If no parameters are given, and the standard input is a terminal,
+it prints the full pathname of the current working directory.
+.bP
+If no parameters are given, and the standard input is not a terminal,
+\fBrealpath\fP reads the standard input to obtain pathnames to expand.
+.
+.SH OPTIONS
+None.
+.
+.SH NOTES
+There is no standard utility with this name,
+though there are a few implementations.
+The best known was the one by Lars Wirzenius, written in 1996.
+.PP
+When this program was written in June 1994,
+the underlying \fBrealpath\fP call was at that point in time
+specific to SunOS (and, shortly after, reimplemented in Linux).
+Later, the call was made part of the standard.
+.PP
+The initial motivation for this program was to eliminate ambiguity
+in scripts which did
+.NS
+FOO=`cd foo; pwd`
+.NE
+.PP
+since SunOS did not always resolve the directory properly
+when the current directory is mounted.
+.PP
+GNU coreutils has a \fBrealpath\fP utility, added in 2011.
+Because it is part of the coreutils package,
+that displaced the other implementations.
+However, the GNU version is incompatible with the other versions,
+making it necessary to modify scripts.
+.
+.SH USAGE
+.
+\fBRealpath\fR is used in shell scripts to obtain a fully normalized path
+for an existing directory or file.
+.
+.SH SEE ALSO
+pwd
+.
+.
+.SH BUGS
+.
+Probably.

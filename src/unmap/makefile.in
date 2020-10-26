@@ -1,4 +1,4 @@
-# $Id: makefile.in,v 1.2 2012/03/13 18:24:45 tom Exp $
+# $Id: makefile.in,v 1.4 2020/10/25 18:25:15 tom Exp $
 # makefile for unmap
 
 SHELL		= /bin/sh
@@ -22,12 +22,15 @@ CC		= @CC@
 CFLAGS		= @CFLAGS@ @EXTRA_CFLAGS@
 
 CPP		= @CPP@
-CPPFLAGS	= @CPPFLAGS@
+CPPFLAGS	= @CPPFLAGS@ -I$(top_srcdir)
 
 LINK		= $(CC) $(CFLAGS)
 
 INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+
+LINT		= @LINT@
+LINT_OPTS	= @LINT_OPTS@
 
 o		= .@OBJEXT@
 x		= @EXEEXT@
@@ -67,6 +70,11 @@ clean :
 	rm -f $(PROGS) *.o core
 distclean : clean
 	rm -f makefile
+
+lint:
+	$(LINT) $(LINT_OPTS) $(CPPFLAGS) chrcount.c map_s.c
+	$(LINT) $(LINT_OPTS) $(CPPFLAGS) map.c      map_s.c
+	$(LINT) $(LINT_OPTS) $(CPPFLAGS) unmap.c    unmap_s.c
 
 $(BINDIR) :
 	mkdir -p $@

@@ -1,0 +1,51 @@
+.\" $Id: tisplit.1,v 1.3 2020/10/25 23:50:30 tom Exp $
+.ie \n(.g .ds `` \(lq
+.el       .ds `` ``
+.ie \n(.g .ds '' \(rq
+.el       .ds '' ''
+.
+.TH TISPLIT "1" "October 2020"
+.hy 0
+.SH NAME
+tisplit \- split a terminfo source-file
+.
+.SH SYNOPSIS
+.B tisplit
+[
+.I options
+] [
+.I filename
+[
+.I ...
+]
+]
+.
+.SH DESCRIPTION
+Splits a terminfo file (usually terminfo.src) into
+a parent file which can be reprocessed by timerge, and
+the entries in a \*(``TiSplit\*('' subdirectory.
+.PP
+If no filename is given, this splits \*(``terminfo.src\*(''
+.PP
+While splitting, \fBtisplit\fP creates a map of the input file,
+named for the input with \*(``.in\*('' appended,
+e.g., \*(``terminfo.src.in\*(''
+(used by \fBtimerge\fP when reconstructing the original file).
+.
+.SH OPTIONS
+.
+.TP 5
+.B \-v
+verbose, printing the filenames which are split.
+.
+.SH USAGE
+.
+\fBTisplit\fR is used to compare sources for large terminfo databases.
+.
+.SH SEE ALSO
+timerge
+.
+.
+.SH BUGS
+.
+Probably.

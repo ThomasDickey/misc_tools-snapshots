@@ -1,5 +1,5 @@
 /*
- * $Id: newpath.c,v 1.14 2012/09/02 20:12:52 tom Exp $
+ * $Id: newpath.c,v 1.16 2020/10/25 18:48:35 tom Exp $
  *
  * Author:	T.E.Dickey
  * Created:	02 Jun 1994
@@ -20,6 +20,8 @@
 #else
 #include <unistd.h>
 #endif
+
+#include <td_getopt.h>
 
 #ifdef WIN32
 #define	PATHDELIM ';'

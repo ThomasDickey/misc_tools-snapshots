@@ -1,0 +1,60 @@
+.\" $Id: cpd.1,v 1.1 2020/10/26 00:45:34 tom Exp $
+.de NE
+.fi
+.ft R
+.ie n  .in -4
+.el    .in -2
+..
+.de NS
+.ie n  .sp
+.el    .sp .5
+.ie n  .in +4
+.el    .in +2
+.nf
+.ft C			\" Courier
+..
+.
+.TH CPD "1" "October 2020"
+.hy 0
+.SH NAME
+cpd \- copy-date
+.
+.SH SYNOPSIS
+.B cpd
+.I filename
+[
+.I ...
+]
+.
+.SH DESCRIPTION
+Use \fBcpd\fR to copy the timestamp from one file/directory to one more
+more files/directories.
+.
+.SH OPTIONS
+None.
+.
+.SH USAGE
+.
+\fBCpd\fR is used in shell scripts for a variety of reasons.
+The same can be accomplished with \fBtouch\fP (though not
+at the time this utility was first written).
+These do the same thing now:
+.
+.NS 4
+cpd source target
+.NE
+.
+.PP
+and
+.
+.NS 4
+touch -r source target
+.NE
+.
+.SH SEE ALSO
+touch(1)
+.
+.
+.SH BUGS
+.
+Probably.

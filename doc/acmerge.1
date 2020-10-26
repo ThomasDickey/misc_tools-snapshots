@@ -1,0 +1,44 @@
+.\" $Id: acmerge.1,v 1.1 2020/10/26 00:23:44 tom Exp $
+.ie \n(.g .ds `` \(lq
+.el       .ds `` ``
+.ie \n(.g .ds '' \(rq
+.el       .ds '' ''
+.TH ACMERGE "1" "October 2020"
+.hy 0
+.SH NAME
+acmerge \- merge a split aclocal.m4
+.
+.SH SYNOPSIS
+.B acmerge
+[
+.I filename
+]
+.
+.SH DESCRIPTION
+Merge parts for a split-up autoconf source file (usually
+aclocal.m4) from a parent file which was processed by
+\fBacsplit\fP.
+.PP
+The command parameter tells \fBacmerge\fP where to write merged autoconf
+source (default: \*(``aclocal.m4\*('').
+.
+.SH OPTIONS
+.TP 5
+.B \-n
+do not create a comment-line with dashes between macros in the resulting file.
+.TP 5
+.B \-v
+verbose
+.
+.SH USAGE
+.
+\fBAcmerge\fR is used to construct aclocal.m4 from the macros which are
+stored in a repository.
+.
+.SH SEE ALSO
+acsplit(1)
+.
+.
+.SH BUGS
+.
+Probably.

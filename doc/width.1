@@ -1,15 +1,24 @@
-.\" $Id: width.1,v 1.2 1996/11/22 19:20:29 dickey Exp $
-.deDS
-.sp
-.nf
-.RS
+.\" $Id: width.1,v 1.4 2020/10/25 23:50:40 tom Exp $
+.de bP
+.ie n  .IP \(bu 4
+.el    .IP \(bu 2
 ..
-.deDE
+.de NE
 .fi
-.RE
+.ft R
+.ie n  .in -4
+.el    .in -2
+..
+.de NS
+.ie n  .sp
+.el    .sp .5
+.ie n  .in +4
+.el    .in +2
+.nf
+.ft C			\" Courier
 ..
 .
-.TH WIDTH "" "November 1996"
+.TH WIDTH "1" "October 2020"
 .hy 0
 .SH NAME
 width \- display width of lines in a text file
@@ -27,11 +36,9 @@ width \- display width of lines in a text file
 .
 .SH DESCRIPTION
 Use \fBwidth\fR to
-.TP 5
--
+.bP
 find the length of the longest line in one or more files, or
-.TP
--
+.bP
 show lines that are longer than a given threshold
 .
 .SH OPTIONS
@@ -50,19 +57,18 @@ Several text editors (e.g., vile, emacs) treat this style of output as
 an error listing, and can step through the reported instances.
 .
 .TP 5
-.BI \-p
+.B \-p
 report maximum width per-file (otherwise the maximum across all files
 is reported).
 .
 .TP 5
 .BI \-t NUM
-set tab stops to multiples of \fINUM\fB.
-If you do not set tab stops, tab characters (and other nonprinting characters
-except for newline) will be counted as a single column.
+set tab stops to multiples of \fINUM\fP.
+The default tab-stop interval is 8.
 .
 .TP 5
 .BI \-w NUM
-report lines longer than \fINUM\fB.
+report lines longer than \fINUM\fP.
 .
 .
 .SH USAGE
@@ -70,9 +76,9 @@ report lines longer than \fINUM\fB.
 \fBWidth\fR is normally used to check the width of production-quality
 C/C++ code, e.g.,
 .
-.DS 4
+.NS 4
 width -w79 -4 -n $*
-.DE
+.NE
 .
 .PP
 Use a "-" in place of the \fI[filename]\fR to read a list of filenames

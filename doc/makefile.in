@@ -1,0 +1,74 @@
+# $Id: makefile.in,v 1.6 2020/10/26 00:53:11 tom Exp $
+# second-level makefile template for "misc_tools"
+
+SHELL	= /bin/sh
+
+@SET_MAKE@
+MAKE_RECUR	= @cf_cv_makeflags@ prefix=$(prefix) DESTDIR=$(DESTDIR)
+
+top_srcdir	= @top_srcdir@
+srcdir		= @srcdir@
+srcdir_sl	= @srcdir@/
+VPATH		= @srcdir@
+@SET_MAKE@
+
+prefix		= @prefix@
+exec_prefix	= @exec_prefix@
+
+datarootdir	= @datarootdir@
+mandir		= @mandir@/man1
+
+MANDIR		= $(DESTDIR)$(mandir)
+
+INSTALL		= @INSTALL@
+INSTALL_DATA	= @INSTALL_DATA@
+
+FILES = \
+	acmerge.1 \
+	acsplit.1 \
+	chrcount.1 \
+	count_files.1 \
+	cpd.1 \
+	hex.1 \
+	isatty.1 \
+	map.1 \
+	newest.1 \
+	newpath.1 \
+	perror.1 \
+	realpath.1 \
+	slowcat.1 \
+	splitit.1 \
+	sue.1 \
+	timerge.1 \
+	tisplit.1 \
+	unmap.1 \
+	width.1
+
+all ::
+clean \
+clobber \
+lint ::
+	@ echo "done: $@"
+
+distclean :
+	rm -f makefile
+
+check ::
+	@ echo "There are no automatic tests for these programs"
+
+install : $(MANDIR)
+	@$(SHELL) -c "for name in $(FILES); do \
+		NAME=\`basename \$${name} .1\`; \
+		if test -f ../src/*/\$${NAME}; then \
+			echo installing \$${name}; \
+			$(INSTALL_DATA) \$${name} $(MANDIR)/$${name}; \
+		else \
+			echo skipping \$${name}; \
+		fi; \
+		done"
+
+uninstall :
+	cd $(MANDIR) && rm -f $(FILES)
+
+$(MANDIR) :
+	mkdir -p $@

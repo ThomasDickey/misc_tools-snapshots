@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.18 2012/03/17 14:47:38 tom Exp $
+dnl $Id: configure.in,v 1.23 2020/10/25 19:08:41 tom Exp $
 dnl configure-script template for "misc_tools"
 
 AC_INIT(src/newpath/newpath.c)
@@ -13,9 +13,10 @@ AC_SET_MAKE
 CF_MAKEFLAGS
 
 CF_PROG_EXT
+CF_PROG_LINT
 CF_ANSI_CC_REQD
+CF_WITHOUT_X
 CF_XOPEN_SOURCE
-
 
 CF_DISABLE_ECHO
 CF_ENABLE_WARNINGS
@@ -86,12 +87,11 @@ AC_ARG_WITH(everything,
 AC_MSG_RESULT($with_everything)
 
 AC_STDC_HEADERS
-AC_CHECK_HEADERS( \
-getopt.h \
-unistd.h \
-)
+CF_GETOPT_HEADER
 
 AC_HAVE_FUNCS( \
+getopt \
+getline \
 realpath \
 )
 
@@ -112,7 +112,7 @@ distclean ::
 CF_EOF
 ],[
 echo "** checking for conflicts"
-for name in makefile.in [$]srcdir/src/*/makefile.in
+for name in makefile.in [$]srcdir/doc/makefile.in [$]srcdir/src/*/makefile.in
 do
 	cf_FILE=\`echo "\$name" | sed -e "s,\$srcdir/,," -e 's,\.in\$,,'\`
 	cf_DIR=\`echo "\$cf_FILE" | sed -e 's,/makefile,,'\`

@@ -1,0 +1,58 @@
+.\" $Id: count_files.1,v 1.1 2020/10/26 00:40:06 tom Exp $
+.de bP
+.ie n  .IP \(bu 4
+.el    .IP \(bu 2
+..
+.de NE
+.fi
+.ft R
+.ie n  .in -4
+.el    .in -2
+..
+.de NS
+.ie n  .sp
+.el    .sp .5
+.ie n  .in +4
+.el    .in +2
+.nf
+.ft C			\" Courier
+..
+.
+.TH COUNT_FILES "1" "October 2020"
+.hy 0
+.SH NAME
+count_files \- count files listed on standard input
+.
+.SH SYNOPSIS
+.B count_files
+[
+.I options
+] [
+.I filename
+[
+.I ...
+]
+]
+.
+.SH DESCRIPTION
+This is like the utility \fBwc\fP,
+except that it assumes that the standard input is a list of pathnames.
+.
+.SH OPTIONS
+.TP 5
+.B \-c
+count characters
+.TP 5
+.B \-l
+count lines
+.TP 5
+.B \-w
+count words
+.
+.SH SEE ALSO
+wc(1)
+.
+.
+.SH BUGS
+.
+Probably.

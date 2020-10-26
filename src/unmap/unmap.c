@@ -1,5 +1,5 @@
 /*
- * $Id: unmap.c,v 1.8 2012/03/14 09:20:58 tom Exp $
+ * $Id: unmap.c,v 1.9 2020/10/25 18:04:15 tom Exp $
  *
  * Title:	unmap.c
  * Author:	T.E.Dickey
@@ -9,6 +9,8 @@
  */
 
 #include "unmap.h"
+
+#include <td_getopt.h>
 
 static void
 usage(void)

@@ -1,4 +1,4 @@
-# $Id: makefile.in,v 1.5 2012/09/02 20:10:03 tom Exp $
+# $Id: makefile.in,v 1.7 2020/10/25 18:19:30 tom Exp $
 
 SHELL		= /bin/sh
 THIS		= sue
@@ -26,12 +26,15 @@ CC		= @CC@
 CFLAGS		= @CFLAGS@ @EXTRA_CFLAGS@
 
 CPP		= @CPP@
-CPPFLAGS	= @CPPFLAGS@
+CPPFLAGS	= @CPPFLAGS@ -I$(top_srcdir)
 
 LINK		= $(CC) $(CFLAGS)
 
 INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+
+LINT		= @LINT@
+LINT_OPTS	= @LINT_OPTS@
 
 o		= .@OBJEXT@
 x		= @EXEEXT@
@@ -68,6 +71,9 @@ clean :
 	rm -f $(PROGS) *.o core
 distclean : clean
 	rm -f makefile
+
+lint: $(THIS).c
+	$(LINT) $(LINT_OPTS) $(CPPFLAGS) $(THIS).c
 
 $(BINDIR) \
 $(DATADIR) :
