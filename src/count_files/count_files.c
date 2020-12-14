@@ -1,5 +1,5 @@
 /*
- * $Id: count_files.c,v 1.3 2020/10/25 17:58:39 tom Exp $
+ * $Id: count_files.c,v 1.4 2020/12/14 00:34:24 tom Exp $
  *
  * Title:	count_files.c
  * Author:	T.E.Dickey
@@ -157,7 +157,7 @@ main(int argc,
     } else {
 	while (fgets(buffer, sizeof(buffer), stdin) != 0) {
 	    size_t len = strlen(buffer);
-	    while (len != 0 && isspace(buffer[len - 1]))
+	    while (len != 0 && isspace((unsigned char) buffer[len - 1]))
 		buffer[--len] = EOS;
 	    DoPath(buffer);
 	}

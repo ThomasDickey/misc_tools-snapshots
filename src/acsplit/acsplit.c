@@ -1,5 +1,5 @@
 /*
- * $Id: acsplit.c,v 1.13 2019/12/31 18:45:15 tom Exp $
+ * $Id: acsplit.c,v 1.14 2020/12/14 00:34:24 tom Exp $
  *
  * Title:	acsplit.c - split aclocal.m4
  * Author:	T.E.Dickey
@@ -23,7 +23,7 @@
 #include <string.h>
 
 #define VERBOSE(n) if(verbose > n) printf
-#define isname(c) ((isalnum(c) || (c) == '_'))
+#define isname(c) ((isalnum((unsigned char)c) || (c) == '_'))
 
 #define remember(path,num) cur_path = path; cur_line = num
 
@@ -56,7 +56,7 @@ where(void)
 static char *
 skip_blanks(char *s)
 {
-    while (isspace(*s))
+    while (isspace((unsigned char) *s))
 	s++;
     return s;
 }
@@ -80,7 +80,7 @@ skip_comment(char *s)
     } else {
 	return 0;
     }
-    if (isspace(*s) || ispunct(*s))
+    if (isspace((unsigned char) *s) || ispunct((unsigned char) *s))
 	return skip_blanks(s);
     return 0;
 }

@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.23 2020/10/25 19:08:41 tom Exp $
+dnl $Id: configure.in,v 1.24 2020/12/14 00:13:32 tom Exp $
 dnl configure-script template for "misc_tools"
 
 AC_INIT(src/newpath/newpath.c)
@@ -110,6 +110,16 @@ cat >>makefile <<CF_EOF
 distclean ::
 	rm -f makefile config.h config.status config.log config.cache
 CF_EOF
+for name in [$]srcdir/doc/makefile.in [$]srcdir/src/*/makefile.in
+do
+	cf_FILE=`echo "$name" | sed -e "s,$srcdir/,," -e 's,\.in$,,'`
+	cf_DIR=`echo "$cf_FILE" | sed -e 's,/makefile,,'`
+	if test -s $cf_FILE
+	then
+		echo "	-@\$(SHELL) -c \"if test ! -f $cf_FILE ; then rmdir $cf_DIR 2>/dev/null && echo ..removed $cf_DIR ; fi; exit 0\"" >>makefile
+	fi
+done
+echo "	-@\$(SHELL) -c \"rmdir src 2>/dev/null && echo ..removed src; exit 0\"" >>makefile
 ],[
 echo "** checking for conflicts"
 for name in makefile.in [$]srcdir/doc/makefile.in [$]srcdir/src/*/makefile.in

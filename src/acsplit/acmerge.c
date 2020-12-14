@@ -1,5 +1,5 @@
 /*
- * $Id: acmerge.c,v 1.10 2012/03/14 09:03:24 tom Exp $
+ * $Id: acmerge.c,v 1.11 2020/12/14 00:34:24 tom Exp $
  *
  * Title:	acmerge.c - merge a split aclocal.m4
  * Author:	T.E.Dickey
@@ -13,7 +13,7 @@
 #include <ctype.h>
 #include <string.h>
 
-#define isname(c) ((isalnum(c) || (c) == '_'))
+#define isname(c) ((isalnum((unsigned char)c) || (c) == '_'))
 
 #define VERBOSE(n) if(verbose > n) printf
 
@@ -32,7 +32,7 @@ failed(char *msg)
 static char *
 skip_blanks(char *s)
 {
-    while (isspace(*s))
+    while (isspace((unsigned char) *s))
 	s++;
     return s;
 }
@@ -42,7 +42,7 @@ is_comment(char *s)
 {
     if (!strncmp(s, "dnl", 3)) {
 	s += 3;
-	if (isspace(*s) || ispunct(*s))
+	if (isspace((unsigned char) *s) || ispunct((unsigned char) *s))
 	    return 1;
     }
     return 0;
@@ -53,7 +53,7 @@ skip_comment(char *s)
 {
     if (!strncmp(s, "dnl", 3)) {
 	s += 3;
-	if (isspace(*s))
+	if (isspace((unsigned char) *s))
 	    return skip_blanks(s);
     }
     return 0;

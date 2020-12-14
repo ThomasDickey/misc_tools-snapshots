@@ -1,4 +1,4 @@
-# $Id: makefile.in,v 1.6 2020/10/26 00:53:11 tom Exp $
+# $Id: makefile.in,v 1.7 2020/12/14 00:22:33 tom Exp $
 # second-level makefile template for "misc_tools"
 
 SHELL	= /bin/sh
@@ -61,7 +61,7 @@ install : $(MANDIR)
 		NAME=\`basename \$${name} .1\`; \
 		if test -f ../src/*/\$${NAME}; then \
 			echo installing \$${name}; \
-			$(INSTALL_DATA) \$${name} $(MANDIR)/$${name}; \
+			$(INSTALL_DATA) $(srcdir)/\$${name} $(MANDIR)/$${name}; \
 		else \
 			echo skipping \$${name}; \
 		fi; \
