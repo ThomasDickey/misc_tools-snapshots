@@ -1,3 +1,28 @@
+2020-12-13  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* package/debian/changelog, package/debian/compat, package/misc_tools.spec:
+	bump
+
+	* src/acsplit/acmerge.c, src/acsplit/acsplit.c, src/count_files/count_files.c, src/tisplit/timerge.c, src/tisplit/tisplit.c:
+	fix warnings about char-subscript for array in ctype macros
+
+	* doc/makefile.in: fix for out-of-tree builds
+
+	* configure: regen
+
+	* configure.in:
+	remove empty directories in "make distclean" for out-of-tree builds
+
+	* doc/sue.1: fix typo
+
+	* src/width/makefile.in: fix for out-of-tree builds
+
+2020-11-26  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* configure: regen
+
+	* aclocal.m4: resync with my-autoconf
+
 2020-10-25  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/misc_tools.spec:
@@ -102,6 +127,10 @@
 
 	* package/debian/copyright, COPYING.asc, COPYING, package/debian/changelog, package/misc_tools.spec:
 	bump
+
+2020-08-16  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.guess, config.sub: 2020-08-17
 
 2020-07-12  Thomas E. Dickey  <dickey@invisible-island.net>
 

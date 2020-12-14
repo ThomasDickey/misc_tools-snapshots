@@ -1,4 +1,4 @@
-# $Id: makefile.in,v 1.5 2020/10/25 17:40:40 tom Exp $
+# $Id: makefile.in,v 1.6 2020/12/13 23:28:30 tom Exp $
 
 SHELL		= /bin/sh
 THIS		= width
@@ -22,7 +22,7 @@ CC		= @CC@
 CFLAGS		= @CFLAGS@ @EXTRA_CFLAGS@
 
 CPP		= @CPP@
-CPPFLAGS	= @CPPFLAGS@ -I$(top_srcdir)
+CPPFLAGS	= @CPPFLAGS@ -I$(top_srcdir) -I../..
 
 LINK		= $(CC) $(CFLAGS)
 

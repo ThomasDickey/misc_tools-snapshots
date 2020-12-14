@@ -1,5 +1,5 @@
 /*
- * $Id: timerge.c,v 1.4 2015/01/04 21:42:43 tom Exp $
+ * $Id: timerge.c,v 1.5 2020/12/14 00:34:24 tom Exp $
  *
  * Title:	timerge.c - merge a split terminfo.src
  * Author:	T.E.Dickey
@@ -37,7 +37,7 @@ append(const char *name, FILE *ofp)
 
     sprintf(temp, "%s/", target);
     t = temp + strlen(temp);
-    while (!isspace(*name))
+    while (!isspace((unsigned char) *name))
 	*t++ = *name++;
     *t = 0;
 

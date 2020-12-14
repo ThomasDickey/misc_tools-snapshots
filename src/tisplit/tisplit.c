@@ -1,5 +1,5 @@
 /*
- * $Id: tisplit.c,v 1.2 2012/03/14 09:03:25 tom Exp $
+ * $Id: tisplit.c,v 1.3 2020/12/14 00:34:24 tom Exp $
  *
  * Title:	tisplit.c - split terminfo.src
  * Author:	T.E.Dickey
@@ -18,7 +18,7 @@
 #include <string.h>
 
 #define VERBOSE(n) if(verbose > n) printf
-#define isname(c) (isprint(c) && (c) != '#' && !isspace(c) && (c) != '|')
+#define isname(c) (isprint((unsigned char)c) && (c) != '#' && !isspace((unsigned char)c) && (c) != '|')
 
 static const char *target = "TiSplit";
 static int verbose;
