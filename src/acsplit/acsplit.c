@@ -1,5 +1,5 @@
 /*
- * $Id: acsplit.c,v 1.14 2020/12/14 00:34:24 tom Exp $
+ * $Id: acsplit.c,v 1.15 2020/12/19 10:49:42 tom Exp $
  *
  * Title:	acsplit.c - split aclocal.m4
  * Author:	T.E.Dickey
@@ -21,6 +21,9 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+
+#include <td_getline.h>
+#include <td_getopt.h>
 
 #define VERBOSE(n) if(verbose > n) printf
 #define isname(c) ((isalnum((unsigned char)c) || (c) == '_'))
@@ -170,20 +173,25 @@ static FILE *
 append(FILE *ofp, FILE *hdr)
 {
     char temp[BUFSIZ];
-    char bfr[BUFSIZ];
 
     if (ofp != 0) {
+	char *bfr = 0;
+	size_t have = 0;
 
 	fclose(ofp);
 	my_temp(temp);
 	VERBOSE(1) ("%s append %s\n", where(), temp);
 
-	ofp = fopen(temp, "r");
-	while (fgets(bfr, sizeof(bfr), ofp)) {
-	    VERBOSE(2) ("*...%s", bfr);
-	    fputs(bfr, hdr);
+	if ((ofp = fopen(temp, "r")) != 0) {
+	    while (getline(&bfr, &have, ofp) >= 0) {
+		VERBOSE(2) ("*...%s", bfr);
+		fputs(bfr, hdr);
+	    }
+	    fclose(ofp);
+	    free(bfr);
+	} else {
+	    failed(where());
 	}
-	fclose(ofp);
 
 	remove(temp);
 	if ((ofp = fopen(temp, "w")) == 0)
@@ -201,7 +209,8 @@ acsplit(const char *path)
     FILE *ifp = fopen(path, "r");
     FILE *ofp;
     char name[BUFSIZ];
-    char bfr[BUFSIZ];
+    char *bfr = 0;
+    size_t have = 0;
     int content = 0;
     int level = 0;
     int quote = 0;
@@ -221,7 +230,7 @@ acsplit(const char *path)
     name[0] = 0;
     ofp = finish((FILE *) 0, name);
 
-    while (fgets(bfr, sizeof(bfr), ifp) != 0) {
+    while (getline(&bfr, &have, ifp) >= 0) {
 	remember(path, ++lineno);
 	VERBOSE(2) ("%5d.  %s", content, bfr);
 	if (level == 0 && !quote && (last || is_dashes(bfr))) {
@@ -284,6 +293,7 @@ acsplit(const char *path)
     ofp = finish(ofp, name);
     fclose(hdr);
     remove(my_temp(name));
+    free(bfr);
 }
 
 static void
@@ -296,31 +306,25 @@ usage(void)
 int
 main(int argc, char *argv[])
 {
-    int n;
-    int found = 0;
+    int c;
 
-    if (argc > 1) {
-	for (n = 1; n < argc; n++) {
-	    char *parm = argv[n];
-	    if (*parm == '-') {
-		while (*++parm) {
-		    switch (*parm) {
-		    case 'v':
-			++verbose;
-			break;
-		    default:
-			usage();
-			break;
-		    }
-		}
-	    } else {
-		acsplit(parm);
-		found++;
-	    }
+    while ((c = getopt(argc, argv, "v")) != -1) {
+	switch (c) {
+	case 'v':
+	    ++verbose;
+	    break;
+	default:
+	    usage();
+	    break;
 	}
     }
-    if (!found)
+    if (optind < argc) {
+	while (optind < argc) {
+	    acsplit(argv[optind++]);
+	}
+    } else {
 	acsplit("aclocal.m4");
+    }
 
     return EXIT_SUCCESS;
 }

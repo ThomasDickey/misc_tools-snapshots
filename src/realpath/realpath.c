@@ -1,5 +1,5 @@
 /*
- * $Id: realpath.c,v 1.4 2012/03/14 09:16:28 tom Exp $
+ * $Id: realpath.c,v 1.6 2020/12/19 12:54:52 tom Exp $
  *
  * Title:	realpath.c
  * Author:	T.E.Dickey
@@ -20,11 +20,20 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+
+#ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>		/* for MAXPATHLEN */
+#endif
 
 #ifndef HAVE_REALPATH
 #include <sys/types.h>
 #include <sys/stat.h>
+#endif
+
+#include <td_getline.h>
+
+#ifndef MAXPATHLEN
+#define MAXPATHLEN 256
 #endif
 
 static void
@@ -83,15 +92,16 @@ main(int argc, char *argv[])
     } else if (isatty(fileno(stdin))) {
 	do_path(".");
     } else {
-	char buffer[BUFSIZ];
-	while (fgets(buffer, sizeof(buffer), stdin)) {
+	char *buffer = 0;
+	size_t have = 0;
+	while (getline(&buffer, &have, stdin) >= 0) {
 	    int len = (int) strlen(buffer);
 	    if (len > 0 && buffer[len - 1] == '\n')
 		buffer[--len] = '\0';
 	    if (len > 0)
 		do_path(buffer);
 	}
+	free(buffer);
     }
-    exit(EXIT_SUCCESS);
-    /*NOTREACHED */
+    return (EXIT_SUCCESS);
 }

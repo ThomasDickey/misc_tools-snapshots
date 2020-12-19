@@ -1,5 +1,5 @@
 /*
- * $Id: timerge.c,v 1.5 2020/12/14 00:34:24 tom Exp $
+ * $Id: timerge.c,v 1.6 2020/12/19 12:14:42 tom Exp $
  *
  * Title:	timerge.c - merge a split terminfo.src
  * Author:	T.E.Dickey
@@ -17,6 +17,8 @@
 #include <ctype.h>
 #include <string.h>
 
+#include <td_getline.h>
+
 #define is_comment(s) ((*s) == '#')
 
 static const char *target = "TiSplit";
@@ -31,7 +33,8 @@ failed(const char *msg)
 static void
 append(const char *name, FILE *ofp)
 {
-    char temp[BUFSIZ];
+    size_t have = BUFSIZ;
+    char *temp = malloc(have);
     char *t;
     FILE *ifp;
 
@@ -44,9 +47,10 @@ append(const char *name, FILE *ofp)
     if ((ifp = fopen(temp, "r")) == 0)
 	failed(temp);
 
-    while (fgets(temp, sizeof(temp), ifp) != 0)
+    while (getline(&temp, &have, ifp) >= 0)
 	fputs(temp, ofp);
     fclose(ifp);
+    free(temp);
 }
 
 static void
@@ -54,20 +58,22 @@ timerge(const char *path)
 {
     FILE *hdr;
     FILE *ofp;
-    char name[BUFSIZ];
-    char temp[BUFSIZ];
-    char bfr[BUFSIZ];
+    char *name = malloc(strlen(path) + 4);
+    char *temp = malloc(strlen(target) + 5);
+    char *bfr = 0;
+    size_t have = 0;
 
     sprintf(name, "%s.in", path);
     if ((hdr = fopen(name, "r")) == 0)
 	failed(name);
+    free(name);
 
     sprintf(temp, "%s.out", target);
     remove(temp);
     if ((ofp = fopen(temp, "w")) == 0)
 	failed(temp);
 
-    while (fgets(bfr, sizeof(bfr), hdr) != 0) {
+    while (getline(&bfr, &have, hdr) >= 0) {
 	if (is_comment(bfr)) {
 	    fputs(bfr, ofp);
 	} else {
@@ -76,7 +82,10 @@ timerge(const char *path)
     }
     fclose(hdr);
     fclose(ofp);
+    free(bfr);
+
     rename(temp, path);
+    free(temp);
 }
 
 int

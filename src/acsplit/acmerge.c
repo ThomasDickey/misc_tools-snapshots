@@ -1,5 +1,5 @@
 /*
- * $Id: acmerge.c,v 1.11 2020/12/14 00:34:24 tom Exp $
+ * $Id: acmerge.c,v 1.12 2020/12/19 10:36:10 tom Exp $
  *
  * Title:	acmerge.c - merge a split aclocal.m4
  * Author:	T.E.Dickey
@@ -12,6 +12,9 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+
+#include <td_getline.h>
+#include <td_getopt.h>
 
 #define isname(c) ((isalnum((unsigned char)c) || (c) == '_'))
 
@@ -86,7 +89,8 @@ dashes(FILE *ofp)
 static void
 append(char *name, FILE *ofp)
 {
-    char temp[BUFSIZ];
+    size_t have = 0;
+    char *temp = malloc(have = BUFSIZ);
     char *t;
     FILE *ifp;
     int found = 0;
@@ -112,12 +116,13 @@ append(char *name, FILE *ofp)
 	dashes(ofp);
     else
 	fputc('\n', ofp);
-    while (fgets(temp, sizeof(temp), ifp) != 0) {
+    while (getline(&temp, &have, ifp) >= 0) {
 	fputs(temp, ofp);
 	++count;
     }
     VERBOSE(0) ("...appended %d lines\n", count);
     fclose(ifp);
+    free(temp);
 }
 
 static void
@@ -127,7 +132,8 @@ acmerge(const char *path)
     FILE *ofp;
     char name[BUFSIZ];
     char temp[BUFSIZ];
-    char bfr[BUFSIZ];
+    char *bfr = 0;
+    size_t have = 0;
 
     sprintf(name, "%s.in", path);
     if ((hdr = fopen(name, "r")) == 0)
@@ -138,7 +144,7 @@ acmerge(const char *path)
     if ((ofp = fopen(temp, "w")) == 0)
 	failed(temp);
 
-    while (fgets(bfr, sizeof(bfr), hdr) != 0) {
+    while (getline(&bfr, &have, hdr) >= 0) {
 	VERBOSE(0) ("read %s", bfr);
 	if (is_dashes(bfr)) {
 	    dashes(ofp);
@@ -151,6 +157,7 @@ acmerge(const char *path)
     fclose(hdr);
     fclose(ofp);
     rename(temp, path);
+    free(bfr);
 }
 
 static void
@@ -163,33 +170,26 @@ usage(void)
 int
 main(int argc, char *argv[])
 {
-    int n;
-    int found = 0;
+    int c;
 
-    if (argc > 1) {
-	for (n = 1; n < argc; n++) {
-	    char *parm = argv[n];
-	    if (*parm == '-') {
-		while (*++parm) {
-		    switch (*parm) {
-		    case 'n':
-			do_dash = 0;
-			break;
-		    case 'v':
-			++verbose;
-			break;
-		    default:
-			usage();
-			break;
-		    }
-		}
-	    } else {
-		acmerge(parm);
-		found++;
-	    }
+    while ((c = getopt(argc, argv, "nv")) != -1) {
+	switch (c) {
+	case 'n':
+	    do_dash = 0;
+	    break;
+	case 'v':
+	    ++verbose;
+	    break;
+	default:
+	    usage();
+	    break;
 	}
     }
-    if (!found) {
+    if (optind < argc) {
+	while (optind < argc) {
+	    acmerge(argv[optind++]);
+	}
+    } else {
 	acmerge("aclocal.m4");
     }
 

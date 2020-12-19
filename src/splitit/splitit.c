@@ -1,5 +1,5 @@
 /*
- * $Id: splitit.c,v 1.4 2020/10/25 18:02:51 tom Exp $
+ * $Id: splitit.c,v 1.5 2020/12/19 12:52:13 tom Exp $
  *
  * Title:	splitit.c
  * Author:	T.E.Dickey
@@ -15,11 +15,18 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <sys/param.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#ifdef HAVE_SYS_PARAM_H
+#include <sys/param.h>
+#endif
+
 #include <td_getopt.h>
+
+#ifndef MAXPATHLEN
+#define MAXPATHLEN 256
+#endif
 
 static FILE *output;
 static off_t split_size = 1024 * 1423;	/* MS-DOS 3.5" diskette */

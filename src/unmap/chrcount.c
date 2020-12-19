@@ -1,5 +1,5 @@
 /*
- * $Id: chrcount.c,v 1.9 2020/10/25 18:03:54 tom Exp $
+ * $Id: chrcount.c,v 1.10 2020/12/19 10:14:51 tom Exp $
  *
  * Title:	chrcount.c
  * Author:	T.E.Dickey
@@ -14,6 +14,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include <td_getline.h>
 #include <td_getopt.h>
 
 #define typeCalloc(count,type) (type *)calloc(count,sizeof(type))
@@ -75,16 +76,20 @@ do_count(char *path)
 static COUNTS *
 chrcount(char *path)
 {
-    char temp[1024];
-    char leaf[1024];
     size_t used = 0;
     size_t need = 2;
     COUNTS *result = typeCalloc(need, COUNTS);
 
     if (isdirectory(path)) {
 	FILE *pp = popen("ls -1 -a", "r");
+
 	if (pp != 0) {
-	    while (fgets(leaf, sizeof(leaf), pp) != 0) {
+	    char *leaf = 0;
+	    size_t have = 0;
+
+	    while (getline(&leaf, &have, pp) >= 0) {
+		char *temp = malloc(2 + strlen(path) + strlen(leaf));
+
 		trim(leaf);
 		sprintf(temp, "%s/%s", path, leaf);
 		if ((used + 1) >= need) {
@@ -96,8 +101,10 @@ chrcount(char *path)
 		    used++;
 		    result[used].name = 0;
 		}
+		free(temp);
 	    }
 	    pclose(pp);
+	    free(leaf);
 	}
     } else {
 	result[0].name = strmalloc(path);

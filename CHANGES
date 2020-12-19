@@ -1,3 +1,41 @@
+2020-12-19  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* package/debian/changelog, package/misc_tools.spec: bump
+
+	* configure: regen
+
+	* src/realpath/realpath.c: allow for missing <sys/param.h>
+
+	* configure.in: add check for <sys/param.h>, which hurd lacks
+
+	* src/splitit/splitit.c: allow for missing <sys/param.h>
+
+	* src/tisplit/tisplit.c, src/tisplit/timerge.c, src/realpath/realpath.c:
+	use getline
+
+	* src/newest/newest.c: use getline
+	add usage message
+
+	* src/count_files/count_files.c: use getline
+
+	* src/width/width.c: getline may return 0 on empty line
+
+	* src/perror/perror.c:
+	this program accepts no options; exit with error if any are given.
+	that makes it consistent with the configure script
+
+	* src/cpd/cpd.c: workaround for bogus clang warning
+
+	* src/acsplit/acsplit.c, src/acsplit/acmerge.c: use getline and getopt
+
+	* src/unmap/chrcount.c: use getline
+
+	* td_getline.h: gcc warning
+
+	* src/sue/sue.c: fail if permissions-change fails
+
+	* src/slowcat/slowcat.c: quit if we cannot write the output
+
 2020-12-13  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/debian/changelog, package/debian/compat, package/misc_tools.spec:

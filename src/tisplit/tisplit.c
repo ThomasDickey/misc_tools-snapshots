@@ -1,5 +1,5 @@
 /*
- * $Id: tisplit.c,v 1.3 2020/12/14 00:34:24 tom Exp $
+ * $Id: tisplit.c,v 1.4 2020/12/19 12:19:05 tom Exp $
  *
  * Title:	tisplit.c - split terminfo.src
  * Author:	T.E.Dickey
@@ -16,6 +16,8 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+
+#include <td_getline.h>
 
 #define VERBOSE(n) if(verbose > n) printf
 #define isname(c) (isprint((unsigned char)c) && (c) != '#' && !isspace((unsigned char)c) && (c) != '|')
@@ -81,20 +83,22 @@ static FILE *
 append(FILE *ofp, FILE *hdr)
 {
     char temp[BUFSIZ];
-    char bfr[BUFSIZ];
 
     if (ofp != 0) {
+	char *bfr = 0;
+	size_t have = 0;
 
 	fclose(ofp);
 	my_temp(temp);
 	VERBOSE(1) ("append %s\n", temp);
 
 	ofp = fopen(temp, "r");
-	while (fgets(bfr, sizeof(bfr), ofp)) {
+	while (getline(&bfr, &have, ofp) >= 0) {
 	    VERBOSE(2) ("*...%s", bfr);
 	    fputs(bfr, hdr);
 	}
 	fclose(ofp);
+	free(bfr);
 
 	remove(temp);
 	if ((ofp = fopen(temp, "w")) == 0)
@@ -110,7 +114,8 @@ tisplit(const char *path)
     FILE *ifp = fopen(path, "r");
     FILE *ofp;
     char name[BUFSIZ];
-    char bfr[BUFSIZ];
+    char *bfr = 0;
+    size_t have = 0;
 
     if (ifp == 0)
 	failed(path);
@@ -124,7 +129,7 @@ tisplit(const char *path)
     name[0] = 0;
     ofp = finish((FILE *) 0, name);
 
-    while (fgets(bfr, sizeof(bfr), ifp) != 0) {
+    while (getline(&bfr, &have, ifp) >= 0) {
 	VERBOSE(2) (">...%s", bfr);
 	if (*bfr == '#' || *bfr == '\n' || *bfr == '\r') {
 	    if (*name != 0) {
@@ -144,6 +149,8 @@ tisplit(const char *path)
 	ofp = append(ofp, hdr);
     fclose(hdr);
     remove(my_temp(name));
+
+    free(bfr);
 }
 
 int

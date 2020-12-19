@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.24 2020/12/14 00:13:32 tom Exp $
+dnl $Id: configure.in,v 1.25 2020/12/19 12:53:14 tom Exp $
 dnl configure-script template for "misc_tools"
 
 AC_INIT(src/newpath/newpath.c)
@@ -88,6 +88,8 @@ AC_MSG_RESULT($with_everything)
 
 AC_STDC_HEADERS
 CF_GETOPT_HEADER
+
+AC_HAVE_HEADERS(sys/param.h)
 
 AC_HAVE_FUNCS( \
 getopt \
