@@ -1,5 +1,5 @@
 /*
- * $Id: slowcat.c,v 1.5 2012/09/02 22:09:02 tom Exp $
+ * $Id: slowcat.c,v 1.6 2020/12/19 10:05:21 tom Exp $
  *
  * Author:	T.E.Dickey
  * Created:	14 Jan 1997
@@ -7,6 +7,7 @@
  */
 #include <time.h>
 #include <sys/time.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 
@@ -28,7 +29,8 @@ put_char(int c)
     char C = (char) c;
 
     t1 = timer();
-    write(1, &C, 1);
+    if (write(1, &C, 1) < 0)
+	exit(EXIT_FAILURE);
     while ((timer() - t1) < usecs) {
 	;
     }
@@ -78,5 +80,5 @@ main(int argc, char *argv[])
 	    slowcat(stdin);
     } else
 	slowcat(stdin);
-    return 0;
+    return EXIT_SUCCESS;
 }

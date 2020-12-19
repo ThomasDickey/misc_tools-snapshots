@@ -1,5 +1,10 @@
 /*
- * $Id: cpd.c,v 1.3 2012/03/13 17:40:18 tom Exp $
+ * $Id: cpd.c,v 1.4 2020/12/19 10:56:49 tom Exp $
+ *
+ * Title:	cpd.c
+ * Author:	T.Dickey
+ * Created:	29 Oct 1991 (refer to "copydate" script in 1982)
+ * Function:	Copy file-modification time from reference file to targets.
  */
 #include	<stdlib.h>
 #include	<stdio.h>
@@ -17,7 +22,7 @@ usage(void)
 {
     fprintf(stderr, "usage: %s %s dst[...]\n",
 	    leaf, touch ? "date" : "src");
-    exit(1);
+    exit(EXIT_FAILURE);
 }
 
 static void
@@ -45,7 +50,7 @@ main(int argc, char *argv[])
 
     if (touch) {
 	char *s = argv[1];
-	int mon, day, hour, min, yy;
+	int mon = 0, day = 0, hour = 0, min = 0, yy = 0;
 	time_t when = time(0);
 	struct tm tm;
 
@@ -65,6 +70,7 @@ main(int argc, char *argv[])
 	    break;
 	default:
 	    wantdate();
+	    /*NOTREACHED */
 	}
 
 	tm.tm_mon = mon - 1;

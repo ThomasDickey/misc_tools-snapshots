@@ -1,5 +1,5 @@
 /*
- * $Id: width.c,v 1.15 2020/10/25 17:32:34 tom Exp $
+ * $Id: width.c,v 1.16 2020/12/19 11:25:30 tom Exp $
  *
  * Title:	width.c
  * Author:	T.Dickey
@@ -186,7 +186,7 @@ main(int argc, char *argv[])
 	    if (!strcmp(name, "-")) {
 		char *filename = 0;
 		size_t lenname = 0;
-		while (getline(&filename, &lenname, stdin) != 0) {
+		while (getline(&filename, &lenname, stdin) >= 0) {
 		    FILE *fp = fopen(filename, "r");
 		    if (fp == 0)
 			failed(filename);

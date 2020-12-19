@@ -1,8 +1,12 @@
 /*
- * $Id: newest.c,v 1.4 2020/10/25 17:59:31 tom Exp $
+ * $Id: newest.c,v 1.5 2020/12/19 11:36:11 tom Exp $
  *
- * Given one or more files specified either on the command line, or via a pipe,
- * compute the date and/or name of the newest one, printing to stdout.
+ * Title:	newest.c
+ * Author:	T.Dickey
+ * Created:	26 Mar 2000
+ * Function:	Given one or more files specified either on the command line,
+ *		or via a pipe, compute the date and/or name of the newest one,
+ *		printing to stdout.
  */
 #include <stdlib.h>
 #include <sys/types.h>
@@ -11,6 +15,7 @@
 #include <string.h>
 #include <time.h>
 
+#include <td_getline.h>
 #include <td_getopt.h>
 
 static int found = 0;
@@ -31,6 +36,13 @@ newest(char *name)
     }
 }
 
+static void
+usage(void)
+{
+    fprintf(stderr, "usage: newest [-d] [-n] file1 [ file2 ...]\n");
+    exit(EXIT_FAILURE);
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -46,6 +58,8 @@ main(int argc, char *argv[])
 	case 'n':
 	    n_opt = 1;
 	    break;
+	default:
+	    usage();
 	}
     }
     if (!n_opt && !d_opt)
@@ -54,13 +68,15 @@ main(int argc, char *argv[])
 	while (optind < argc)
 	    newest(argv[optind++]);
     } else {
-	char buffer[BUFSIZ];
-	while (fgets(buffer, sizeof(buffer), stdin)) {
+	char *buffer = 0;
+	size_t have = 0;
+	while (getline(&buffer, &have, stdin) >= 0) {
 	    size_t nn = strlen(buffer);
 	    if (nn != 0 && buffer[--nn] == '\n')
 		buffer[nn] = 0;
 	    newest(buffer);
 	}
+	free(buffer);
     }
     if (found) {
 	if (n_opt) {
@@ -70,5 +86,5 @@ main(int argc, char *argv[])
 	    printf("%s", ctime(&the_date));
 	}
     }
-    return 0;
+    return EXIT_SUCCESS;
 }

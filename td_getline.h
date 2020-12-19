@@ -1,5 +1,5 @@
 /*
- * $Id: td_getline.h,v 1.3 2020/10/25 18:54:47 tom Exp $
+ * $Id: td_getline.h,v 1.4 2020/12/19 10:11:07 tom Exp $
  *
  * This header provides "getline" for systems which lack that function.
  */
@@ -70,7 +70,7 @@ td_getline(char **lineptr, size_t *length, FILE *fp)
 		if (ended)
 		    break;
 		else
-		    offset += after;
+		    offset += (size_t) after;
 	    } else {
 		offset += chunk;
 	    }

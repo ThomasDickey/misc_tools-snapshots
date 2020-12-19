@@ -1,5 +1,5 @@
 /*
- * $Id: sue.c,v 1.4 2012/03/14 09:03:25 tom Exp $
+ * $Id: sue.c,v 1.5 2020/12/19 10:08:51 tom Exp $
  *
  * Author:	T.E.Dickey
  * Created:	23 Apr 1990
@@ -10,6 +10,13 @@
 #include	<stdio.h>
 #include	<string.h>
 #include	<pwd.h>
+
+static void
+failed(const char *caller)
+{
+    perror(caller);
+    exit(EXIT_FAILURE);
+}
 
 int
 main(int argc, char *argv[])
@@ -26,14 +33,18 @@ main(int argc, char *argv[])
     /*
      * This works _everywhere_ except for glibc 2.1.3, which is broken.
      */
-    (void) setuid(geteuid());
-    (void) setgid(getegid());
+    if (setuid(geteuid()) < 0)
+	failed("setuid");
+    if (setgid(getegid()) < 0)
+	failed("setgid");
 #else
     /*
      * For the moment (2000/12/28), no one's broken the "old" behavior.
      */
-    (void) setreuid(geteuid(), geteuid());
-    (void) setregid(getegid(), getegid());
+    if (setreuid(geteuid(), geteuid()) < 0)
+	failed("setreuid");
+    if (setregid(getegid(), getegid()) < 0)
+	failed("setregid");
 #endif
     strcpy(home, "HOME=");
     strcpy(shell, "SHELL=");

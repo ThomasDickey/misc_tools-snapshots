@@ -1,5 +1,5 @@
 /*
- * $Id: count_files.c,v 1.4 2020/12/14 00:34:24 tom Exp $
+ * $Id: count_files.c,v 1.5 2020/12/19 11:26:27 tom Exp $
  *
  * Title:	count_files.c
  * Author:	T.E.Dickey
@@ -18,6 +18,7 @@
 #include <ctype.h>
 #include <string.h>
 
+#include <td_getline.h>
 #include <td_getopt.h>
 
 #ifndef	TRUE
@@ -124,7 +125,6 @@ int
 main(int argc,
      char *argv[])
 {
-    char buffer[BUFSIZ];
     int j;
 
     while ((j = getopt(argc, argv, "lwc")) != EOF) {
@@ -155,15 +155,18 @@ main(int argc,
 	while (optind < argc)
 	    DoPath(argv[optind++]);
     } else {
-	while (fgets(buffer, sizeof(buffer), stdin) != 0) {
+	char *buffer = 0;
+	size_t have = 0;
+
+	while (getline(&buffer, &have, stdin) >= 0) {
 	    size_t len = strlen(buffer);
 	    while (len != 0 && isspace((unsigned char) buffer[len - 1]))
 		buffer[--len] = EOS;
-	    DoPath(buffer);
+	    if (buffer[0] != EOS)
+		DoPath(buffer);
 	}
+	free(buffer);
     }
     Show("total", total_lines, total_words, total_chars);
-    exit(EXIT_SUCCESS);
-    /*NOTREACHED */
     return (EXIT_SUCCESS);
 }
