@@ -1,3 +1,22 @@
+2021-01-08  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* COPYING.asc: bump
+
+	* configure: regen
+
+	* package/debian/copyright: bump
+
+	* aclocal.m4: use CF_PROG_CC
+
+	* configure.in: use CF_PROG_CC
+	make some escaping fixes, per shellcheck
+
+	* COPYING, package/debian/changelog, package/misc_tools.spec: bump
+
+2021-01-05  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* aclocal.m4: resync with my-autoconf
+
 2020-12-19  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/debian/changelog, package/misc_tools.spec: bump
