@@ -1,3 +1,23 @@
+2021-03-26  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* src/newpath/newpath.c:
+	add "-0" option, so that I can install just newpath in the bin directory,
+	as a symbolic link to a lib-directory containing all of misc_tools.
+	After updating the path, the misc_tools directory will be at the front,
+	without a package-conflict.
+
+	* doc/newpath.1: add "-0" option
+
+	* src/newpath/makefile.in: use DEFS, to conditionally include config.h
+
+	* package/debian/changelog, package/misc_tools.spec: bump
+
+2021-03-22  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* configure: regen
+
+	* aclocal.m4: resync with my-autoconf
+
 2021-01-08  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* COPYING.asc: bump
@@ -809,6 +829,8 @@
 
 	* config_h.in: RCS_BASE
 
+	* config_h.in: s/Header/Id/
+
 1994-06-28  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/count_files/count_files.c: RCS_BASE
@@ -816,6 +838,10 @@
 1994-06-24  Thomas E. Dickey  <dickey@clark.net>
 
 	* src/newpath/newpath.sh: RCS_BASE
+
+1994-06-24  Thomas E. Dickey  <dickey@clark.net>
+
+	* src/newpath/newpath.sh: s/Header/Id/
 
 1994-06-23  Thomas E. Dickey  <dickey@clark.net>
 

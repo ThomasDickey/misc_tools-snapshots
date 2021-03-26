@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Header: /users/source/archives/misc_tools.vcs/src/newpath/RCS/newpath.sh,v 1.1 1994/06/24 14:18:42 dickey Exp $
+# $Id: newpath.sh,v 1.2 1994/06/24 14:18:42 tom Exp $
 # crude, slow, portable
 Popt="no"
 Bopt="no"
