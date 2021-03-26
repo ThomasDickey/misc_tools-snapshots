@@ -1,4 +1,4 @@
-# $Id: makefile.in,v 1.3 2020/10/25 18:19:30 tom Exp $
+# $Id: makefile.in,v 1.4 2021/03/26 20:34:51 tom Exp $
 
 SHELL		= /bin/sh
 THIS		= newpath
@@ -22,7 +22,7 @@ CC		= @CC@
 CFLAGS		= @CFLAGS@ @EXTRA_CFLAGS@
 
 CPP		= @CPP@
-CPPFLAGS	= @CPPFLAGS@ -I$(top_srcdir)
+CPPFLAGS	= @DEFS@ @CPPFLAGS@ -I$(top_srcdir)
 
 LINK		= $(CC) $(CFLAGS)
 

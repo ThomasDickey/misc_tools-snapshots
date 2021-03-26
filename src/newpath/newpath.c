@@ -1,14 +1,19 @@
 /*
- * $Id: newpath.c,v 1.16 2020/10/25 18:48:35 tom Exp $
+ * $Id: newpath.c,v 1.17 2021/03/26 23:51:19 tom Exp $
  *
  * Author:	T.E.Dickey
  * Created:	02 Jun 1994
  * Modified:
+ *		25 Mar 2021, add "-0" option.
  *		13 Mar 2012, integrate into misc_tools package
  *		10 Nov 2000, port to win32
  *
  * Function: (see usage message)
  */
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -18,6 +23,7 @@
 #ifdef WIN32
 #include <process.h>
 #else
+#include <limits.h>
 #include <unistd.h>
 #endif
 
@@ -25,10 +31,12 @@
 
 #ifdef WIN32
 #define	PATHDELIM ';'
+#define	PATHSEP   '\\'
 #define Compare(a,b) stricmp(a,b)
 #define SameDir(a,b) (!Compare((a)->nn, (b)->nn))
 #else
 #define	PATHDELIM ':'
+#define	PATHSEP   '/'
 #define Compare(a,b) strcmp(a,b)
 #define SameDir(a,b) ((a)->sb.st_ino == (b)->sb.st_ino \
 				   && (a)->sb.st_dev == (b)->sb.st_dev)
@@ -79,6 +87,7 @@ usage(void)
 	"(the default) or removed.",
 	"",
 	"Options:",
+	"    -0      put newpath's directory at the beginning",
 	"    -a NAME modify path after given NAME",
 	"    -b      put new arguments before existing path",
 	"    -d      remove duplicates/non-directory items",
@@ -167,6 +176,20 @@ exists(LIST * entry)
     return FALSE;
 }
 
+#ifdef HAVE_REALPATH
+static int
+isFile(const char *path)
+{
+    struct stat sb;
+    int result = FALSE;
+    if (lstat(path, &sb) == 0
+	&& (sb.st_mode & S_IFMT) == S_IFREG) {
+	result = TRUE;
+    }
+    return result;
+}
+#endif
+
 int
 main(int argc, char *argv[])
 {
@@ -175,14 +198,18 @@ main(int argc, char *argv[])
     int remove_duplicates = FALSE;
     size_t length = (size_t) argc;
     int operation = 'a';
+    int use_original = FALSE;
     const char *where = 0;
 
     int c, point = 0;
     LIST *list;
     char *s;
 
-    while ((c = getopt(argc, argv, "a:bdefn:prv")) != EOF) {
+    while ((c = getopt(argc, argv, "0a:bdefn:prv")) != EOF) {
 	switch (c) {
+	case '0':
+	    use_original = TRUE;
+	    break;
 	case 'a':
 	    where = optarg;
 	    break;
@@ -228,7 +255,7 @@ main(int argc, char *argv[])
     for (c = 0; s[c] != EOS; c++)
 	if (s[c] == PATHDELIM)
 	    length++;
-    length += 3;
+    length += (argc + 3);
     list = (LIST *) calloc(length, sizeof(LIST));
     list[0].nn = StrAlloc(BLANK);	/* dummy entry, to simplify -b option */
 
@@ -248,6 +275,77 @@ main(int argc, char *argv[])
     }
     list[c].nn = 0;
     TRACE((stderr, "%s has %d entries\n", name, c));
+
+    /*
+     * Find the directory where this program resides, accounting for symlinks.
+     */
+#ifdef HAVE_REALPATH
+    if (use_original) {
+	char *actual = malloc(PATH_MAX);
+	if (actual != NULL) {
+	    char *source = argv[0];
+	    char *leaf;
+	    int found = FALSE;
+
+	    if (strchr(source, PATHSEP) != NULL
+		&& realpath(source, actual) != NULL
+		&& isFile(actual)
+		&& (leaf = strrchr(actual, PATHSEP)) != NULL) {
+		found = TRUE;
+		*leaf = EOS;
+	    } else if (strchr(source, PATHSEP) == NULL) {
+		for (c = 0; list[c].nn != NULL; ++c) {
+		    sprintf(actual, "%s%c%s", list[c].nn, PATHSEP, argv[0]);
+		    if (isFile(actual)) {
+			found = TRUE;
+			strcpy(actual, list[c].nn);
+			break;
+		    }
+		}
+	    }
+	    if (found) {
+		found = -1;
+		for (c = 1; list[c].nn != NULL; ++c) {
+		    if (!strcmp(list[c].nn, actual)) {
+			found = c;
+			break;
+		    }
+		}
+#ifdef OPT_TRACE
+		for (c = 1; list[c].nn != NULL; ++c) {
+		    TRACE((stderr, " old %d %s\n", c, list[c].nn));
+		}
+#endif
+		if (found > 1) {
+		    /* rotate */
+		    LIST inserts = list[found];
+		    for (c = 1; c < found; ++c) {
+			LIST pending = list[c];
+			list[c] = inserts;
+			TRACE((stderr, " new %d %s\n", c, list[c].nn));
+			inserts = pending;
+		    }
+		    list[c] = inserts;
+		    TRACE((stderr, " new %d %s\n", c, list[c].nn));
+		} else if (found < 0) {
+		    /* prepend */
+		    LIST inserts;
+		    LIST pending;
+		    memset(&inserts, 0, sizeof(inserts));
+		    inserts.nn = actual;
+		    for (c = 1; list[c].nn != NULL; ++c) {
+			pending = list[c];
+			list[c] = inserts;
+			TRACE((stderr, " new %d %s\n", c, list[c].nn));
+			inserts = pending;
+		    }
+		    list[c] = inserts;
+		    TRACE((stderr, " new %d %s\n", c, list[c].nn));
+		}
+	    }
+	}
+    }
+#endif /* HAVE_REALPATH */
 
     /* Find the list-entry after which we insert/remove entries */
     for (c = 0; list[c].nn != 0; c++) {
