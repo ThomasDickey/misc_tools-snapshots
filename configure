@@ -5959,7 +5959,7 @@ cat >>"$CONFIG_STATUS" <<EOF
 #
 
 echo "** checking for conflicts"
-for name in makefile.in $srcdir/doc/makefile.in $srcdir/src/*/makefile.in
+for name in makefile.in $srcdir/doc/*.in $srcdir/src/*/makefile.in
 do
 	cf_FILE=\`echo "\$name" | sed -e "s,\$srcdir/,," -e 's,\\.in\$,,'\`
 	cf_DIR=\`echo "\$cf_FILE" | sed -e 's,/makefile,,'\`

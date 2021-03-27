@@ -1,5 +1,5 @@
 /*
- * $Id: newpath.c,v 1.17 2021/03/26 23:51:19 tom Exp $
+ * $Id: newpath.c,v 1.18 2021/03/27 17:28:11 tom Exp $
  *
  * Author:	T.E.Dickey
  * Created:	02 Jun 1994
@@ -188,6 +188,18 @@ isFile(const char *path)
     }
     return result;
 }
+
+static int
+isLink(const char *path)
+{
+    struct stat sb;
+    int result = FALSE;
+    if (lstat(path, &sb) == 0
+	&& (sb.st_mode & S_IFMT) == S_IFLNK) {
+	result = TRUE;
+    }
+    return result;
+}
 #endif
 
 int
@@ -255,7 +267,7 @@ main(int argc, char *argv[])
     for (c = 0; s[c] != EOS; c++)
 	if (s[c] == PATHDELIM)
 	    length++;
-    length += (argc + 3);
+    length += (size_t) (argc + 3);
     list = (LIST *) calloc(length, sizeof(LIST));
     list[0].nn = StrAlloc(BLANK);	/* dummy entry, to simplify -b option */
 
@@ -286,6 +298,7 @@ main(int argc, char *argv[])
 	    char *source = argv[0];
 	    char *leaf;
 	    int found = FALSE;
+	    char resolved[1024];
 
 	    if (strchr(source, PATHSEP) != NULL
 		&& realpath(source, actual) != NULL
@@ -296,9 +309,21 @@ main(int argc, char *argv[])
 	    } else if (strchr(source, PATHSEP) == NULL) {
 		for (c = 0; list[c].nn != NULL; ++c) {
 		    sprintf(actual, "%s%c%s", list[c].nn, PATHSEP, argv[0]);
+		    while (isLink(actual)) {
+			int have = (int) readlink(actual,
+						  resolved,
+						  sizeof(resolved));
+			if (have <= 0)
+			    break;
+			resolved[have] = EOS;
+			strcpy(actual, resolved);
+		    }
 		    if (isFile(actual)) {
-			found = TRUE;
-			strcpy(actual, list[c].nn);
+			leaf = strrchr(actual, PATHSEP);
+			if (leaf != NULL) {
+			    found = TRUE;
+			    *leaf = EOS;
+			}
 			break;
 		    }
 		}
@@ -425,6 +450,9 @@ main(int argc, char *argv[])
 	fflush(stdout);
     }
 
+#ifdef NO_LEAKS
+    free(list);
+#endif
     exit(EXIT_SUCCESS);
     /*NOTREACHED */
 }

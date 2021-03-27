@@ -1,3 +1,35 @@
+2021-03-27  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* package/debian/postinst, package/debian/rules:
+	s/misc_tools/misctools/, since Debian insists...
+
+	* package/misc_tools.spec:
+	move binaries into lib-directory to work around name-pollution conflicts
+
+	* package/debian/changelog: bump
+
+	* src/newpath/newpath.c:
+	handle the case where newpath is a symbolic link
+
+	* package/debian/rules:
+	move binaries into my lib-directory to simplify conflict resolution
+
+	* package/debian/postinst: make /usr/bin/newpath a symbolic link
+
+	* doc/makefile.in: also cleanup minstall script
+
+	* configure: regen
+
+	* doc/minstall.in: RCS_BASE
+
+	* doc/makefile.in:
+	improve conditional-install of manpages by new "minstall" script which not
+	only checks if the corresponding program was built, but also if there is
+	a conflicting manpage already installed.
+
+	* configure.in:
+	broaden pattern for doc directory to include minstall script
+
 2021-03-26  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* src/newpath/newpath.c:

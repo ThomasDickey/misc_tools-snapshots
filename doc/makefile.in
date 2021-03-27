@@ -1,4 +1,4 @@
-# $Id: makefile.in,v 1.7 2020/12/14 00:22:33 tom Exp $
+# $Id: makefile.in,v 1.9 2021/03/27 14:06:27 tom Exp $
 # second-level makefile template for "misc_tools"
 
 SHELL	= /bin/sh
@@ -8,7 +8,6 @@ MAKE_RECUR	= @cf_cv_makeflags@ prefix=$(prefix) DESTDIR=$(DESTDIR)
 
 top_srcdir	= @top_srcdir@
 srcdir		= @srcdir@
-srcdir_sl	= @srcdir@/
 VPATH		= @srcdir@
 @SET_MAKE@
 
@@ -19,9 +18,6 @@ datarootdir	= @datarootdir@
 mandir		= @mandir@/man1
 
 MANDIR		= $(DESTDIR)$(mandir)
-
-INSTALL		= @INSTALL@
-INSTALL_DATA	= @INSTALL_DATA@
 
 FILES = \
 	acmerge.1 \
@@ -51,24 +47,16 @@ lint ::
 	@ echo "done: $@"
 
 distclean :
-	rm -f makefile
+	rm -f makefile minstall
 
 check ::
 	@ echo "There are no automatic tests for these programs"
 
 install : $(MANDIR)
-	@$(SHELL) -c "for name in $(FILES); do \
-		NAME=\`basename \$${name} .1\`; \
-		if test -f ../src/*/\$${NAME}; then \
-			echo installing \$${name}; \
-			$(INSTALL_DATA) $(srcdir)/\$${name} $(MANDIR)/$${name}; \
-		else \
-			echo skipping \$${name}; \
-		fi; \
-		done"
+	DESTDIR="$(DESTDIR)" $(SHELL) ./minstall $(FILES)
 
 uninstall :
-	cd $(MANDIR) && rm -f $(FILES)
+	DESTDIR="$(DESTDIR)" $(SHELL) ./minstall -u $(FILES)
 
 $(MANDIR) :
 	mkdir -p $@
