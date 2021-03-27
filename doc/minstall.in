@@ -1,0 +1,72 @@
+#!/bin/sh
+# $Id: minstall.in,v 1.1 2021/03/27 13:47:23 tom Exp $
+# vi:ts=4
+# conditionally install/uninstall my manpages, if there is no naming conflict.
+
+prefix="@prefix@"
+exec_prefix="@exec_prefix@"
+
+top_srcdir="@top_srcdir@"
+srcdir="@srcdir@"
+
+datarootdir="@datarootdir@"
+mandir="@mandir@/man1"
+
+MANDIR="${DESTDIR}${mandir}"
+
+INSTALL="@INSTALL@"
+INSTALL_DATA="@INSTALL_DATA@"
+
+remove=
+for name in "$@"
+do
+	if [ "x$name" = "x-u" ]
+	then
+		remove=yes
+		continue
+	fi
+
+	# check if we built the program for this manpage
+	NAME=`basename ${name} .1`
+	for check in ${top_srcdir}/src/*/${NAME}
+	do
+		if [ -f "$check" ]
+		then
+
+			# check if a conflicting filename is installed
+			tool=
+			NAME=`basename ${name}`
+			if [ -f "${mandir}/${NAME}" ]
+			then
+				tool=cat
+				file="${mandir}/${NAME}" 
+			elif [ -f "${mandir}/${NAME}.gz" ]
+			then
+				tool="gzip -dc"
+				file="${mandir}/${NAME}.gz"
+			fi
+
+			if [ -n "$tool" ]
+			then
+				check=`$tool "$file" | head -n 1 | grep -w tom`
+				if [ -z "$check" ]
+				then
+					echo "conflicted $name"
+					break
+				fi
+			fi
+
+			if [ -n "$remove" ]
+			then
+				echo "uninstalling ${name}"
+				rm -f ${MANDIR}/${name} ${MANDIR}/${name}.gz
+			else
+				echo "installing ${name}"
+				${INSTALL_DATA} ${srcdir}/${name} ${MANDIR}/${name}
+			fi
+		else
+			echo "skipping ${name}"
+			break
+		fi
+	done
+done

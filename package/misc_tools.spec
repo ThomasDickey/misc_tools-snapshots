@@ -1,7 +1,7 @@
 Summary: misc_tools - miscellaneous foundation tools
 %define AppProgram misc_tools
-%define AppVersion 20210326
-# $XTermId: misc_tools.spec,v 1.19 2021/03/26 08:09:06 tom Exp $
+%define AppVersion 20210327
+# $XTermId: misc_tools.spec,v 1.20 2021/03/27 18:03:46 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
 Release: 1
@@ -18,6 +18,8 @@ and install on each machine, but which are too small to package separately.
 
 %prep
 
+%global my_bindir %{_libdir}/misc_tools
+
 # no need for debugging symbols...
 %define debug_package %{nil}
 
@@ -29,7 +31,7 @@ INSTALL_PROGRAM='${INSTALL}' \
 	./configure \
 		--target %{_target_platform} \
 		--prefix=%{_prefix} \
-		--bindir=%{_bindir} \
+		--bindir=%{my_bindir} \
 		--libdir=%{_libdir} \
 		--mandir=%{_mandir} \
 		--with-sudo-hacks=root,dickey
@@ -43,7 +45,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/%name
 touch    $RPM_BUILD_ROOT%{_datadir}/%name/setuid
 
-pushd $RPM_BUILD_ROOT%{_bindir}
+pushd $RPM_BUILD_ROOT%{my_bindir}
 for prog in *
 do
 	case `file $prog` in
@@ -58,19 +60,24 @@ popd
 
 %post
 
-pushd %{_bindir}
-for prog in `cat %{_datadir}/%name/setuid`
+ln -v -sf %{my_bindir}/newpath %{_bindir}/
+
+if [ -f %{_datadir}/%{name}/setuid ]
+then
+pushd %{my_bindir}
+for prog in `cat %{_datadir}/%{name}/setuid`
 do
 	if id $prog >/dev/null 2>/dev/null
 	then
 		U=`id $prog | sed -e 's/^uid=//' -e 's/(.*//'`
 		G=`id $prog | sed -e 's/^.*gid=//' -e 's/(.*//'`
-		chown $U $prog
-		chgrp $G $prog
-		chmod ug+s $prog
+		chown -v $U $prog
+		chgrp -v $G $prog
+		chmod -v ug+s $prog
 	fi
 done
 popd
+fi
 
 %clean
 if rm -rf $RPM_BUILD_ROOT; then
@@ -82,12 +89,15 @@ exit 0
 
 %files
 %defattr(-,root,root)
-%{_bindir}/*
+%{my_bindir}/*
 %{_mandir}/man1/*
 %{_datadir}/%name/*
 
 %changelog
 # each patch should add its ChangeLog entries here
+
+* Sat Mar 27 2021 Thomas Dickey
+- move binaries into lib-directory to work around name-pollution conflicts
 
 * Sun Oct 25 2020 Thomas Dickey
 - add manual pages

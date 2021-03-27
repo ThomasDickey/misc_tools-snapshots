@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.26 2021/01/08 20:28:09 tom Exp $
+dnl $Id: configure.in,v 1.27 2021/03/27 13:15:37 tom Exp $
 dnl configure-script template for "misc_tools"
 
 AC_INIT(src/newpath/newpath.c)
@@ -123,7 +123,7 @@ done
 echo "	-@\$(SHELL) -c \"rmdir src 2>/dev/null && echo ..removed src; exit 0\"" >>makefile
 ],[
 echo "** checking for conflicts"
-for name in makefile.in [$]srcdir/doc/makefile.in [$]srcdir/src/*/makefile.in
+for name in makefile.in [$]srcdir/doc/*.in [$]srcdir/src/*/makefile.in
 do
 	cf_FILE=\`echo "\$name" | sed -e "s,\$srcdir/,," -e 's,\\.in\$,,'\`
 	cf_DIR=\`echo "\$cf_FILE" | sed -e 's,/makefile,,'\`

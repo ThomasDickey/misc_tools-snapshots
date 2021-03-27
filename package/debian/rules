@@ -24,6 +24,7 @@ ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
         INSTALL_PROGRAM += -s
 endif
 
+PACKAGE		= misctools
 
 configure: configure-stamp
 configure-stamp:
@@ -36,9 +37,12 @@ configure-stamp:
 		--host=$(DEB_HOST_GNU_TYPE) \
 		--build=$(DEB_BUILD_GNU_TYPE) \
 		--prefix=/usr \
+		--bindir=/usr/lib/$(PACKAGE) \
+		--datadir=/usr/share \
 		--mandir=\$${prefix}/share/man \
 		--sysconfdir=/etc \
-		--with-package=misctools \
+		--with-package=$(PACKAGE) \
+		--with-everything \
 		--with-sudo-hacks=root,dickey
 
 	touch configure-stamp
@@ -71,7 +75,7 @@ install-stamp: build-stamp
 	dh_clean -k
 	dh_installdirs
 
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/misctools
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/$(PACKAGE)
 
 	touch install-stamp
 
