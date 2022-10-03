@@ -1,3 +1,25 @@
+2022-10-03  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* package/debian/rules: fix for compat 12
+
+	* package/debian/compat, package/debian/copyright,
+	  package/misc_tools.spec:
+	bump
+
+	* COPYING.asc: regen
+
+	* package/debian/changelog, COPYING: bump
+
+	* configure: regen
+
+	* aclocal.m4: resync with my-autoconf
+
+	* configure.in: configurable egrep/fgrep
+
+2022-08-01  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.guess, config.sub: 2022-08-01
+
 2021-03-27  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/debian/postinst, package/debian/rules:
@@ -109,10 +131,13 @@
 
 2020-12-13  Thomas E. Dickey  <dickey@invisible-island.net>
 
-	* package/debian/changelog, package/debian/compat, package/misc_tools.spec:
+	* package/debian/changelog, package/debian/compat,
+	  package/misc_tools.spec:
 	bump
 
-	* src/acsplit/acmerge.c, src/acsplit/acsplit.c, src/count_files/count_files.c, src/tisplit/timerge.c, src/tisplit/tisplit.c:
+	* src/acsplit/acmerge.c, src/acsplit/acsplit.c,
+	  src/count_files/count_files.c, src/tisplit/timerge.c,
+	  src/tisplit/tisplit.c:
 	fix warnings about char-subscript for array in ctype macros
 
 	* doc/makefile.in: fix for out-of-tree builds
@@ -143,10 +168,13 @@
 
 	* doc/makefile.in: add distclean rule
 
-	* doc/cpd.1, doc/count_files.1, doc/chrcount.1, doc/acsplit.1, doc/acmerge.1, doc/hex.1, doc/isatty.1, doc/map.1, doc/newest.1:
+	* doc/cpd.1, doc/count_files.1, doc/chrcount.1, doc/acsplit.1,
+	  doc/newest.1:
 	RCS_BASE
 
-	* doc/width.1, doc/unmap.1, doc/tisplit.1, doc/timerge.1, doc/sue.1, doc/splitit.1, doc/slowcat.1, doc/realpath.1, doc/perror.1, doc/newpath.1:
+	* doc/width.1, doc/unmap.1, doc/tisplit.1, doc/timerge.1, doc/sue.1,
+	  doc/splitit.1, doc/slowcat.1, doc/realpath.1, doc/perror.1,
+	  doc/newpath.1:
 	set-section
 
 	* doc/newpath.1, doc/perror.1, doc/realpath.1: RCS_BASE
@@ -186,12 +214,19 @@
 
 	* src/newpath/newpath.c: include for td_getopt.h must follow unistd.h
 
-	* src/unmap/makefile.in, src/tisplit/makefile.in, src/count_files/makefile.in, src/acsplit/makefile.in, src/cpd/makefile.in, src/hex/makefile.in, src/isatty/makefile.in, src/newest/makefile.in, src/newpath/makefile.in, src/perror/makefile.in, src/realpath/makefile.in, src/slowcat/makefile.in, src/splitit/makefile.in, src/sue/makefile.in:
+	* src/unmap/makefile.in, src/tisplit/makefile.in,
+	  src/count_files/makefile.in, src/acsplit/makefile.in,
+	  src/cpd/makefile.in, src/hex/makefile.in, src/isatty/makefile.in,
+	  src/newest/makefile.in, src/newpath/makefile.in,
+	  src/perror/makefile.in, src/realpath/makefile.in,
+	  src/sue/makefile.in:
 	add lint-rule
 
 	* configure: regen
 
-	* src/unmap/unmap.c, src/unmap/map.c, src/unmap/chrcount.c, src/unmap/unmap.h, src/splitit/splitit.c, src/newest/newest.c, src/count_files/count_files.c:
+	* src/unmap/unmap.c, src/unmap/map.c, src/unmap/chrcount.c,
+	  src/unmap/unmap.h, src/splitit/splitit.c, src/newest/newest.c,
+	  src/count_files/count_files.c:
 	use td_getopt.h
 
 	* td_getopt.h: use NEED_GETOPT_H rather than just HAVE_GETOPT_H
@@ -202,7 +237,12 @@
 
 	* makefile.in: add top-level lint rule
 
-	* src/acsplit/makefile.in, src/count_files/makefile.in, src/cpd/makefile.in, src/hex/makefile.in, src/isatty/makefile.in, src/newest/makefile.in, src/perror/makefile.in, src/slowcat/makefile.in, src/splitit/makefile.in, src/sue/makefile.in, src/tisplit/makefile.in, src/unmap/makefile.in, src/newpath/makefile.in, src/width/makefile.in:
+	* src/acsplit/makefile.in, src/count_files/makefile.in,
+	  src/cpd/makefile.in, src/hex/makefile.in, src/isatty/makefile.in,
+	  src/newest/makefile.in, src/perror/makefile.in,
+	  src/slowcat/makefile.in, src/splitit/makefile.in, src/sue/makefile.in,
+	  src/tisplit/makefile.in, src/unmap/makefile.in,
+	  src/width/makefile.in:
 	update CPPFLAGS for headers in top-srcdir
 
 	* configure.in: use CF_PROG_LINT
@@ -234,7 +274,8 @@
 
 	* configure.in: use CF_WITHOUT_X
 
-	* package/debian/copyright, COPYING.asc, COPYING, package/debian/changelog, package/misc_tools.spec:
+	* package/debian/copyright, COPYING.asc, COPYING,
+	  package/misc_tools.spec:
 	bump
 
 2020-08-16  Thomas E. Dickey  <dickey@invisible-island.net>
@@ -285,7 +326,7 @@
 
 	* makefile.in: add a dummy "check" rule, for Arch mkpkg
 
-	* package/debian/changelog, package/misc_tools.spec, COPYING.asc, COPYING:
+	* COPYING:
 	bump
 
 	* configure: regen
@@ -406,7 +447,8 @@
 	* src/width/width.c, src/newest/newest.c, src/slowcat/slowcat.c:
 	gcc warning
 
-	* src/splitit/makefile.in, src/newest/makefile.in, src/count_files/makefile.in:
+	* src/splitit/makefile.in, src/newest/makefile.in,
+	  src/count_files/makefile.in:
 	makefile-template
 
 	* package/misc_tools.spec:
@@ -450,12 +492,16 @@
 
 	* src/sue/use-usual: quote here-document
 
-	* src/unmap/map.c, src/unmap/unmap.c, src/realpath/realpath.c, src/width/width.c:
+	* src/unmap/map.c, src/unmap/unmap.c, src/realpath/realpath.c,
+	  src/width/width.c:
 	cleanup
 
 	* package/debian/changelog, package/misc_tools.spec: bump
 
-	* src/width/width.c, src/slowcat/slowcat.c, src/sue/sue.c, src/tisplit/timerge.c, src/tisplit/tisplit.c, src/acsplit/acmerge.c, src/hex/hex.c, src/unmap/chrcount.c, src/unmap/map_s.c, src/unmap/unmap_s.c, src/acsplit/acsplit.c, src/newpath/newpath.c:
+	* src/width/width.c, src/slowcat/slowcat.c, src/sue/sue.c,
+	  src/tisplit/timerge.c, src/tisplit/tisplit.c, src/acsplit/acmerge.c,
+	  src/hex/hex.c, src/unmap/chrcount.c, src/unmap/map_s.c,
+	  src/newpath/newpath.c:
 	cleanup
 
 	* configure: regen
@@ -499,7 +545,9 @@
 
 	* src/sue/use-hacks: add some error-checking
 
-	* package/debian/watch, package/debian/docs, package/debian/rules, package/debian/control, package/debian/copyright, package/debian/changelog, package/misc_tools.spec:
+	* package/debian/watch, package/debian/docs, package/debian/rules,
+	  package/debian/control, package/debian/copyright,
+	  package/misc_tools.spec:
 	RCS_BASE
 
 	* src/unmap/chrcount.c: cleanup
@@ -550,7 +598,10 @@
 		a) realpath
 		b) perror (in MySQL)
 
-	* src/unmap/makefile.in, src/tisplit/makefile.in, src/sue/makefile.in, src/width/makefile.in, src/slowcat/makefile.in, src/realpath/makefile.in, src/perror/makefile.in, src/newpath/makefile.in, src/isatty/makefile.in:
+	* src/unmap/makefile.in, src/tisplit/makefile.in, src/sue/makefile.in,
+	  src/width/makefile.in, src/slowcat/makefile.in,
+	  src/realpath/makefile.in, src/perror/makefile.in,
+	  src/isatty/makefile.in:
 	makefile-template
 
 	* aclocal.m4, configure.in, makefile.in: add/use CF_MAKEFLAGS
@@ -609,7 +660,8 @@
 
 	* src/unmap/map_s.c: add utf8 param to map()
 
-	* src/unmap/chrcount.c, src/unmap/map.c, src/unmap/map_s.c, src/unmap/unmap.c, src/unmap/unmap_s.c, src/unmap/unmap.h:
+	* src/unmap/chrcount.c, src/unmap/map.c, src/unmap/map_s.c,
+	  src/unmap/unmap.h:
 	indent'd
 
 2003-11-29  Thomas E. Dickey  <dickey@invisible-island.net>
@@ -713,7 +765,8 @@
 
 1998-05-16  Thomas E. Dickey  <dickey@clark.net>
 
-	* src/tisplit/tisplit.c, src/tisplit/timerge.c, src/tisplit/doit, src/tisplit/Makefile:
+	* src/tisplit/tisplit.c, src/tisplit/timerge.c, src/tisplit/doit,
+	  src/tisplit/Makefile:
 	RCS_BASE
 
 1997-11-06  Thomas E. Dickey  <dickey@clark.net>
@@ -749,7 +802,8 @@
 
 1997-08-28  Thomas E. Dickey  <dickey@clark.net>
 
-	* src/acsplit/acmerge.c, src/acsplit/doit, src/acsplit/Makefile, src/acsplit/acsplit.c:
+	* src/acsplit/acmerge.c, src/acsplit/doit, src/acsplit/Makefile,
+	  src/acsplit/acsplit.c:
 	RCS_BASE
 
 1997-07-06  Thomas E. Dickey  <dickey@clark.net>

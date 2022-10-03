@@ -1,7 +1,7 @@
-Summary: misc_tools - miscellaneous foundation tools
+Summary: miscellaneous foundation tools
 %define AppProgram misc_tools
-%define AppVersion 20210327
-# $XTermId: misc_tools.spec,v 1.20 2021/03/27 18:03:46 tom Exp $
+%define AppVersion 20221003
+# $XTermId: misc_tools.spec,v 1.21 2022/10/03 08:14:50 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
 Release: 1
