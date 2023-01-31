@@ -1,3 +1,17 @@
+2023-01-30  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* package/debian/copyright, package/debian/changelog,
+	  package/misc_tools.spec:
+	bump
+
+2023-01-29  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* configure: regen
+
+	* aclocal.m4: resync with my-autoconf
+
+	* configure.in: initialize $ac_includes_default
+
 2022-10-03  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/debian/rules: fix for compat 12
@@ -169,7 +183,7 @@
 	* doc/makefile.in: add distclean rule
 
 	* doc/cpd.1, doc/count_files.1, doc/chrcount.1, doc/acsplit.1,
-	  doc/newest.1:
+	  doc/acmerge.1, doc/hex.1, doc/isatty.1, doc/map.1, doc/newest.1:
 	RCS_BASE
 
 	* doc/width.1, doc/unmap.1, doc/tisplit.1, doc/timerge.1, doc/sue.1,
@@ -219,7 +233,7 @@
 	  src/cpd/makefile.in, src/hex/makefile.in, src/isatty/makefile.in,
 	  src/newest/makefile.in, src/newpath/makefile.in,
 	  src/perror/makefile.in, src/realpath/makefile.in,
-	  src/sue/makefile.in:
+	  src/slowcat/makefile.in, src/splitit/makefile.in, src/sue/makefile.in:
 	add lint-rule
 
 	* configure: regen
@@ -242,7 +256,7 @@
 	  src/newest/makefile.in, src/perror/makefile.in,
 	  src/slowcat/makefile.in, src/splitit/makefile.in, src/sue/makefile.in,
 	  src/tisplit/makefile.in, src/unmap/makefile.in,
-	  src/width/makefile.in:
+	  src/newpath/makefile.in, src/width/makefile.in:
 	update CPPFLAGS for headers in top-srcdir
 
 	* configure.in: use CF_PROG_LINT
@@ -275,7 +289,7 @@
 	* configure.in: use CF_WITHOUT_X
 
 	* package/debian/copyright, COPYING.asc, COPYING,
-	  package/misc_tools.spec:
+	  package/debian/changelog, package/misc_tools.spec:
 	bump
 
 2020-08-16  Thomas E. Dickey  <dickey@invisible-island.net>
@@ -326,7 +340,7 @@
 
 	* makefile.in: add a dummy "check" rule, for Arch mkpkg
 
-	* COPYING:
+	* package/debian/changelog, package/misc_tools.spec, COPYING.asc, COPYING:
 	bump
 
 	* configure: regen
@@ -501,7 +515,7 @@
 	* src/width/width.c, src/slowcat/slowcat.c, src/sue/sue.c,
 	  src/tisplit/timerge.c, src/tisplit/tisplit.c, src/acsplit/acmerge.c,
 	  src/hex/hex.c, src/unmap/chrcount.c, src/unmap/map_s.c,
-	  src/newpath/newpath.c:
+	  src/unmap/unmap_s.c, src/acsplit/acsplit.c, src/newpath/newpath.c:
 	cleanup
 
 	* configure: regen
@@ -547,7 +561,7 @@
 
 	* package/debian/watch, package/debian/docs, package/debian/rules,
 	  package/debian/control, package/debian/copyright,
-	  package/misc_tools.spec:
+	  package/debian/changelog, package/misc_tools.spec:
 	RCS_BASE
 
 	* src/unmap/chrcount.c: cleanup
@@ -601,7 +615,7 @@
 	* src/unmap/makefile.in, src/tisplit/makefile.in, src/sue/makefile.in,
 	  src/width/makefile.in, src/slowcat/makefile.in,
 	  src/realpath/makefile.in, src/perror/makefile.in,
-	  src/isatty/makefile.in:
+	  src/newpath/makefile.in, src/isatty/makefile.in:
 	makefile-template
 
 	* aclocal.m4, configure.in, makefile.in: add/use CF_MAKEFLAGS
@@ -661,7 +675,7 @@
 	* src/unmap/map_s.c: add utf8 param to map()
 
 	* src/unmap/chrcount.c, src/unmap/map.c, src/unmap/map_s.c,
-	  src/unmap/unmap.h:
+	  src/unmap/unmap.c, src/unmap/unmap_s.c, src/unmap/unmap.h:
 	indent'd
 
 2003-11-29  Thomas E. Dickey  <dickey@invisible-island.net>
