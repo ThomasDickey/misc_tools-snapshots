@@ -1,9 +1,9 @@
-.\" $Id: splitit.1,v 1.2 2020/10/25 23:50:12 tom Exp $
-.TH SPLITIT "1" "October 2020"
+.\" $Id: splitit.1,v 1.4 2024/07/12 22:56:16 tom Exp $
+.TH SPLITIT 1 2024-07-12 "MiscTools" "User commands"
 .hy 0
 .SH NAME
-splitit \- split a file or output stream into files
-.
+splitit \-
+split a file or output stream into files
 .SH SYNOPSIS
 .B width
 [
@@ -29,15 +29,15 @@ output file-specification (will append .001 etc)
 output chunk-size (default 1.44M)
 .
 .
-.SH USAGE
+.SH BUGS
+.
+Probably.
+.
+.
+.SH EXAMPLES
 This program is a relic of a scheme used for backup in the 1990s.
 Written in 1994 (and used until 2008), it split a backup file.
 The output was staged on a Windows partition, from which tapes were written.
 .
 .SH SEE ALSO
 split(1)
-.
-.
-.SH BUGS
-.
-Probably.

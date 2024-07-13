@@ -1,13 +1,19 @@
-.\" $Id: sue.1,v 1.3 2020/12/13 23:47:55 tom Exp $
-.ie \n(.g .ds `` \(lq
-.el       .ds `` ``
-.ie \n(.g .ds '' \(rq
-.el       .ds '' ''
-.TH SUE "1" "October 2020"
+.\" $Id: sue.1,v 1.5 2024/07/12 22:56:16 tom Exp $
+.TH SUE 1 2024-07-12 "MiscTools" "User commands"
+.ie \n(.g \{\
+.ds `` \(lq
+.ds '' \(rq
+.\}
+.el \{\
+.ie t .ds `` ``
+.el   .ds `` ""
+.ie t .ds '' ''
+.el   .ds '' ""
+.\}
 .hy 0
 .SH NAME
-sue \- su with environment
-.
+sue \-
+su with environment
 .SH SYNOPSIS
 .B sue
 .I command
@@ -22,14 +28,14 @@ because \fBsudo\fP makes it cumbersome to reuse the current \fBPATH\fP.
 .SH OPTIONS
 None.
 .
-.SH USAGE
+.
+.SH BUGS
+.
+Probably.
+.
+.SH EXAMPLES
 .
 \fBSue\fR is installed by convention as the user to which it should \*(``su\*(''
 .
 .SH SEE ALSO
 sudo, su
-.
-.
-.SH BUGS
-.
-Probably.

@@ -1,15 +1,14 @@
 Summary: miscellaneous foundation tools
 %define AppProgram misc_tools
-%define AppVersion 20230414
-# $XTermId: misc_tools.spec,v 1.23 2023/04/14 22:15:25 tom Exp $
+%define AppVersion 20240712
+# $XTermId: misc_tools.spec,v 1.25 2024/07/13 00:45:19 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
 Release: 1
 License: MIT
 Group: Applications/Development
-URL: ftp://ftp.invisible-island.net/%{AppProgram}
-Source0: %{AppProgram}-%{AppVersion}.tgz
-Packager: Thomas Dickey <dickey@invisible-island.net>
+URL: https://invisible-island.net/%{AppProgram}
+Source0: https://invisible-island.net/archives/%{AppProgram}/%{AppProgram}-%{AppVersion}.tgz
 Requires: sudo
 
 %description
@@ -43,7 +42,7 @@ make
 
 make install DESTDIR=$RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/%name
-touch    $RPM_BUILD_ROOT%{_datadir}/%name/setuid
+touch	 $RPM_BUILD_ROOT%{_datadir}/%name/setuid
 
 pushd $RPM_BUILD_ROOT%{my_bindir}
 for prog in *
@@ -56,11 +55,17 @@ do
 		;;
 	esac
 done
+mkdir -p $RPM_BUILD_ROOT%{_bindir}
+ln -v -sf `echo %{_bindir}|\
+	sed -e 's,^%{_prefix},,' \
+	    -e 's,/$,,' \
+	    -e 's,/[^/]*,../,g' \
+	    -e 's,../$,..,'``
+	echo %{my_bindir} | \
+	sed -e 's,^%{_prefix},,'`/newpath $RPM_BUILD_ROOT%{_bindir}/newpath
 popd
 
 %post
-
-ln -v -sf %{my_bindir}/newpath %{_bindir}/
 
 if [ -f %{_datadir}/%{name}/setuid ]
 then
@@ -79,22 +84,18 @@ done
 popd
 fi
 
-%clean
-if rm -rf $RPM_BUILD_ROOT; then
-  echo OK
-else
-  find $RPM_BUILD_ROOT -type f | grep -F -v /.nfs && exit 1
-fi
-exit 0
-
 %files
 %defattr(-,root,root)
+%{_bindir}/newpath
 %{my_bindir}/*
 %{_mandir}/man1/*
 %{_datadir}/%name/*
 
 %changelog
 # each patch should add its ChangeLog entries here
+
+* Fri Jul 12 2024 Thomas Dickey
+- add newpath symlink to file list
 
 * Sat Mar 27 2021 Thomas Dickey
 - move binaries into lib-directory to work around name-pollution conflicts

@@ -1,14 +1,19 @@
-.\" $Id: tisplit.1,v 1.3 2020/10/25 23:50:30 tom Exp $
-.ie \n(.g .ds `` \(lq
-.el       .ds `` ``
-.ie \n(.g .ds '' \(rq
-.el       .ds '' ''
-.
-.TH TISPLIT "1" "October 2020"
+.\" $Id: tisplit.1,v 1.5 2024/07/12 22:56:16 tom Exp $
+.TH TISPLIT 1 2024-07-12 "MiscTools" "User commands"
+.ie \n(.g \{\
+.ds `` \(lq
+.ds '' \(rq
+.\}
+.el \{\
+.ie t .ds `` ``
+.el   .ds `` ""
+.ie t .ds '' ''
+.el   .ds '' ""
+.\}
 .hy 0
 .SH NAME
-tisplit \- split a terminfo source-file
-.
+tisplit \-
+split a terminfo source-file
 .SH SYNOPSIS
 .B tisplit
 [
@@ -38,14 +43,14 @@ e.g., \*(``terminfo.src.in\*(''
 .B \-v
 verbose, printing the filenames which are split.
 .
-.SH USAGE
+.
+.SH BUGS
+.
+Probably.
+.
+.SH EXAMPLES
 .
 \fBTisplit\fR is used to compare sources for large terminfo databases.
 .
 .SH SEE ALSO
 timerge
-.
-.
-.SH BUGS
-.
-Probably.

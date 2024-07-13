@@ -1,4 +1,10 @@
-.\" $Id: isatty.1,v 1.1 2020/10/26 00:11:36 tom Exp $
+.\" $Id: isatty.1,v 1.3 2024/07/12 22:56:16 tom Exp $
+.TH ISATTY 1 2024-07-12 "MiscTools" "User commands"
+.ie n .ds CW R
+.el   \{
+.ie \n(.g .ds CW CR
+.el       .ds CW CW
+.\}
 .de NE
 .fi
 .ft R
@@ -11,14 +17,13 @@
 .ie n  .in +4
 .el    .in +2
 .nf
-.ft C			\" Courier
+.ft \*(CW
 ..
 .
-.TH ISATTY "1" "October 2020"
 .hy 0
 .SH NAME
-isatty \- check if standard I/O is a tty
-.
+isatty \-
+check if standard I/O is a tty
 .SH SYNOPSIS
 .B isatty
 .
@@ -28,7 +33,12 @@ Use \fBisatty\fR to check if the standard input and output are a terminal.
 .SH OPTIONS
 None
 .
-.SH USAGE
+.
+.SH BUGS
+.
+Probably.
+.
+.SH EXAMPLES
 .
 \fBIsatty\fR is equivalent to
 .
@@ -38,8 +48,3 @@ None
 .
 .SH SEE ALSO
 test
-.
-.
-.SH BUGS
-.
-Probably.

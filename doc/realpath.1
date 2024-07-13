@@ -1,4 +1,10 @@
-.\" $Id: realpath.1,v 1.2 2020/10/25 23:50:01 tom Exp $
+.\" $Id: realpath.1,v 1.4 2024/07/12 22:56:16 tom Exp $
+.TH REALPATH 1 2024-07-12 "MiscTools" "User commands"
+.ie n .ds CW R
+.el   \{
+.ie \n(.g .ds CW CR
+.el       .ds CW CW
+.\}
 .de bP
 .ie n  .IP \(bu 4
 .el    .IP \(bu 2
@@ -15,14 +21,13 @@
 .ie n  .in +4
 .el    .in +2
 .nf
-.ft C			\" Courier
+.ft \*(CW
 ..
 .
-.TH REALPATH "1" "October 2020"
 .hy 0
 .SH NAME
-realpath \- expand directory and filename paths
-.
+realpath \-
+expand directory and filename paths
 .SH SYNOPSIS
 .B realpath
 [
@@ -72,15 +77,15 @@ that displaced the other implementations.
 However, the GNU version is incompatible with the other versions,
 making it necessary to modify scripts.
 .
-.SH USAGE
+.
+.SH BUGS
+.
+Probably.
+.
+.SH EXAMPLES
 .
 \fBRealpath\fR is used in shell scripts to obtain a fully normalized path
 for an existing directory or file.
 .
 .SH SEE ALSO
 pwd
-.
-.
-.SH BUGS
-.
-Probably.

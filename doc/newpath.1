@@ -1,9 +1,9 @@
-.\" $Id: newpath.1,v 1.3 2021/03/26 22:19:32 tom Exp $
-.TH NEWPATH "1" "March 2021"
+.\" $Id: newpath.1,v 1.6 2024/07/12 23:49:47 tom Exp $
+.TH NEWPATH 1 2024-07-12 "MiscTools" "User commands"
 .hy 0
 .SH NAME
-newpath \- review or update the PATH
-.
+newpath \-
+review or update the PATH
 .SH SYNOPSIS
 .B newpath
 [ \fIoptions\fP [ \fIdirectories\fP ]]
@@ -12,11 +12,16 @@ newpath \- review or update the PATH
 .SH DESCRIPTION
 Echoes the \fBPATH\fP environment variable with the given directories added,
 (the default) or removed.
+This program was written in June 1994, and is used in a variety
+of shell environments.
 .PP
 After the options and directory-parameters,
 you can put a '\-' before a command
 to invoke it with the environment variable updated,
 rather than echoing the result to standard output.
+.PP
+When adding directories, \fBnewpath\fP resolves symbolic links
+using the \fIrealpath\fP(3) function.
 .
 .SH OPTIONS
 .TP 5
@@ -50,7 +55,12 @@ remove arguments from path
 .B \-v
 verbose, shows the path with one directory per line.
 .
-.SH USAGE
+.
+.SH BUGS
+.
+Probably.
+.
+.SH EXAMPLES
 .
 \fBNewpath\fR is used in the shell initialization script to
 set up customized PATH (or PATH-like) environment variables
@@ -58,13 +68,35 @@ which correspond to the directories which exist.
 For example, it is used in systems that have NFS-mounted
 home directories with different application directories on each host.
 .PP
-This program was written in June 1994, and is used in a variety
-of shell environments.
+Because some of the utilities in this collection have the same name
+as a few other programs,
+it is helpful to install the collection in a directory
+normally not on the PATH,
+and (with a symbolic link to \fBnewpath\fP in a directory on the PATH),
+use \fBnewpath\fP to augment the path to include those utilities.
+.PP
+This C shell script checks for the link, and uses it:
+.sp
+.RS
+.EX
+foreach dir ( /usr/bin /usr/local/bin )
+    if ( -f $dir/newpath ) then
+        set path=(`newpath -0dp`)
+        break
+    endif
+end
+.EE
+.RE
+.PP
+If the link is assumed, either C or POSIX shell can augment the path
+in a single line:
+.sp
+.RS
+.EX
+set path=(`newpath -0dp`)
+PATH=`newpath -0d`
+.EE
+.RE
 .
 .SH SEE ALSO
 sh(1)
-.
-.
-.SH BUGS
-.
-Probably.

@@ -1,4 +1,10 @@
-.\" $Id: cpd.1,v 1.1 2020/10/26 00:45:34 tom Exp $
+.\" $Id: cpd.1,v 1.3 2024/07/12 22:56:16 tom Exp $
+.TH CPD 1 2024-07-12 "MiscTools" "User commands"
+.ie n .ds CW R
+.el   \{
+.ie \n(.g .ds CW CR
+.el       .ds CW CW
+.\}
 .de NE
 .fi
 .ft R
@@ -11,14 +17,13 @@
 .ie n  .in +4
 .el    .in +2
 .nf
-.ft C			\" Courier
+.ft \*(CW
 ..
 .
-.TH CPD "1" "October 2020"
 .hy 0
 .SH NAME
-cpd \- copy-date
-.
+cpd \-
+copy-date
 .SH SYNOPSIS
 .B cpd
 .I filename
@@ -33,7 +38,12 @@ more files/directories.
 .SH OPTIONS
 None.
 .
-.SH USAGE
+.
+.SH BUGS
+.
+Probably.
+.
+.SH EXAMPLES
 .
 \fBCpd\fR is used in shell scripts for a variety of reasons.
 The same can be accomplished with \fBtouch\fP (though not
@@ -53,8 +63,3 @@ touch -r source target
 .
 .SH SEE ALSO
 touch(1)
-.
-.
-.SH BUGS
-.
-Probably.

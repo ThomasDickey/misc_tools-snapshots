@@ -1,13 +1,19 @@
-.\" $Id: timerge.1,v 1.2 2020/10/25 23:50:24 tom Exp $
-.ie \n(.g .ds `` \(lq
-.el       .ds `` ``
-.ie \n(.g .ds '' \(rq
-.el       .ds '' ''
-.TH TIMERGE "1" "October 2020"
+.\" $Id: timerge.1,v 1.4 2024/07/12 22:56:16 tom Exp $
+.TH TIMERGE 1 2024-07-12 "MiscTools" "User commands"
+.ie \n(.g \{\
+.ds `` \(lq
+.ds '' \(rq
+.\}
+.el \{\
+.ie t .ds `` ``
+.el   .ds `` ""
+.ie t .ds '' ''
+.el   .ds '' ""
+.\}
 .hy 0
 .SH NAME
-timerge \- merge a split terminfo.src
-.
+timerge \-
+merge a split terminfo.src
 .SH SYNOPSIS
 .B timerge
 [
@@ -25,14 +31,14 @@ source (default: \*(``terminfo.src\*('').
 .SH OPTIONS
 None.
 .
-.SH USAGE
+.
+.SH BUGS
+.
+Probably.
+.
+.SH EXAMPLES
 .
 \fBTimerge\fR is used to compare sources for large terminfo databases.
 .
 .SH SEE ALSO
 tisplit
-.
-.
-.SH BUGS
-.
-Probably.

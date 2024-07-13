@@ -1,4 +1,10 @@
-.\" $Id: width.1,v 1.4 2020/10/25 23:50:40 tom Exp $
+.\" $Id: width.1,v 1.6 2024/07/12 22:56:16 tom Exp $
+.TH WIDTH 1 2024-07-12 "MiscTools" "User commands"
+.ie n .ds CW R
+.el   \{
+.ie \n(.g .ds CW CR
+.el       .ds CW CW
+.\}
 .de bP
 .ie n  .IP \(bu 4
 .el    .IP \(bu 2
@@ -15,14 +21,13 @@
 .ie n  .in +4
 .el    .in +2
 .nf
-.ft C			\" Courier
+.ft \*(CW
 ..
 .
-.TH WIDTH "1" "October 2020"
 .hy 0
 .SH NAME
-width \- display width of lines in a text file
-.
+width \-
+display width of lines in a text file
 .SH SYNOPSIS
 .B width
 [
@@ -70,8 +75,12 @@ The default tab-stop interval is 8.
 .BI \-w NUM
 report lines longer than \fINUM\fP.
 .
+.SH BUGS
 .
-.SH USAGE
+Probably.
+.
+.
+.SH EXAMPLES
 .
 \fBWidth\fR is normally used to check the width of production-quality
 C/C++ code, e.g.,
@@ -86,8 +95,3 @@ from the standard input.
 .
 .SH SEE ALSO
 indent
-.
-.
-.SH BUGS
-.
-Probably.

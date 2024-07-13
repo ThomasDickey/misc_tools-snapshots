@@ -1,13 +1,19 @@
-.\" $Id: unmap.1,v 1.4 2020/10/25 23:50:35 tom Exp $
-.ie \n(.g .ds `` \(lq
-.el       .ds `` ``
-.ie \n(.g .ds '' \(rq
-.el       .ds '' ''
-.TH UNMAP "1" "October 2020"
+.\" $Id: unmap.1,v 1.6 2024/07/12 22:56:16 tom Exp $
+.TH UNMAP 1 2024-07-12 "MiscTools" "User commands"
+.ie \n(.g \{\
+.ds `` \(lq
+.ds '' \(rq
+.\}
+.el \{\
+.ie t .ds `` ``
+.el   .ds `` ""
+.ie t .ds '' ''
+.el   .ds '' ""
+.\}
 .hy 0
 .SH NAME
-unmap \- decode typescript files
-.
+unmap \-
+decode typescript files
 .SH SYNOPSIS
 .B unmap
 [
@@ -34,15 +40,15 @@ as displaying it as \*(``\\E\*('').
 decode bytes into Unicode, assuming UTF-8
 .
 .
-.SH USAGE
+.SH BUGS
+.
+Probably.
+.
+.
+.SH EXAMPLES
 .
 \fBUnmap\fR is used to convert \fItypescript\fP files created by \fBscript\fP
 into readable form.
 .
 .SH SEE ALSO
 map
-.
-.
-.SH BUGS
-.
-Probably.

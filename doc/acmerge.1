@@ -1,13 +1,19 @@
-.\" $Id: acmerge.1,v 1.1 2020/10/26 00:23:44 tom Exp $
-.ie \n(.g .ds `` \(lq
-.el       .ds `` ``
-.ie \n(.g .ds '' \(rq
-.el       .ds '' ''
-.TH ACMERGE "1" "October 2020"
+.\" $Id: acmerge.1,v 1.3 2024/07/12 22:56:16 tom Exp $
+.TH ACMERGE 1 2024-07-12 "MiscTools" "User commands"
+.ie \n(.g \{\
+.ds `` \(lq
+.ds '' \(rq
+.\}
+.el \{\
+.ie t .ds `` ``
+.el   .ds `` ""
+.ie t .ds '' ''
+.el   .ds '' ""
+.\}
 .hy 0
 .SH NAME
-acmerge \- merge a split aclocal.m4
-.
+acmerge \-
+merge a split aclocal.m4
 .SH SYNOPSIS
 .B acmerge
 [
@@ -30,15 +36,15 @@ do not create a comment-line with dashes between macros in the resulting file.
 .B \-v
 verbose
 .
-.SH USAGE
+.
+.SH BUGS
+.
+Probably.
+.
+.SH EXAMPLES
 .
 \fBAcmerge\fR is used to construct aclocal.m4 from the macros which are
 stored in a repository.
 .
 .SH SEE ALSO
 acsplit(1)
-.
-.
-.SH BUGS
-.
-Probably.
