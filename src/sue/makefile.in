@@ -1,4 +1,4 @@
-# $Id: makefile.in,v 1.7 2020/10/25 18:19:30 tom Exp $
+# $Id: makefile.in,v 1.9 2024/07/13 16:36:24 tom Exp $
 
 SHELL		= /bin/sh
 THIS		= sue
@@ -18,8 +18,9 @@ datarootdir	= @datarootdir@
 
 bindir		= @bindir@
 datadir		= @datadir@/@PACKAGE@
+libexecdir	= @libexecdir@
 
-BINDIR		= $(DESTDIR)$(bindir)
+BINDIR		= $(DESTDIR)@install_bin@
 DATADIR		= $(DESTDIR)$(datadir)
 
 CC		= @CC@
@@ -31,7 +32,7 @@ CPPFLAGS	= @CPPFLAGS@ -I$(top_srcdir)
 LINK		= $(CC) $(CFLAGS)
 
 INSTALL		= @INSTALL@
-INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+INSTALL_PROGRAM	= @INSTALL_BIN@
 
 LINT		= @LINT@
 LINT_OPTS	= @LINT_OPTS@

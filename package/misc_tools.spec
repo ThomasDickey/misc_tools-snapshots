@@ -1,7 +1,7 @@
 Summary: miscellaneous foundation tools
 %define AppProgram misc_tools
-%define AppVersion 20240712
-# $XTermId: misc_tools.spec,v 1.25 2024/07/13 00:45:19 tom Exp $
+%define AppVersion 20240713
+# $XTermId: misc_tools.spec,v 1.28 2024/07/13 14:48:20 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
 Release: 1
@@ -33,6 +33,8 @@ INSTALL_PROGRAM='${INSTALL}' \
 		--bindir=%{my_bindir} \
 		--libdir=%{_libdir} \
 		--mandir=%{_mandir} \
+		--with-execdir \
+		--with-everything \
 		--with-sudo-hacks=root,dickey
 
 make
@@ -55,14 +57,6 @@ do
 		;;
 	esac
 done
-mkdir -p $RPM_BUILD_ROOT%{_bindir}
-ln -v -sf `echo %{_bindir}|\
-	sed -e 's,^%{_prefix},,' \
-	    -e 's,/$,,' \
-	    -e 's,/[^/]*,../,g' \
-	    -e 's,../$,..,'``
-	echo %{my_bindir} | \
-	sed -e 's,^%{_prefix},,'`/newpath $RPM_BUILD_ROOT%{_bindir}/newpath
 popd
 
 %post

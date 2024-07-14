@@ -1,0 +1,38 @@
+#!/bin/sh
+# $Id: install-bin.in,v 1.4 2024/07/13 17:35:43 tom Exp $
+# Install all of the executables in $libexecdir, and make a symbolic link for
+# newpath from the $bindir.
+
+INSTALL="@INSTALL@"
+INSTALL_PROGRAM="@INSTALL_PROGRAM@"
+with_libexec="@with_libexec@"
+
+if [ "$with_libexec" != no ]
+then
+	prefix="@prefix@"
+	exec_prefix="@exec_prefix@"
+	bindir="@bindir@"
+	libexecdir="@libexecdir@"
+	my_bindir="$DESTDIR$libexecdir/$with_libexec"
+	mkdir -p $my_bindir
+	if [ -d "$2" ]
+	then
+		my_target="$1"
+	else
+		my_target=`echo "$2" | sed -e 's,^.*/,,'`
+	fi
+	$INSTALL_PROGRAM "$1" $my_bindir/$my_target
+	if [ "$1" = newpath ]
+	then
+		source=`echo $bindir|\
+			sed -e 's,^'$prefix',,' \
+			    -e 's,/$,,' \
+			    -e 's,/[^/]*,../,g' \
+			    -e 's,../$,..,'``
+		echo "$my_bindir" | \
+			sed -e 's,^'$DESTDIR$prefix',,'`
+		@LN_S@ "$source/$1" "$2/$1"
+	fi
+else
+	$INSTALL_PROGRAM "$@"
+fi

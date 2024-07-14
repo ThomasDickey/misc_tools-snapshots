@@ -1,3 +1,66 @@
+2024-07-13  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* src/newpath/newpath.c:
+	a relative link for newpath, i.e., making /usr/bin/newpath a symbolic link
+	to ../libexec/misctools/newpath did not work -- fix this by finding the
+	program on the path, and using realpath to resolve links in that.
+
+	* install-bin.in: corrected link source
+
+	* package/debian/postinst: using libexec now, rather than lib
+
+	* src/sue/use-hacks:
+	s/DESTDIR/DestDir/ to avoid conflict with $DESTDIR used in package builds
+
+	* configure: regen
+
+	* src/sue/use-hacks: exit on the first error
+
+	* install-bin.in: add special case for src/sue
+
+	* configure.in: add install_bin symbol, for special case in src/sue
+
+	* src/sue/makefile.in:
+	bin-directory depends upon the --with-execdir option
+
+	* configure: regen
+
+	* install-bin.in: account for DESTDIR
+
+	* configure.in: improve message-result for logging
+
+	* package/debian/postinst:
+	symbolic link is now done via configure option --with-execdir
+
+	* package/debian/rules: use --with-execdir option
+
+	* configure: regen
+
+	* aclocal.m4: add CF_PROG_LN_S
+
+	* install-bin.in: RCS_BASE
+
+	* package/misc_tools.spec:
+	simplify by adding a configure option --with-execdir
+
+	* configure.in, src/acsplit/makefile.in, src/count_files/makefile.in,
+	  src/cpd/makefile.in, src/hex/makefile.in, src/isatty/makefile.in,
+	  src/newest/makefile.in, src/newpath/makefile.in,
+	  src/perror/makefile.in, src/realpath/makefile.in,
+	  src/slowcat/makefile.in, src/splitit/makefile.in, src/sue/makefile.in,
+	  src/tisplit/makefile.in, src/unmap/makefile.in, src/width/makefile.in:
+	added --with-execdir option to simplify installing the tools into libexecdir
+	while making a symbolic link to newpath
+
+	* makefile.in: provide for cleanup of install-bin script
+
+	* package/misc_tools.spec:
+	build all programs, since there is no naming conflict now
+
+	* doc/minstall.in: update to match unquoted section number in .TH line
+
+	* package/debian/changelog, package/misc_tools.spec: bump
+
 2024-07-12  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/misc_tools.spec:

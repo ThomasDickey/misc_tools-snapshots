@@ -1,9 +1,10 @@
 /*
- * $Id: newpath.c,v 1.18 2021/03/27 17:28:11 tom Exp $
+ * $Id: newpath.c,v 1.19 2024/07/14 00:51:48 tom Exp $
  *
  * Author:	T.E.Dickey
  * Created:	02 Jun 1994
  * Modified:
+ *		13 Jul 2024, handle relative-link in search for original path.
  *		25 Mar 2021, add "-0" option.
  *		13 Mar 2012, integrate into misc_tools package
  *		10 Nov 2000, port to win32
@@ -298,7 +299,21 @@ main(int argc, char *argv[])
 	    char *source = argv[0];
 	    char *leaf;
 	    int found = FALSE;
-	    char resolved[1024];
+	    char resolved[PATH_MAX];
+	    char which[PATH_MAX];
+
+	    if (!isFile(source)) {
+		for (c = 0; list[c].nn != NULL; ++c) {
+		    size_t need = strlen(list[c].nn) + strlen(source);
+		    if (need >= sizeof(which) - 3)
+			continue;
+		    sprintf(which, "%s/%s", list[c].nn, source);
+		    if (isLink(which) || isFile(which)) {
+			source = which;
+			break;
+		    }
+		}
+	    }
 
 	    if (strchr(source, PATHSEP) != NULL
 		&& realpath(source, actual) != NULL

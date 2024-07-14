@@ -1,4 +1,4 @@
-# $Id: makefile.in,v 1.5 2020/10/25 19:02:52 tom Exp $
+# $Id: makefile.in,v 1.6 2024/07/13 13:33:10 tom Exp $
 # top-level makefile template for "misc_tools"
 
 SHELL	= /bin/sh
@@ -18,7 +18,10 @@ exec_prefix	= @exec_prefix@
 all ::
 
 check ::
-	@ echo "There are no automatic tests for these programs"
+	@echo "There are no automatic tests for these programs"
+
+distclean ::
+	rm -f core @EXTRA_OUTPUT_FILES@
 
 all \
 clean \

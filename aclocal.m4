@@ -1,7 +1,7 @@
-dnl $Id: aclocal.m4,v 1.21 2023/12/01 22:22:50 tom Exp $
+dnl $Id: aclocal.m4,v 1.22 2024/07/13 16:00:06 tom Exp $
 dnl ---------------------------------------------------------------------------
 dnl
-dnl Copyright 2012-2022,2023 by Thomas E. Dickey
+dnl Copyright 2012-2023,2024 by Thomas E. Dickey
 dnl
 dnl                         All Rights Reserved
 dnl
@@ -1217,6 +1217,28 @@ case "x$LINT" in
 esac
 AC_SUBST(LINT_OPTS)
 AC_SUBST(LINT_LIBS)
+])dnl
+dnl ---------------------------------------------------------------------------
+dnl CF_PROG_LN_S version: 2 updated: 2010/08/14 18:25:37
+dnl ------------
+dnl Combine checks for "ln -s" and "ln -sf", updating $LN_S to include "-f"
+dnl option if it is supported.
+AC_DEFUN([CF_PROG_LN_S],[
+AC_PROG_LN_S
+AC_MSG_CHECKING(if $LN_S -f options work)
+
+rm -f conf$$.src conf$$dst
+echo >conf$$.dst
+echo first >conf$$.src
+if $LN_S -f conf$$.src conf$$.dst 2>/dev/null; then
+	cf_prog_ln_sf=yes
+else
+	cf_prog_ln_sf=no
+fi
+rm -f conf$$.dst conf$$src
+AC_MSG_RESULT($cf_prog_ln_sf)
+
+test "$cf_prog_ln_sf" = yes && LN_S="$LN_S -f"
 ])dnl
 dnl ---------------------------------------------------------------------------
 dnl CF_REMOVE_CFLAGS version: 3 updated: 2021/09/05 17:25:40

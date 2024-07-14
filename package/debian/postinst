@@ -7,14 +7,8 @@ set -e
 V=-v
 if [ "$1" != "upgrade" ]
 then
-	source=/usr/lib/misctools/newpath 
-	target=/usr/bin
-	if [ -f $source ]
-	then
-		ln $V -sf $source $target/
-	fi
 	source=/usr/share/misctools/setuid 
-	target=/usr/lib/misctools
+	target=/usr/libexec/misctools
 	if [ -f $source ]
 	then
 		cd $target

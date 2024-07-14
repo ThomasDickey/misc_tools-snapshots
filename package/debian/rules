@@ -37,11 +37,11 @@ configure-stamp:
 		--host=$(DEB_HOST_GNU_TYPE) \
 		--build=$(DEB_BUILD_GNU_TYPE) \
 		--prefix=/usr \
-		--bindir=/usr/lib/$(PACKAGE) \
 		--datadir=/usr/share \
 		--mandir=\$${prefix}/share/man \
 		--sysconfdir=/etc \
 		--with-package=$(PACKAGE) \
+		--with-execdir \
 		--with-everything \
 		--with-sudo-hacks=root,dickey
 
