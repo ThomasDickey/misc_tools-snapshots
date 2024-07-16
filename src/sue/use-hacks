@@ -1,31 +1,30 @@
 #!/bin/sh
-# $Id: use-hacks,v 1.7 2024/07/13 17:18:17 tom Exp $
+# $Id: use-hacks,v 1.8 2024/07/15 20:42:40 tom Exp $
 # install the given program as setuid/setgid for the listed users
 
-DOIT=eval
-set -e
+DOIT="eval"
 
 INSTALL="$1"; shift 1
 PROGRAM="$1"; shift 1
 DestDir="$1"; shift 1
 
-if test "$#" != 0
+if [ "$#" != 0 ]
 then
 	echo "** installing setuid for $*"
 	for user in "$@"
 	do
-		$DOIT $INSTALL $PROGRAM $DestDir/$user
-		if id $user >/dev/null 2>/dev/null
+		$DOIT $INSTALL "$PROGRAM" "$DestDir/$user"
+		if id "$user" >/dev/null 2>/dev/null
 		then
 			echo "...$user"
-			U=`id $user | sed -e 's/^uid=//' -e 's/(.*//'`
-			G=`id $user | sed -e 's/^.*gid=//' -e 's/(.*//'`
-			$DOIT chown $U $DestDir/$user
-			$DOIT chgrp $G $DestDir/$user
-			$DOIT chmod ug+s $DestDir/$user
+			U=`id "$user" | sed -e 's/^uid=//' -e 's/(.*//'`
+			G=`id "$user" | sed -e 's/^.*gid=//' -e 's/(.*//'`
+			$DOIT chown "$U" "$DestDir/$user"
+			$DOIT chgrp "$G" "$DestDir/$user"
+			$DOIT chmod ug+s "$DestDir/$user"
 		else
 			echo "?? $user"
 		fi
-		ls -l $DestDir/$user
+		ls -l "$DestDir/$user"
 	done
 fi

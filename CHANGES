@@ -1,3 +1,18 @@
+2024-07-15  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* install-bin.in: source parameter may have $DESTDIR prefix
+
+	* src/sue/use-usual:
+	use $DestDir rather than $DESTDIR, and use the install program
+	to install the prepared wrapper rather than fixing after install.
+
+	* package/misc_tools.spec: use --with-execdir option
+
+	* src/sue/use-hacks: quoting per shellcheck warnings
+	do not exit on the first error, to work with rpmbuild
+
+	* package/debian/changelog: bump
+
 2024-07-13  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* src/newpath/newpath.c:

@@ -1,7 +1,8 @@
 #!/bin/sh
-# $Id: install-bin.in,v 1.4 2024/07/13 17:35:43 tom Exp $
+# $Id: install-bin.in,v 1.5 2024/07/16 00:00:22 tom Exp $
 # Install all of the executables in $libexecdir, and make a symbolic link for
 # newpath from the $bindir.
+set -e
 
 INSTALL="@INSTALL@"
 INSTALL_PROGRAM="@INSTALL_PROGRAM@"
@@ -24,13 +25,14 @@ then
 	$INSTALL_PROGRAM "$1" $my_bindir/$my_target
 	if [ "$1" = newpath ]
 	then
-		source=`echo $bindir|\
-			sed -e 's,^'$prefix',,' \
+		source="`echo $bindir|\
+			sed -e 's,^'${DESTDIR-ERROR}',,' \
+			    -e 's,^'$prefix',,' \
 			    -e 's,/$,,' \
 			    -e 's,/[^/]*,../,g' \
 			    -e 's,../$,..,'``
 		echo "$my_bindir" | \
-			sed -e 's,^'$DESTDIR$prefix',,'`
+			sed -e 's,^'$DESTDIR$prefix',,'`"
 		@LN_S@ "$source/$1" "$2/$1"
 	fi
 else

@@ -1,7 +1,7 @@
-Summary: miscellaneous foundation tools
+Summary: Miscellaneous foundation tools
 %define AppProgram misc_tools
-%define AppVersion 20240713
-# $XTermId: misc_tools.spec,v 1.28 2024/07/13 14:48:20 tom Exp $
+%define AppVersion 20240715
+# $XTermId: misc_tools.spec,v 1.29 2024/07/15 23:42:00 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
 Release: 1
@@ -17,7 +17,7 @@ and install on each machine, but which are too small to package separately.
 
 %prep
 
-%global my_bindir %{_libdir}/misc_tools
+%global my_bindir %{_libexecdir}/misc_tools
 
 # no need for debugging symbols...
 %define debug_package %{nil}
@@ -27,11 +27,11 @@ and install on each machine, but which are too small to package separately.
 %build
 
 INSTALL_PROGRAM='${INSTALL}' \
-	./configure \
+	%configure \
 		--target %{_target_platform} \
 		--prefix=%{_prefix} \
-		--bindir=%{my_bindir} \
-		--libdir=%{_libdir} \
+		--bindir=%{_bindir} \
+		--libexecdir=%{_libexecdir} \
 		--mandir=%{_mandir} \
 		--with-execdir \
 		--with-everything \
@@ -70,8 +70,7 @@ do
 	then
 		U=`id $prog | sed -e 's/^uid=//' -e 's/(.*//'`
 		G=`id $prog | sed -e 's/^.*gid=//' -e 's/(.*//'`
-		chown -v $U $prog
-		chgrp -v $G $prog
+		chown -v "$U:$G" $prog
 		chmod -v ug+s $prog
 	fi
 done
@@ -87,6 +86,9 @@ fi
 
 %changelog
 # each patch should add its ChangeLog entries here
+
+* Mon Jul 15 2024 Thomas Dickey
+- use --with-execdir option
 
 * Fri Jul 12 2024 Thomas Dickey
 - add newpath symlink to file list
