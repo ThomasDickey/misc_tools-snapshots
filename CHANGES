@@ -1,3 +1,71 @@
+2025-09-11  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* src/sue/sue.c: workaround for broken NetBSD header
+
+	* td_getopt.h: NetBSD lint
+
+	* package/debian/changelog, package/misc_tools.spec: bump
+
+2025-09-10  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* COPYING.asc: sign
+
+	* package/misc_tools.spec: SPDX equivalent
+
+	* COPYING: consolidate license
+
+	* install-bin.in:
+	amend $INSTALL in case install-sh is used from a subdirectory
+
+	* install-bin.in: shellcheck warnings
+
+	* config_h.in, doc/minstall.in, package/debian/postinst,
+	  src/newpath/makefile.wnt, configure.in:
+	trim-blanks
+
+	* src/unmap/chrcount.c, src/unmap/map.c, src/unmap/map_s.c,
+	  src/unmap/unmap.c, src/unmap/unmap_s.c, src/width/width.c,
+	  src/splitit/splitit.c, src/perror/perror.c, src/slowcat/slowcat.c,
+	  src/sue/sue.c, src/tisplit/timerge.c, src/tisplit/tisplit.c,
+	  src/acsplit/acmerge.c, src/count_files/count_files.c, src/cpd/cpd.c,
+	  src/newest/newest.c, src/newpath/newpath.c, src/acsplit/acsplit.c,
+	  td_getline.h:
+	s/0/NULL/
+
+	* doc/newpath.1: bump
+
+	* doc/newpath.1: grammar
+
+	* doc/cpd.1: bump
+
+	* doc/cpd.1: grammar
+
+	* doc/chrcount.1: bump
+
+	* doc/chrcount.1: grammar
+
+	* doc/acsplit.1: bump
+
+	* doc/acsplit.1: grammar
+
+	* package/debian/copyright: bump
+
+	* configure: regen
+
+	* package/debian/changelog, package/misc_tools.spec: bump
+
+2025-08-05  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* aclocal.m4: resync with my-autoconf
+
+2025-06-08  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* install-sh: resync with my-autoconf
+
+2024-07-28  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.guess: update to 2024-07-27
+
 2024-07-15  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* install-bin.in: source parameter may have $DESTDIR prefix
@@ -87,8 +155,16 @@
 	* doc/acmerge.1, doc/acsplit.1, doc/chrcount.1, doc/count_files.1,
 	  doc/cpd.1, doc/hex.1, doc/isatty.1, doc/map.1, doc/newest.1,
 	  doc/perror.1, doc/realpath.1, doc/slowcat.1, doc/splitit.1, doc/sue.1,
-	  doc/timerge.1, doc/tisplit.1, doc/unmap.1, doc/width.1, doc/newpath.1:
+	  doc/timerge.1, doc/tisplit.1, doc/unmap.1, doc/width.1:
 	identify source (in lower-left) as "MiscTools"
+
+	* doc/acmerge.1, doc/acsplit.1, doc/chrcount.1, doc/count_files.1,
+	  doc/cpd.1, doc/hex.1, doc/isatty.1, doc/map.1, doc/newest.1,
+	  doc/perror.1, doc/realpath.1, doc/slowcat.1, doc/splitit.1, doc/sue.1,
+	  doc/timerge.1, doc/tisplit.1, doc/unmap.1, doc/width.1:
+	quoting
+
+	* doc/newpath.1: identify source (in lower-left) as "MiscTools"
 
 	* doc/acmerge.1, doc/acsplit.1, doc/chrcount.1, doc/count_files.1,
 	  doc/cpd.1, doc/hex.1, doc/isatty.1, doc/map.1, doc/newest.1,
@@ -104,6 +180,10 @@
 	* COPYING.asc: sign
 
 	* COPYING, package/debian/changelog, package/misc_tools.spec: bump
+
+2024-06-03  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.sub: update to 2024-05-27
 
 2023-12-27  Thomas E. Dickey  <dickey@invisible-island.net>
 

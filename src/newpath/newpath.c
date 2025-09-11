@@ -1,5 +1,5 @@
 /*
- * $Id: newpath.c,v 1.19 2024/07/14 00:51:48 tom Exp $
+ * $Id: newpath.c,v 1.20 2025/09/10 20:38:30 tom Exp $
  *
  * Author:	T.E.Dickey
  * Created:	02 Jun 1994
@@ -101,11 +101,11 @@ usage(void)
 	"",
 	"Put a '-' before a command which is invoked with the environment variable",
 	"updated, rather than echoing the result to standard output.",
-	0
+	NULL
     };
     register int j;
 
-    for (j = 0; tbl[j] != 0; j++)
+    for (j = 0; tbl[j] != NULL; j++)
 	fprintf(stderr, "%s\n", tbl[j]);
     exit(EXIT_FAILURE);
 }
@@ -115,7 +115,7 @@ StrAlloc(const char *s)		/* patch: not everyone has 'strdup()' */
 {
     char *d = malloc(strlen(s) + 1);
 
-    if (d == 0)
+    if (d == NULL)
 	failed("malloc");
     return strcpy(d, s);
 }
@@ -126,12 +126,12 @@ Remove(int offset, LIST * list, char *name)
     int n = offset;
 
     TRACE((stderr, "Remove %d:%s\n", offset, name));
-    while (list[n].nn != 0) {
+    while (list[n].nn != NULL) {
 	if (!Compare(list[n].nn, name)) {
 	    do {
 		list[n] = list[n + 1];
 	    }
-	    while (list[++n].nn != 0);
+	    while (list[++n].nn != NULL);
 	    n = offset - 1;
 	}
 	n++;
@@ -153,7 +153,7 @@ Append(int offset, LIST * list, char *name)
 	list[n] = temp;
 	temp = save;
     }
-    while (list[n].nn != 0);
+    while (list[n].nn != NULL);
 
     return offset + 1;
 }
@@ -212,7 +212,7 @@ main(int argc, char *argv[])
     size_t length = (size_t) argc;
     int operation = 'a';
     int use_original = FALSE;
-    const char *where = 0;
+    const char *where = NULL;
 
     int c, point = 0;
     LIST *list;
@@ -233,7 +233,7 @@ main(int argc, char *argv[])
 	    remove_duplicates = TRUE;
 	    break;
 	case 'e':
-	    where = 0;
+	    where = NULL;
 	    break;
 	case 'f':
 	    allow_files = TRUE;
@@ -245,7 +245,7 @@ main(int argc, char *argv[])
 	    out_delim = ' ';
 	    break;
 	case 'r':
-	    if (where == 0)
+	    if (where == NULL)
 		where = BLANK;
 	    operation = c;
 	    break;
@@ -260,7 +260,7 @@ main(int argc, char *argv[])
     /* Get the current path, make a corresponding list of strings.  Leave
      * enough room in the list to allow us to insert the arguments also.
      */
-    if ((s = getenv(name)) == 0)
+    if ((s = getenv(name)) == NULL)
 	s = StrAlloc(BLANK);
     else
 	s = StrAlloc(s);	/* ...just in case someone else uses it */
@@ -286,7 +286,7 @@ main(int argc, char *argv[])
 	}
 	s++;
     }
-    list[c].nn = 0;
+    list[c].nn = NULL;
     TRACE((stderr, "%s has %d entries\n", name, c));
 
     /*
@@ -388,13 +388,13 @@ main(int argc, char *argv[])
 #endif /* HAVE_REALPATH */
 
     /* Find the list-entry after which we insert/remove entries */
-    for (c = 0; list[c].nn != 0; c++) {
-	if (where != 0 && !Compare(where, list[c].nn)) {
+    for (c = 0; list[c].nn != NULL; c++) {
+	if (where != NULL && !Compare(where, list[c].nn)) {
 	    point = c;
 	    break;
 	}
     }
-    if (list[c].nn == 0)
+    if (list[c].nn == NULL)
 	point = c - 1;
     TRACE((stderr, "argc=%d, point=%d (%c)\n", argc, point, operation));
 
@@ -412,16 +412,16 @@ main(int argc, char *argv[])
 
     if (remove_duplicates) {
 	/* Check to see if the directory exists. If not, remove it */
-	for (c = 1; list[c].nn != 0; c++)
+	for (c = 1; list[c].nn != NULL; c++)
 	    if (!exists(&list[c])) {
 		Remove(c, list, list[c].nn);
 		c--;
 	    };
 	/* Compare the inode & device numbers of the remaining items */
-	for (c = 1; list[c].nn != 0; c++) {
+	for (c = 1; list[c].nn != NULL; c++) {
 	    int d;
 
-	    for (d = c + 1; list[d].nn != 0; d++) {
+	    for (d = c + 1; list[d].nn != NULL; d++) {
 		if (SameDir(&list[c], &list[d])) {
 		    Remove(d, list, list[d].nn);
 		    d--;
@@ -433,13 +433,13 @@ main(int argc, char *argv[])
     /* Finally, print the path */
     if (optind < argc) {
 	size_t len = strlen(name) + 2;
-	char *changed = 0;
+	char *changed = NULL;
 
-	for (c = 1; list[c].nn != 0; c++)
+	for (c = 1; list[c].nn != NULL; c++)
 	    len += 1 + strlen(list[c].nn);
 	changed = malloc(len);
 	strcpy(changed, name);
-	for (c = 1; list[c].nn != 0; c++) {
+	for (c = 1; list[c].nn != NULL; c++) {
 	    sprintf(changed + strlen(changed), "%c%s",
 		    (c > 1) ? PATHDELIM : '=',
 		    list[c].nn);
@@ -456,7 +456,7 @@ main(int argc, char *argv[])
 	fflush(stdout);
     } else {
 	fflush(stderr);
-	for (c = 1; list[c].nn != 0; c++) {
+	for (c = 1; list[c].nn != NULL; c++) {
 	    if (c > 1)
 		(void) putchar(out_delim);
 	    (void) fputs(list[c].nn, stdout);

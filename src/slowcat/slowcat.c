@@ -1,5 +1,5 @@
 /*
- * $Id: slowcat.c,v 1.6 2020/12/19 10:05:21 tom Exp $
+ * $Id: slowcat.c,v 1.7 2025/09/10 20:40:21 tom Exp $
  *
  * Author:	T.E.Dickey
  * Created:	14 Jan 1997
@@ -70,7 +70,7 @@ main(int argc, char *argv[])
 	    } else {
 		FILE *fp = fopen(name, "r");
 		ok++;
-		if (fp != 0) {
+		if (fp != NULL) {
 		    slowcat(fp);
 		    fclose(fp);
 		}

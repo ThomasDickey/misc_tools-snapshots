@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.32 2024/07/13 16:39:09 tom Exp $
+dnl $Id: configure.in,v 1.33 2025/09/10 20:43:09 tom Exp $
 dnl configure-script template for "misc_tools"
 
 AC_INIT(src/newpath/newpath.c)
@@ -14,7 +14,7 @@ CF_MAKEFLAGS
 
 CF_PROG_EXT
 CF_PROG_LINT
-CF_PROG_LN_S 
+CF_PROG_LN_S
 CF_WITHOUT_X
 CF_XOPEN_SOURCE
 

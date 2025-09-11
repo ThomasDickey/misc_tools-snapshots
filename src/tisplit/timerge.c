@@ -1,5 +1,5 @@
 /*
- * $Id: timerge.c,v 1.6 2020/12/19 12:14:42 tom Exp $
+ * $Id: timerge.c,v 1.7 2025/09/10 20:40:21 tom Exp $
  *
  * Title:	timerge.c - merge a split terminfo.src
  * Author:	T.E.Dickey
@@ -44,7 +44,7 @@ append(const char *name, FILE *ofp)
 	*t++ = *name++;
     *t = 0;
 
-    if ((ifp = fopen(temp, "r")) == 0)
+    if ((ifp = fopen(temp, "r")) == NULL)
 	failed(temp);
 
     while (getline(&temp, &have, ifp) >= 0)
@@ -60,17 +60,17 @@ timerge(const char *path)
     FILE *ofp;
     char *name = malloc(strlen(path) + 4);
     char *temp = malloc(strlen(target) + 5);
-    char *bfr = 0;
+    char *bfr = NULL;
     size_t have = 0;
 
     sprintf(name, "%s.in", path);
-    if ((hdr = fopen(name, "r")) == 0)
+    if ((hdr = fopen(name, "r")) == NULL)
 	failed(name);
     free(name);
 
     sprintf(temp, "%s.out", target);
     remove(temp);
-    if ((ofp = fopen(temp, "w")) == 0)
+    if ((ofp = fopen(temp, "w")) == NULL)
 	failed(temp);
 
     while (getline(&bfr, &have, hdr) >= 0) {

@@ -1,5 +1,5 @@
 /*
- * $Id: width.c,v 1.16 2020/12/19 11:25:30 tom Exp $
+ * $Id: width.c,v 1.17 2025/09/10 20:41:47 tom Exp $
  *
  * Title:	width.c
  * Author:	T.Dickey
@@ -81,7 +81,7 @@ width(const char *name, FILE *fp)
     int column = 0;
     int length = 0;
     size_t have = 0;
-    char *buffer = 0;
+    char *buffer = NULL;
 
     while (getline(&buffer, &have, fp) >= 0) {
 	int c;
@@ -184,11 +184,11 @@ main(int argc, char *argv[])
 	while (optind < argc) {
 	    char *name = argv[optind++];
 	    if (!strcmp(name, "-")) {
-		char *filename = 0;
+		char *filename = NULL;
 		size_t lenname = 0;
 		while (getline(&filename, &lenname, stdin) >= 0) {
 		    FILE *fp = fopen(filename, "r");
-		    if (fp == 0)
+		    if (fp == NULL)
 			failed(filename);
 		    width(filename, fp);
 		    (void) fclose(fp);
@@ -196,7 +196,7 @@ main(int argc, char *argv[])
 		free(filename);
 	    } else {
 		FILE *fp = fopen(name, "r");
-		if (fp == 0)
+		if (fp == NULL)
 		    failed(name);
 		width(name, fp);
 		(void) fclose(fp);

@@ -1,5 +1,5 @@
 /*
- * $Id: unmap_s.c,v 1.7 2019/12/31 18:46:07 tom Exp $
+ * $Id: unmap_s.c,v 1.8 2025/09/10 20:41:47 tom Exp $
  *
  * Title:	unmap_s.c
  * Author:	T.E.Dickey
@@ -15,7 +15,7 @@
 static int
 put_ch(FILE *ofp, int c)
 {
-    if (ofp != 0)
+    if (ofp != NULL)
 	fputc(c, ofp);
     return 1;
 }

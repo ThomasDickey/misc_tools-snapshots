@@ -1,5 +1,5 @@
 /*
- * $Id: tisplit.c,v 1.4 2020/12/19 12:19:05 tom Exp $
+ * $Id: tisplit.c,v 1.5 2025/09/10 20:40:21 tom Exp $
  *
  * Title:	tisplit.c - split terminfo.src
  * Author:	T.E.Dickey
@@ -60,7 +60,7 @@ finish(FILE *ofp, char *name)
     char temp[BUFSIZ];
 
     my_temp(temp);
-    if (ofp != 0)
+    if (ofp != NULL)
 	fclose(ofp);
 
     if (*name != 0) {
@@ -74,7 +74,7 @@ finish(FILE *ofp, char *name)
 
 	remove(temp);
     }
-    if ((ofp = fopen(temp, "w")) == 0)
+    if ((ofp = fopen(temp, "w")) == NULL)
 	failed(temp);
     return ofp;
 }
@@ -84,8 +84,8 @@ append(FILE *ofp, FILE *hdr)
 {
     char temp[BUFSIZ];
 
-    if (ofp != 0) {
-	char *bfr = 0;
+    if (ofp != NULL) {
+	char *bfr = NULL;
 	size_t have = 0;
 
 	fclose(ofp);
@@ -101,7 +101,7 @@ append(FILE *ofp, FILE *hdr)
 	free(bfr);
 
 	remove(temp);
-	if ((ofp = fopen(temp, "w")) == 0)
+	if ((ofp = fopen(temp, "w")) == NULL)
 	    failed(temp);
     }
     return ofp;
@@ -114,16 +114,16 @@ tisplit(const char *path)
     FILE *ifp = fopen(path, "r");
     FILE *ofp;
     char name[BUFSIZ];
-    char *bfr = 0;
+    char *bfr = NULL;
     size_t have = 0;
 
-    if (ifp == 0)
+    if (ifp == NULL)
 	failed(path);
     mkdir(target, 0777);
 
     sprintf(name, "%s.in", path);
     remove(name);
-    if ((hdr = fopen(name, "w")) == 0)
+    if ((hdr = fopen(name, "w")) == NULL)
 	failed(name);
 
     name[0] = 0;

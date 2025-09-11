@@ -1,5 +1,5 @@
 /*
- * $Id: count_files.c,v 1.5 2020/12/19 11:26:27 tom Exp $
+ * $Id: count_files.c,v 1.6 2025/09/10 20:38:30 tom Exp $
  *
  * Title:	count_files.c
  * Author:	T.E.Dickey
@@ -69,7 +69,7 @@ DoPath(char *path)
     struct stat sb;
 
     if (stat(path, &sb) >= 0 && (sb.st_mode & S_IFMT) == S_IFREG) {
-	if ((fp = fopen(path, "r")) != 0) {
+	if ((fp = fopen(path, "r")) != NULL) {
 	    int c;
 	    int in_word = FALSE;
 	    while (!feof(fp) && !ferror(fp)) {
@@ -155,7 +155,7 @@ main(int argc,
 	while (optind < argc)
 	    DoPath(argv[optind++]);
     } else {
-	char *buffer = 0;
+	char *buffer = NULL;
 	size_t have = 0;
 
 	while (getline(&buffer, &have, stdin) >= 0) {

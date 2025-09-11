@@ -1,5 +1,5 @@
 /*
- * $Id: acmerge.c,v 1.12 2020/12/19 10:36:10 tom Exp $
+ * $Id: acmerge.c,v 1.13 2025/09/10 20:38:30 tom Exp $
  *
  * Title:	acmerge.c - merge a split aclocal.m4
  * Author:	T.E.Dickey
@@ -59,7 +59,7 @@ skip_comment(char *s)
 	if (isspace((unsigned char) *s))
 	    return skip_blanks(s);
     }
-    return 0;
+    return NULL;
 }
 
 static int
@@ -67,7 +67,7 @@ is_dashes(char *line)
 {
     line = skip_blanks(line);
     line = skip_comment(line);
-    if (line != 0 && strlen(line) >= 8) {
+    if (line != NULL && strlen(line) >= 8) {
 	return (!strncmp(line, "--------", 8));
     }
     return 0;
@@ -106,7 +106,7 @@ append(char *name, FILE *ofp)
     *t = 0;
 
     VERBOSE(0) ("appending %s\n", temp);
-    if ((ifp = fopen(temp, "r")) == 0) {
+    if ((ifp = fopen(temp, "r")) == NULL) {
 	if (!strncmp(name, "AC_", 3) || !strncmp(name, "AM_", 3))
 	    return;
 	failed(temp);
@@ -132,16 +132,16 @@ acmerge(const char *path)
     FILE *ofp;
     char name[BUFSIZ];
     char temp[BUFSIZ];
-    char *bfr = 0;
+    char *bfr = NULL;
     size_t have = 0;
 
     sprintf(name, "%s.in", path);
-    if ((hdr = fopen(name, "r")) == 0)
+    if ((hdr = fopen(name, "r")) == NULL)
 	failed(name);
 
     sprintf(temp, "%s.out", target);
     remove(temp);
-    if ((ofp = fopen(temp, "w")) == 0)
+    if ((ofp = fopen(temp, "w")) == NULL)
 	failed(temp);
 
     while (getline(&bfr, &have, hdr) >= 0) {

@@ -1,5 +1,5 @@
 /*
- * $Id: newest.c,v 1.5 2020/12/19 11:36:11 tom Exp $
+ * $Id: newest.c,v 1.6 2025/09/10 20:38:30 tom Exp $
  *
  * Title:	newest.c
  * Author:	T.Dickey
@@ -68,7 +68,7 @@ main(int argc, char *argv[])
 	while (optind < argc)
 	    newest(argv[optind++]);
     } else {
-	char *buffer = 0;
+	char *buffer = NULL;
 	size_t have = 0;
 	while (getline(&buffer, &have, stdin) >= 0) {
 	    size_t nn = strlen(buffer);

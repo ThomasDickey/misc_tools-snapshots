@@ -1,5 +1,5 @@
 /*
- * $Id: sue.c,v 1.5 2020/12/19 10:08:51 tom Exp $
+ * $Id: sue.c,v 1.7 2025/09/11 08:17:35 tom Exp $
  *
  * Author:	T.E.Dickey
  * Created:	23 Apr 1990
@@ -29,9 +29,10 @@ main(int argc, char *argv[])
     int code = EXIT_SUCCESS;
     register struct passwd *q;
 
-#ifndef _POSIX_SAVED_IDS
+#if !defined(_POSIX_SAVED_IDS) && !defined(_NETBSD_SOURCE)
     /*
      * This works _everywhere_ except for glibc 2.1.3, which is broken.
+     * Later, NetBSD also is broken.
      */
     if (setuid(geteuid()) < 0)
 	failed("setuid");
@@ -49,7 +50,7 @@ main(int argc, char *argv[])
     strcpy(home, "HOME=");
     strcpy(shell, "SHELL=");
     strcpy(user, "USER=");
-    if ((q = getpwuid(getuid())) != 0) {
+    if ((q = getpwuid(getuid())) != NULL) {
 	if (q->pw_shell && q->pw_shell[0])
 	    default_shell = q->pw_shell;
 	strcat(home, q->pw_dir);

@@ -1,5 +1,5 @@
 /*
- * $Id: acsplit.c,v 1.15 2020/12/19 10:49:42 tom Exp $
+ * $Id: acsplit.c,v 1.16 2025/09/10 20:37:08 tom Exp $
  *
  * Title:	acsplit.c - split aclocal.m4
  * Author:	T.E.Dickey
@@ -81,11 +81,11 @@ skip_comment(char *s)
     } else if (!strncmp(s, "#", 1)) {
 	s += 1;
     } else {
-	return 0;
+	return NULL;
     }
     if (isspace((unsigned char) *s) || ispunct((unsigned char) *s))
 	return skip_blanks(s);
-    return 0;
+    return NULL;
 }
 
 static int
@@ -94,7 +94,7 @@ is_dashes(char *line)
     static const char dashes[] = "------------------------------------------------------------------------";
     line = skip_blanks(line);
     line = skip_comment(line);
-    if (line != 0) {
+    if (line != NULL) {
 	return (!strncmp(line, dashes, sizeof(dashes) - 1));
     }
     return 0;
@@ -108,7 +108,7 @@ match(char *s, const char *name)
     while (*s == *name) {
 	s++, name++;
     }
-    return (!isname(*s) && (s != base)) ? s : 0;
+    return (!isname(*s) && (s != base)) ? s : NULL;
 }
 
 /* AC_DEFUN([CF_ADD_INCDIR] */
@@ -118,8 +118,8 @@ defined(char *line, char *name)
     char *s;
 
     line = skip_blanks(line);
-    if (((s = match(line, "AC_DEFUN")) != 0)
-	|| ((s = match(line, "define")) != 0)) {
+    if (((s = match(line, "AC_DEFUN")) != NULL)
+	|| ((s = match(line, "define")) != NULL)) {
 	char temp[BUFSIZ];
 	char *t = temp;
 
@@ -150,7 +150,7 @@ finish(FILE *ofp, char *name)
     char temp[BUFSIZ];
 
     my_temp(temp);
-    if (ofp != 0)
+    if (ofp != NULL)
 	fclose(ofp);
 
     if (*name != 0) {
@@ -164,7 +164,7 @@ finish(FILE *ofp, char *name)
 
 	remove(temp);
     }
-    if ((ofp = fopen(temp, "w")) == 0)
+    if ((ofp = fopen(temp, "w")) == NULL)
 	failed(temp);
     return ofp;
 }
@@ -174,15 +174,15 @@ append(FILE *ofp, FILE *hdr)
 {
     char temp[BUFSIZ];
 
-    if (ofp != 0) {
-	char *bfr = 0;
+    if (ofp != NULL) {
+	char *bfr = NULL;
 	size_t have = 0;
 
 	fclose(ofp);
 	my_temp(temp);
 	VERBOSE(1) ("%s append %s\n", where(), temp);
 
-	if ((ofp = fopen(temp, "r")) != 0) {
+	if ((ofp = fopen(temp, "r")) != NULL) {
 	    while (getline(&bfr, &have, ofp) >= 0) {
 		VERBOSE(2) ("*...%s", bfr);
 		fputs(bfr, hdr);
@@ -194,7 +194,7 @@ append(FILE *ofp, FILE *hdr)
 	}
 
 	remove(temp);
-	if ((ofp = fopen(temp, "w")) == 0)
+	if ((ofp = fopen(temp, "w")) == NULL)
 	    failed(temp);
     }
     return ofp;
@@ -209,7 +209,7 @@ acsplit(const char *path)
     FILE *ifp = fopen(path, "r");
     FILE *ofp;
     char name[BUFSIZ];
-    char *bfr = 0;
+    char *bfr = NULL;
     size_t have = 0;
     int content = 0;
     int level = 0;
@@ -218,13 +218,13 @@ acsplit(const char *path)
     int lineno = 0;
     int last = 0;
 
-    if (ifp == 0)
+    if (ifp == NULL)
 	failed(path);
     mkdir(target, 0777);
 
     sprintf(name, "%s.in", path);
     remove(name);
-    if ((hdr = fopen(name, "w")) == 0)
+    if ((hdr = fopen(name, "w")) == NULL)
 	failed(name);
 
     name[0] = 0;
@@ -253,7 +253,7 @@ acsplit(const char *path)
 		fprintf(hdr, "%s\n", name);
 	    }
 	}
-	if (skip_comment(bfr) == 0) {	/* not a comment-line? */
+	if (skip_comment(bfr) == NULL) {	/* not a comment-line? */
 	    int found = 0;
 	    for (n = 0; bfr[n]; ++n) {
 		switch (bfr[n]) {

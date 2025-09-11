@@ -1,5 +1,5 @@
 /*
- * $Id: chrcount.c,v 1.10 2020/12/19 10:14:51 tom Exp $
+ * $Id: chrcount.c,v 1.11 2025/09/10 20:41:47 tom Exp $
  *
  * Title:	chrcount.c
  * Author:	T.E.Dickey
@@ -65,7 +65,7 @@ do_count(char *path)
 
     if (m_opt && result >= 0) {
 	FILE *fp = fopen(path, "r");
-	if (fp != 0) {
+	if (fp != NULL) {
 	    result = map(fp, (FILE *) 0, 0);
 	    fclose(fp);
 	}
@@ -83,8 +83,8 @@ chrcount(char *path)
     if (isdirectory(path)) {
 	FILE *pp = popen("ls -1 -a", "r");
 
-	if (pp != 0) {
-	    char *leaf = 0;
+	if (pp != NULL) {
+	    char *leaf = NULL;
 	    size_t have = 0;
 
 	    while (getline(&leaf, &have, pp) >= 0) {
@@ -99,7 +99,7 @@ chrcount(char *path)
 		if ((result[used].count = do_count(temp)) >= 0) {
 		    result[used].name = strmalloc(leaf);
 		    used++;
-		    result[used].name = 0;
+		    result[used].name = NULL;
 		}
 		free(temp);
 	    }
@@ -117,7 +117,7 @@ static long
 find_count(char *name, COUNTS * list)
 {
     int n;
-    for (n = 0; list[n].name != 0; n++)
+    for (n = 0; list[n].name != NULL; n++)
 	if (!strcmp(name, list[n].name))
 	    return list[n].count;
     return -1;
@@ -167,21 +167,21 @@ main(int argc, char **argv)
      */
 
     /* compute the label-width */
-    for (n = 0, lwidth = 8; vector[0][n].name != 0; n++) {
+    for (n = 0, lwidth = 8; vector[0][n].name != NULL; n++) {
 	if (lwidth < (int) strlen(vector[0][n].name) + 1)
 	    lwidth = (int) strlen(vector[0][n].name) + 1;
     }
 
     /* write the header */
     printf("%-*.*s", lwidth, lwidth, "filename");
-    for (n = 0; labels[n] != 0; n++)
+    for (n = 0; labels[n] != NULL; n++)
 	printf("%*s", widths[n], labels[n]);
     printf("\n");
 
     /* write the rows */
-    for (n = 0; vector[0][n].name != 0; n++) {
+    for (n = 0; vector[0][n].name != NULL; n++) {
 	printf("%-*.*s", lwidth, lwidth, vector[0][n].name);
-	for (m = 0; labels[m] != 0; m++) {
+	for (m = 0; labels[m] != NULL; m++) {
 	    long value = find_count(vector[0][n].name, vector[m]);
 	    if (value >= 0) {
 		if (p_opt && vector[0][n].count) {

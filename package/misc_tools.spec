@@ -1,14 +1,13 @@
 Summary: Miscellaneous foundation tools
-%define AppProgram misc_tools
-%define AppVersion 20240715
-# $XTermId: misc_tools.spec,v 1.29 2024/07/15 23:42:00 tom Exp $
-Name: %{AppProgram}
-Version: %{AppVersion}
+%global AppVersion 20240715
+# $XTermId: misc_tools.spec,v 1.32 2025/09/11 08:16:45 tom Exp $
+Name: misc_tools
+Version: 20250911
 Release: 1
-License: MIT
+License: X11-distribute-modifications-variant
 Group: Applications/Development
-URL: https://invisible-island.net/%{AppProgram}
-Source0: https://invisible-island.net/archives/%{AppProgram}/%{AppProgram}-%{AppVersion}.tgz
+URL: https://invisible-island.net/%{name}
+Source0: https://invisible-island.net/archives/%{name}/%{name}-%{version}.tgz
 Requires: sudo
 
 %description
@@ -22,7 +21,7 @@ and install on each machine, but which are too small to package separately.
 # no need for debugging symbols...
 %define debug_package %{nil}
 
-%setup -q -n %{AppProgram}-%{AppVersion}
+%setup -q -n %{name}-%{version}
 
 %build
 
@@ -86,6 +85,9 @@ fi
 
 %changelog
 # each patch should add its ChangeLog entries here
+
+* Thu Sep 11 2025 Thomas E. Dickey
+- testing misc_tools 20250911-1
 
 * Mon Jul 15 2024 Thomas Dickey
 - use --with-execdir option

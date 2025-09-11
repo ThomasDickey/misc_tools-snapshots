@@ -1,5 +1,5 @@
 /*
- * $Id: map.c,v 1.6 2020/10/25 18:04:06 tom Exp $
+ * $Id: map.c,v 1.7 2025/09/10 20:41:47 tom Exp $
  *
  * Title:	map.c
  * Author:	T.E.Dickey
@@ -40,7 +40,7 @@ main(int argc, char **argv)
 	int n;
 	for (n = 1; n < argc; n++) {
 	    FILE *fp = fopen(argv[n], "r");
-	    if (fp != 0) {
+	    if (fp != NULL) {
 		map(fp, stdout, utf8);
 		fclose(fp);
 	    }

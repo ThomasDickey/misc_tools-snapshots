@@ -1,5 +1,5 @@
 /*
- * $Id: td_getopt.h,v 1.3 2020/10/26 00:55:34 tom Exp $
+ * $Id: td_getopt.h,v 1.4 2025/09/11 08:17:16 tom Exp $
  *
  * This header provides "getopt" for systems which lack that function.
  */
@@ -38,8 +38,8 @@ static int
 td_getopt(int argc, char *argv[], const char *opts)
 {
     static int sp = 1;
-    register int c;
-    register char *cp;
+    int c;
+    const char *cp;
 
     if (sp == 1) {
 	if (td_optind >= argc ||

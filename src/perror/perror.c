@@ -1,5 +1,5 @@
 /*
- * $Id: perror.c,v 1.3 2020/12/19 11:13:33 tom Exp $
+ * $Id: perror.c,v 1.4 2025/09/10 20:40:21 tom Exp $
  *
  * Title:	perror.c
  * Author:	T.Dickey
@@ -19,9 +19,9 @@ main(int argc, char *argv[])
     char *temp;
 
     for (n = 1; n < argc; n++) {
-	temp = 0;
+	temp = NULL;
 	if ((value = (int) strtol(argv[n], &temp, 0)) > 0
-	    && temp != 0
+	    && temp != NULL
 	    && *temp == 0) {
 	    errno = value;
 	    perror(argv[0]);

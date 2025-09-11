@@ -1,7 +1,7 @@
 #
 # makefile for newpath on WIN32 using Microsoft Visual C++
 #
-# $Id: makefile.wnt,v 1.2 2020/10/25 17:31:48 tom Exp $
+# $Id: makefile.wnt,v 1.3 2025/09/10 20:43:10 tom Exp $
 #
 !include <ntwin32.mak>
 
@@ -10,8 +10,8 @@ LDFLAGS = -nologo -pdb:none
 
 OBJ = 	newpath.obj
 
-.c.obj:	
-	$(cc) $(CFLAGS) -c $< -Fo$@ 
+.c.obj:
+	$(cc) $(CFLAGS) -c $< -Fo$@
 
 all:  newpath.exe
 

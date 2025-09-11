@@ -7,7 +7,7 @@ set -e
 V=-v
 if [ "$1" != "upgrade" ]
 then
-	source=/usr/share/misctools/setuid 
+	source=/usr/share/misctools/setuid
 	target=/usr/libexec/misctools
 	if [ -f $source ]
 	then

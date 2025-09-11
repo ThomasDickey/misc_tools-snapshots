@@ -1,5 +1,5 @@
 /*
- * $Id: cpd.c,v 1.4 2020/12/19 10:56:49 tom Exp $
+ * $Id: cpd.c,v 1.5 2025/09/10 20:38:30 tom Exp $
  *
  * Title:	cpd.c
  * Author:	T.Dickey
@@ -51,7 +51,7 @@ main(int argc, char *argv[])
     if (touch) {
 	char *s = argv[1];
 	int mon = 0, day = 0, hour = 0, min = 0, yy = 0;
-	time_t when = time(0);
+	time_t when = time(NULL);
 	struct tm tm;
 
 	tm = *localtime(&when);

@@ -1,11 +1,11 @@
 /*
- * $Id: splitit.c,v 1.5 2020/12/19 12:52:13 tom Exp $
+ * $Id: splitit.c,v 1.6 2025/09/10 20:40:49 tom Exp $
  *
  * Title:	splitit.c
  * Author:	T.E.Dickey
  * Created:	17 Oct 1994
  *
- * Function:	
+ * Function:
  *		Reads one or more files, writing to a new set of files suffixed
  *		".001", ".002", etc.  which are all the same size.  The naming
  *		convention is chosen to match the MSDOS utility named
@@ -67,7 +67,7 @@ open_output(void)
 {
     (void) sprintf(seq_name, "%s.%03d", path_prefix, ++sequence);
     (void) unlink(seq_name);
-    if ((output = fopen(seq_name, "w")) == 0)
+    if ((output = fopen(seq_name, "w")) == NULL)
 	failed("fopen");
     written = 0;
 }
@@ -86,7 +86,7 @@ splitit(FILE *input)
     int got;
     int adj;
 
-    if (output == 0)
+    if (output == NULL)
 	open_output();
 
     while ((got = (int) fread(bfr, sizeof(*bfr), sizeof(bfr), input)) > 0) {
@@ -131,7 +131,7 @@ main(int argc, char **argv)
 	while (optind < argc) {
 	    char *name = argv[optind++];
 	    FILE *fp = fopen(name, "r");
-	    if (fp != 0) {
+	    if (fp != NULL) {
 		splitit(fp);
 	    } else {
 		failed(name);

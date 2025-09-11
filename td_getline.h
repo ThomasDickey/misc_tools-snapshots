@@ -1,5 +1,5 @@
 /*
- * $Id: td_getline.h,v 1.4 2020/12/19 10:11:07 tom Exp $
+ * $Id: td_getline.h,v 1.5 2025/09/10 20:36:49 tom Exp $
  *
  * This header provides "getline" for systems which lack that function.
  */
@@ -22,7 +22,7 @@ td_getline(char **lineptr, size_t *length, FILE *fp)
     ssize_t result = -1;
 
     do {
-	if (*lineptr == 0 || *length == 0) {
+	if (*lineptr == NULL || *length == 0) {
 	    buffer = malloc(*length = chunk);
 	} else if (*length <= (offset + chunk)) {
 	    buffer = realloc(*lineptr, *length += chunk);
@@ -32,7 +32,7 @@ td_getline(char **lineptr, size_t *length, FILE *fp)
 
 	if (buffer == NULL) {
 	    free(*lineptr);
-	    *lineptr = 0;
+	    *lineptr = NULL;
 	    *length = 0;
 	    break;
 	}
@@ -59,7 +59,7 @@ td_getline(char **lineptr, size_t *length, FILE *fp)
 		    buffer = realloc(*lineptr, *length += chunk);
 		    if (buffer == NULL) {
 			free(*lineptr);
-			*lineptr = 0;
+			*lineptr = NULL;
 			*length = 0;
 			break;
 		    }

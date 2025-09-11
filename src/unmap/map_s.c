@@ -1,5 +1,5 @@
 /*
- * $Id: map_s.c,v 1.5 2012/03/14 09:00:11 tom Exp $
+ * $Id: map_s.c,v 1.6 2025/09/10 20:41:47 tom Exp $
  *
  * Title:	map.c
  * Author:	T.E.Dickey
@@ -15,7 +15,7 @@
 static int
 put_ch(FILE *ofp, int c)
 {
-    if (ofp != 0)
+    if (ofp != NULL)
 	fputc(c, ofp);
     return 1;
 }
