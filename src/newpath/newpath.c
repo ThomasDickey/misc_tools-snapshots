@@ -1,9 +1,10 @@
 /*
- * $Id: newpath.c,v 1.20 2025/09/10 20:38:30 tom Exp $
+ * $Id: newpath.c,v 1.22 2026/08/19 00:18:18 tom Exp $
  *
  * Author:	T.E.Dickey
  * Created:	02 Jun 1994
  * Modified:
+ *		18 Aug 2024, improve no-leaks check.
  *		13 Jul 2024, handle relative-link in search for original path.
  *		25 Mar 2021, add "-0" option.
  *		13 Mar 2012, integrate into misc_tools package
@@ -216,6 +217,8 @@ main(int argc, char *argv[])
 
     int c, point = 0;
     LIST *list;
+    size_t skip;
+    char *base;
     char *s;
 
     while ((c = getopt(argc, argv, "0a:bdefn:prv")) != EOF) {
@@ -264,27 +267,39 @@ main(int argc, char *argv[])
 	s = StrAlloc(BLANK);
     else
 	s = StrAlloc(s);	/* ...just in case someone else uses it */
+    base = s;
+    skip = strlen(base) + 1;
+    (void) base;
+    (void) skip;
 
-    for (c = 0; s[c] != EOS; c++)
-	if (s[c] == PATHDELIM)
+    for (c = 0; s[c] != EOS; c++) {
+	if (s[c] == PATHDELIM) {
 	    length++;
+	}
+    }
     length += (size_t) (argc + 3);
     list = (LIST *) calloc(length, sizeof(LIST));
+    if (list == NULL)
+	failed("calloc");
     list[0].nn = StrAlloc(BLANK);	/* dummy entry, to simplify -b option */
 
     /* Split the environment variable into strings indexed in list[] */
-    for (c = 1; *s != EOS; c++) {
-	if (*s == PATHDELIM) {
-	    list[c].nn = StrAlloc(".");
-	} else {
-	    list[c].nn = s;
-	    while (*s != PATHDELIM && *s != EOS)
-		s++;
-	    if (*s == EOS)
-		continue;
-	    *s = EOS;
+    if (*s != EOS) {
+	for (c = 1; *s != EOS; c++) {
+	    if (*s == PATHDELIM) {
+		list[c].nn = StrAlloc(".");
+	    } else {
+		list[c].nn = s;
+		while (*s != PATHDELIM && *s != EOS)
+		    s++;
+		if (*s == EOS)
+		    continue;
+		*s = EOS;	/* split the string at the delimiter */
+	    }
+	    s++;
 	}
-	s++;
+    } else {
+	c = 1;
     }
     list[c].nn = NULL;
     TRACE((stderr, "%s has %d entries\n", name, c));
@@ -466,7 +481,13 @@ main(int argc, char *argv[])
     }
 
 #ifdef NO_LEAKS
+    free(list[0].nn);
+    for (c = 1; list[c].nn != NULL; ++c) {
+	if (list[c].nn < base || list[c].nn > base + skip)
+	    free(list[c].nn);
+    }
     free(list);
+    free(base);
 #endif
     exit(EXIT_SUCCESS);
     /*NOTREACHED */

@@ -1,10 +1,10 @@
 Summary: Miscellaneous foundation tools
 %global AppVersion 20240715
-# $XTermId: misc_tools.spec,v 1.32 2025/09/11 08:16:45 tom Exp $
+# $XTermId: misc_tools.spec,v 1.34 2026/08/19 00:11:11 tom Exp $
 Name: misc_tools
-Version: 20250911
+Version: 20260818
 Release: 1
-License: X11-distribute-modifications-variant
+License: X11
 Group: Applications/Development
 URL: https://invisible-island.net/%{name}
 Source0: https://invisible-island.net/archives/%{name}/%{name}-%{version}.tgz
@@ -86,8 +86,8 @@ fi
 %changelog
 # each patch should add its ChangeLog entries here
 
-* Thu Sep 11 2025 Thomas E. Dickey
-- testing misc_tools 20250911-1
+* Tue Aug 18 2026 Thomas E. Dickey
+- testing misc_tools 20260818-1
 
 * Mon Jul 15 2024 Thomas Dickey
 - use --with-execdir option
